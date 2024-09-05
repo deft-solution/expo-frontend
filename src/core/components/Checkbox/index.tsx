@@ -17,9 +17,7 @@ const Checkbox = (props: CheckboxTypeProps) => {
     <label className="flex items-center" htmlFor={name}>
       <input type="checkbox" {...register(name)} />
       {label && (
-        <div className="ms-2 text-sm font-medium text-gray-900 dark:text-gray-300">
-          {label}
-        </div>
+        <div className="ms-2 text-sm font-medium text-gray-900 dark:text-gray-300">{label}</div>
       )}
     </label>
   );

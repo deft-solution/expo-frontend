@@ -18,7 +18,10 @@ export function getAllExhibition(param: EventListingFilterParam): Promise<IPagin
   return GETWithToken<IPagination<IExhibitor>, EventListingFilterParam>(API_URL, param);
 }
 
-export function updateExhibition(id: string, param: EventListingFilterParam): Promise<IPagination<IExhibitor>> {
+export function updateExhibition(
+  id: string,
+  param: EventListingFilterParam
+): Promise<IPagination<IExhibitor>> {
   const API_URL = '/api/exhibition/v1/' + id;
   return PUTWithToken<IPagination<IExhibitor>, EventListingFilterParam>(API_URL, param);
 }

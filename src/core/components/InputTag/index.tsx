@@ -10,12 +10,7 @@ export interface InputTagsTypeProps {
 
 const InputTag = (props: InputTagsTypeProps) => {
   const { name, label, placeholder } = props;
-  const {
-    register,
-    getValues,
-    watch,
-    setValue: setFormContextValue,
-  } = useFormContext();
+  const { register, getValues, watch, setValue: setFormContextValue } = useFormContext();
   const defaultValue = getValues(name);
 
   const [value, setValue] = useState<string>('');
@@ -59,10 +54,7 @@ const InputTag = (props: InputTagsTypeProps) => {
   return (
     <div>
       {label && (
-        <label
-          htmlFor={name}
-          className="block mb-2 text-sm font-medium text-gray-900"
-        >
+        <label htmlFor={name} className="block mb-2 text-sm font-medium text-gray-900">
           {label}
         </label>
       )}

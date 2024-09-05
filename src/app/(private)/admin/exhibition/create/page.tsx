@@ -56,8 +56,7 @@ const CreateExhibition = () => {
         const socials = response.socials;
         if (socials.length) {
           SOCIAL_TYPE.forEach((row, idx) => {
-            const url =
-              socials.find(({ type }) => type === row.type)?.url ?? '';
+            const url = socials.find(({ type }) => type === row.type)?.url ?? '';
             setValue(`socials.${idx}.url`, url);
           });
         }
@@ -68,30 +67,18 @@ const CreateExhibition = () => {
   return (
     <div>
       <FormProvider {...methods}>
-        <form
-          className="flex flex-col gap-4"
-          onSubmit={handleSubmit(onSubmitLoginForm)}
-          action=""
-        >
+        <form className="flex flex-col gap-4" onSubmit={handleSubmit(onSubmitLoginForm)} action="">
           <div className="grid grid-cols-2 gap-4">
             <InputText
               name="name"
               label="Exhibition Name"
               placeholder="Exhibition Name Ex: `Ted Talk`.... "
             />
-            <InputText
-              label="Category"
-              name="category"
-              placeholder="Category"
-            />
+            <InputText label="Category" name="category" placeholder="Category" />
           </div>
           <InputTag name="tags" label="Tag" />
           <Upload name="logoUrl" label="Logo URL" />
-          <TextArea
-            label="Description"
-            name="description"
-            placeholder="Exhibition Description"
-          />
+          <TextArea label="Description" name="description" placeholder="Exhibition Description" />
 
           <h2 className="text-2xl">Exhibition Location</h2>
           <div className="flex flex-col gap-4">
@@ -106,29 +93,13 @@ const CreateExhibition = () => {
               placeholder="e.g., 1234 Elm Street"
             />
             <div className="grid grid-cols-2 gap-4">
-              <InputText
-                name="location.postalCode"
-                label="Postal Code"
-                placeholder="e.g., 1234"
-              />
+              <InputText name="location.postalCode" label="Postal Code" placeholder="e.g., 1234" />
 
-              <InputText
-                name="location.state"
-                label="State"
-                placeholder="e.g......."
-              />
+              <InputText name="location.state" label="State" placeholder="e.g......." />
 
-              <InputText
-                name="location.city"
-                label="City"
-                placeholder="e.g., Phnom Penh"
-              />
+              <InputText name="location.city" label="City" placeholder="e.g., Phnom Penh" />
 
-              <InputText
-                name="location.country"
-                label="Country"
-                placeholder="e.g., Cambodia"
-              />
+              <InputText name="location.country" label="Country" placeholder="e.g., Cambodia" />
             </div>
           </div>
 

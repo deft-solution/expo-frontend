@@ -17,10 +17,7 @@ const InputPassword = (props: InputPasswordTypeProps) => {
   return (
     <div>
       {label && (
-        <label
-          htmlFor={name}
-          className="block mb-2 text-sm font-medium text-gray-900"
-        >
+        <label htmlFor={name} className="block mb-2 text-sm font-medium text-gray-900">
           {label}
         </label>
       )}
@@ -31,9 +28,7 @@ const InputPassword = (props: InputPasswordTypeProps) => {
         {...register(name)}
       />
       {errors[name] && (
-        <p className="text-red-500 text-xs mt-2">
-          {errors[name].message?.toString()}
-        </p>
+        <p className="text-red-500 text-xs mt-2">{errors[name].message?.toString()}</p>
       )}
     </div>
   );

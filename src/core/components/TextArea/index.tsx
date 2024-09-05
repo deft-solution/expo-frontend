@@ -32,9 +32,7 @@ const TextArea = (props: TextAreaTypeProps) => {
         {...register(name)}
       ></textarea>
       {errors[name] && (
-        <p className="text-red-500 text-xs mt-2">
-          {errors[name].message?.toString()}
-        </p>
+        <p className="text-red-500 text-xs mt-2">{errors[name].message?.toString()}</p>
       )}
     </div>
   );

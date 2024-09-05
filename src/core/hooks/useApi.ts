@@ -6,21 +6,26 @@ export interface HookTypeParam<T, P = any> {
   effects?: Array<any>;
   onSuccess?: (param: T) => void;
   delayDuration?: number;
-};
+}
 
 export interface ReturnHookType<T> {
   loading: boolean;
   loaded: boolean;
   response: T;
   error: any;
-};
+}
 
 /**
  *
  * @template T the type of the Hook's `response`.
  * @template P the type of the service method's `param`.
  */
-export function useApi<T, P = any>({ service, params = {} as any, effects = [], onSuccess }: HookTypeParam<T, P>): ReturnHookType<T> {
+export function useApi<T, P = any>({
+  service,
+  params = {} as any,
+  effects = [],
+  onSuccess,
+}: HookTypeParam<T, P>): ReturnHookType<T> {
   const [loading, setLoading] = useState(false);
   const [response, setResponse] = useState<T | any>(null);
   const [error, setError] = useState(null);
@@ -39,7 +44,7 @@ export function useApi<T, P = any>({ service, params = {} as any, effects = [], 
         setLoading(false);
         setLoaded(true);
       });
-    return () => { };
+    return () => {};
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, effects);
