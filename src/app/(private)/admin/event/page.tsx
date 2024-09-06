@@ -1,14 +1,15 @@
-"use client";
+'use client';
 
-import Image from "next/image";
-import Link from "next/link";
-import React, { useEffect, useState } from "react";
+import classNames from 'classnames';
+import Image from 'next/image';
+import Link from 'next/link';
+import React, { useEffect, useState } from 'react';
 
-import { formatDisplayDate } from "@/helper/format-date";
-import { IPagination } from "@/models/Pagination";
-import { EventListingFilterParam, IEventList } from "@/schema/Event";
-import { getAllEvent } from "@/service/event";
-import { Pagination, useApi } from "@Core";
+import { formatDisplayDate } from '@/helper/format-date';
+import { IPagination } from '@/models/Pagination';
+import { EventListingFilterParam, IEventList } from '@/schema/Event';
+import { getAllEvent } from '@/service/event';
+import { Pagination, useApi } from '@Core';
 
 const Page = () => {
   const [list, setList] = useState<IEventList[]>([]);
@@ -21,7 +22,7 @@ const Page = () => {
       service: getAllEvent,
       params: { limit: limit, offset: offset },
       effects: [offset],
-    },
+    }
   );
 
   useEffect(() => {
@@ -90,20 +91,21 @@ const Page = () => {
                     {formatDisplayDate(row.endDate)}
                   </td>
                   <td>
-                    {row.isActive ? (
-                      <div className="inline-flex items-center gap-x-1.5 py-1.5 px-3 rounded-full text-xs font-medium bg-teal-500 text-white">
-                        Active
-                      </div>
-                    ) : (
-                      <div className="inline-flex items-center gap-x-1.5 py-1.5 px-3 rounded-full text-xs font-medium bg-red-500 text-white">
-                        Deactive
-                      </div>
-                    )}
+                    <div className="flex items-center gap-2">
+                      <div
+                        className={classNames(
+                          'h-2.5 w-2.5 rounded-full me-2',
+                          { 'bg-green-500': row.isActive },
+                          { 'bg-red-500': !row.isActive }
+                        )}
+                      ></div>
+                      <div>{row.isActive ? 'Active' : 'Deactive'}</div>
+                    </div>
                   </td>
                   <td>
                     <Link
                       href={{
-                        pathname: "/admin/event/create",
+                        pathname: '/admin/event/create',
                         query: { id: row.id },
                       }}
                     >

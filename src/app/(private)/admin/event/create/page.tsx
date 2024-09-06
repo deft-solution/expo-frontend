@@ -1,51 +1,49 @@
-"use client";
-import { useRouter, useSearchParams } from "next/navigation";
-import React, { useEffect } from "react";
-import { FormProvider, useForm } from "react-hook-form";
+'use client';
+import { useRouter, useSearchParams } from 'next/navigation';
+import React, { useEffect } from 'react';
+import { FormProvider, useForm } from 'react-hook-form';
 
-import {
-  handleSubmitCreateEvent,
-  handleSubmitUpdateEvent,
-} from "@/actions/event";
-import DatePicker from "@/core/components/Datepicker";
-import { formatDisplayDate } from "@/helper/format-date";
-import { EventCreateFormSchema, IEvents } from "@/schema/Event";
-import { getEventById } from "@/service/event";
-import { Checkbox, InputText, TextArea, Upload } from "@Core";
-import { yupResolver } from "@hookform/resolvers/yup";
+import { handleSubmitCreateEvent, handleSubmitUpdateEvent } from '@/actions/event';
+import DatePicker from '@/core/components/Datepicker';
+import { formatDisplayDate } from '@/helper/format-date';
+import { EventCreateFormSchema, IEvents } from '@/schema/Event';
+import { getEventById } from '@/service/event';
+import { Checkbox, InputText, TextArea, Upload } from '@Core';
+import { yupResolver } from '@hookform/resolvers/yup';
 
 const Page = () => {
   const router = useRouter();
   const methods = useForm({ resolver: yupResolver(EventCreateFormSchema) });
-  const { handleSubmit, setValue } = methods;
-  const id = useSearchParams().get("id") ?? null; // default value is "1"
+  const { handleSubmit, setValue, trigger } = methods;
+  const id = useSearchParams().get('id') ?? null; // default value is "1"
 
   const onSubmit = (event: IEvents) => {
     const action = id
       ? handleSubmitUpdateEvent(id, event)
       : handleSubmitCreateEvent(event);
     action.then(() => {
-      router.push("/admin/event");
+      router.push('/admin/event');
     });
   };
 
   useEffect(() => {
     if (id) {
       getEventById(id).then((res) => {
-        setValue("name", res.name);
-        setValue("logoUrl", res.logoUrl);
-        setValue("startFrom", formatDisplayDate(res.startFrom, "YYYY-MM-DD"));
-        setValue("endDate", formatDisplayDate(res.endDate, "YYYY-MM-DD"));
-        setValue("email", res.email);
-        setValue("phoneNumber", res.phoneNumber);
-        setValue("location", res.location);
-        setValue("description", res.description);
-        setValue("floorPlanUrl", res.floorPlanUrl);
-        setValue("mainWebsiteUrl", res.mainWebsiteUrl);
-        setValue("isActive", res.isActive);
+        setValue('name', res.name);
+        setValue('logoUrl', res.logoUrl);
+        setValue('startFrom', formatDisplayDate(res.startFrom, 'YYYY-MM-DD'));
+        setValue('endDate', formatDisplayDate(res.endDate, 'YYYY-MM-DD'));
+        setValue('email', res.email);
+        setValue('phoneNumber', res.phoneNumber);
+        setValue('location', res.location);
+        setValue('description', res.description);
+        setValue('floorPlanUrl', res.floorPlanUrl);
+        setValue('mainWebsiteUrl', res.mainWebsiteUrl);
+        setValue('isActive', res.isActive);
+        trigger('logoUrl');
       });
     }
-  }, []);
+  }, [id]);
 
   return (
     <div>

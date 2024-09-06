@@ -1,8 +1,9 @@
-"use client";
-import React, { useEffect } from "react";
+'use client';
+import { useRouter } from 'next/navigation';
+import React, { useEffect } from 'react';
 
-import { useAuthContext } from "@/context/AuthContext";
-import { ProfileSidebar } from "@Core";
+import { useAuthContext } from '@/context/AuthContext';
+import { ProfileSidebar } from '@Core';
 
 export interface RootLayoutProps {
   children: React.ReactNode;
@@ -10,11 +11,17 @@ export interface RootLayoutProps {
 
 export default function PrivateLayout({ children }: Readonly<RootLayoutProps>) {
   const authContext = useAuthContext();
+  const router = useRouter();
 
   useEffect(() => {
-    document.body.classList.add("bg-gray");
+    document.body.classList.add('bg-gray');
+
+    if (!authContext?.isAuthenticated) {
+      router.push('/auth/login');
+    }
+
     return () => {
-      document.body.classList.remove("bg-gray");
+      document.body.classList.remove('bg-gray');
     };
   }, []);
 

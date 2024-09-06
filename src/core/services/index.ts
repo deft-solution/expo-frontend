@@ -1,6 +1,7 @@
 import axios, { AxiosRequestConfig, AxiosResponse, RawAxiosRequestHeaders } from 'axios';
 import getConfig from 'next/config';
 
+import { AuthStorageKey } from '@/constants/Storage';
 import { getAccessToken } from '@/utils/LocalStorage';
 
 /**
@@ -18,6 +19,10 @@ function sendRequest<T, D = any>(config: AxiosRequestConfig<D>): Promise<T> {
         err.errorCode = -1;
         throw err;
       } else {
+        const statusCode = err.response?.data?.errorCode;
+        if (statusCode === 2001) {
+          localStorage.removeItem(AuthStorageKey);
+        }
         throw err.response.data;
       }
     });
