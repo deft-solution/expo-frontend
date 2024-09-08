@@ -21,3 +21,8 @@ export function getEventById(id: string): Promise<IEventList> {
   const API_URL = `/api/events/v1/` + id;
   return GETWithToken<IEventList, {}>(API_URL, {});
 }
+
+export function getAllEventAutoComplete(): Promise<IEventList[]> {
+  const API_URL = `/api/events/v1/autocomplete`;
+  return GETWithToken<IEventList[]>(API_URL, {});
+}

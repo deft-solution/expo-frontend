@@ -1,15 +1,15 @@
 "use client";
 
-import classNames from 'classnames';
-import Image from 'next/image';
-import Link from 'next/link';
-import React, { useEffect, useState } from 'react';
+import classNames from "classnames";
+import Image from "next/image";
+import Link from "next/link";
+import React, { useEffect, useState } from "react";
 
-import { formatDisplayDate } from '@/helper/format-date';
-import { IPagination } from '@/models/Pagination';
-import { IExhibitor } from '@/schema/Exhibition';
-import { getAllExhibition } from '@/service/exhibition';
-import { Pagination, useApi } from '@Core';
+import { formatDisplayDate } from "@/helper/format-date";
+import { IPagination } from "@/models/Pagination";
+import { IExhibitor } from "@/schema/Exhibition";
+import { getAllExhibition } from "@/service/exhibition";
+import { Pagination, useApi } from "@Core";
 
 const ExhibitionPage = () => {
   const [limit, setLimit] = useState<number>(10);
@@ -81,8 +81,8 @@ const ExhibitionPage = () => {
                       {row.logoUrl && (
                         <Image
                           className="w-10 h-10 rounded-full object-cover"
-                          width={14}
-                          height={14}
+                          width={100}
+                          height={100}
                           src={row.logoUrl}
                           alt={row.logoUrl}
                         />

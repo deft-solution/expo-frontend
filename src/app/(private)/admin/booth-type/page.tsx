@@ -1,49 +1,41 @@
 "use client";
+import classNames from 'classnames';
+import Link from 'next/link';
+import React, { useEffect, useState } from 'react';
 
-import classNames from "classnames";
-import Image from "next/image";
-import Link from "next/link";
-import React, { useEffect, useState } from "react";
-
-import { formatDisplayDate } from "@/helper/format-date";
-import { IPagination } from "@/models/Pagination";
-import { EventListingFilterParam, IEventList } from "@/schema/Event";
-import { getAllEvent } from "@/service/event";
-import { Pagination, useApi } from "@Core";
+import { formatDisplayDate } from '@/helper/format-date';
+import { IBootTypeList } from '@/schema/BoothType';
+import { getAllBoothType } from '@/service/booth-type';
+import { useApi } from '@Core';
 
 const Page = () => {
-  const [list, setList] = useState<IEventList[]>([]);
-  const [total, setTotal] = useState(0);
-  const [limit, _] = useState<number>(25);
+  const [list, setList] = useState<IBootTypeList[]>([]);
   const [offset, setOffset] = useState<number>(0);
+  const [total, setTotal] = useState<number>(0);
+  const limit = 10;
 
-  const { response } = useApi<IPagination<IEventList>, EventListingFilterParam>(
-    {
-      service: getAllEvent,
-      params: { limit: limit, offset: offset },
-      effects: [offset],
-    },
-  );
+  // API
+  const { response } = useApi({
+    service: getAllBoothType,
+    params: { limit, offset },
+    effects: [offset],
+  });
 
   useEffect(() => {
-    if (response && response.data.length) {
+    if (response && response.data) {
       setList(response.data);
-      //
       setTotal(response.total);
     }
   }, [response]);
 
   return (
     <div>
-      <div className="grid grid-cols-6 gap-4">
-        <h2 className="text-3xl">All Event</h2>
-        <Link
-          className="col-end-7 text-white bg-primary hover:bg-primary-800 font-medium rounded-lg text-sm px-5 py-2.5 text-center"
-          href="/admin/event/create"
-        >
-          Add Another Event
-        </Link>
-      </div>
+      <Link
+        className="col-end-7 text-white bg-primary hover:bg-primary-800 font-medium rounded-lg text-sm px-5 py-2.5 text-center"
+        href="/admin/booth-type/create"
+      >
+        Create Booth Type
+      </Link>
       <table className="w-full min-w-max table-auto mt-4 text-left">
         <thead>
           <tr>
@@ -51,10 +43,10 @@ const Page = () => {
               Event Name
             </th>
             <th className="px-6 py-3 text-start text-xs font-medium text-gray-500 uppercase dark:text-neutral-500">
-              Start Date
+              Price
             </th>
             <th className="px-6 py-3 text-start text-xs font-medium text-gray-500 uppercase dark:text-neutral-500">
-              End Date
+              Created At
             </th>
             <th className="px-6 py-3 text-start text-xs font-medium text-gray-500 uppercase dark:text-neutral-500">
               Status
@@ -71,24 +63,13 @@ const Page = () => {
                   className="hover:bg-gray-100 dark:hover:bg-neutral-700"
                 >
                   <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-800 dark:text-neutral-200">
-                    <div className="flex items-center gap-2">
-                      {row.logoUrl && (
-                        <Image
-                          className="w-10 h-10 rounded-full object-cover"
-                          width={100}
-                          height={100}
-                          src={row.logoUrl}
-                          alt={row.logoUrl}
-                        />
-                      )}
-                      {row.name}
-                    </div>
+                    {row.name}
                   </td>
-                  <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-800 dark:text-neutral-200">
-                    {formatDisplayDate(row.startFrom)}
+                  <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-800 dark:text-neutral-200">
+                    {row.price}
                   </td>
-                  <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-800 dark:text-neutral-200">
-                    {formatDisplayDate(row.endDate)}
+                  <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-800 dark:text-neutral-200">
+                    {formatDisplayDate(row.createdAt, "DD MMM YYYY")}
                   </td>
                   <td>
                     <div className="flex items-center gap-2">
@@ -105,7 +86,7 @@ const Page = () => {
                   <td>
                     <Link
                       href={{
-                        pathname: "/admin/event/create",
+                        pathname: "/admin/booth-type/create",
                         query: { id: row.id },
                       }}
                     >
@@ -117,8 +98,6 @@ const Page = () => {
             })}
         </tbody>
       </table>
-
-      <Pagination pageSize={limit} total={total} onChange={setOffset} />
     </div>
   );
 };
