@@ -25,4 +25,13 @@ export type { UploadTypesProps } from "./Uploads";
 export { default as Dropdown } from "./Dropdown";
 export type { DropdownTypeProps } from "./Dropdown";
 
+export { default as Form } from "./Form";
+export type { FormTypeProps } from "./Form";
+
+export { default as Button } from "./Buttons";
+export type { ButtonTypeProps } from "./Buttons";
+
+export { default as InputOTP } from "./InputOTP";
+export type { InputOTPTypeProps } from "./InputOTP";
+
 export { default as ProfileSidebar } from "./ProfileSidebar";
