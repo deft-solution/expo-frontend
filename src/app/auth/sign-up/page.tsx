@@ -1,32 +1,35 @@
 "use client";
-import React, { useState } from "react";
-import { useForm } from "react-hook-form";
+import React, { useState } from 'react';
+import { useForm } from 'react-hook-form';
 
-import { IValidatingEmail, ValidateEmail } from "@/schema";
-import { emailIsValid } from "@/service/authentication";
-import { Button, Form, InputOTP, InputText } from "@Core";
-import { yupResolver } from "@hookform/resolvers/yup";
+import { EmailValidationSignUp, IValidatingEmail } from '@/schema';
+import { Button, Form, InputOTP, InputText } from '@Core';
+import { yupResolver } from '@hookform/resolvers/yup';
+
+import { hasSendEmailVerificationSuccess } from '../../../actions/Authentication';
 
 const Page = () => {
-  const [isValid, setIsValid] = useState<boolean>(false);
-  const [disabled, setIsDisabled] = useState<boolean>(false);
-  const methods = useForm({
-    resolver: yupResolver(ValidateEmail),
-  });
-  const { setError } = methods;
+  const [isValidEmail, setIsValidEmail] = useState<boolean>(false);
+  const [isCodeSubmitted, setIsCodeSubmitted] = useState<boolean>(false);
 
-  const onValidatingEmail = (data: IValidatingEmail) => {
-    setIsDisabled(true);
-    emailIsValid(data)
-      .then(({ isValid }) => {
-        if (!isValid) {
-          setError("email", { message: "Email has register." });
-        }
-        setIsDisabled(false);
-      })
-      .catch(() => {
-        setIsDisabled(false);
-      });
+  const [disabled, setIsDisabled] = useState<boolean>(false);
+
+  const methods = useForm({
+    resolver: yupResolver(EmailValidationSignUp),
+  });
+  const { formState, trigger, setError } = methods;
+
+  const onSubmitForm = async (formValue: IValidatingEmail) => {
+    if (formValue.email && !isValidEmail) {
+      const isValidEmail = await hasSendEmailVerificationSuccess(
+        formValue.email,
+      );
+      setIsValidEmail(isValidEmail);
+    }
+    if (formValue.code === null) {
+      setError("code", { message: "Verification is required" });
+    }
+    console.log(formValue);
   };
 
   return (
@@ -40,18 +43,28 @@ const Page = () => {
             <Form
               classNames="flex flex-col gap-4"
               methods={methods}
-              onSubmit={onValidatingEmail}
+              onSubmit={onSubmitForm}
             >
-              <InputText
-                name="email"
-                label="Email"
-                disabled={disabled}
-                placeholder="exmaple@gmail.com"
-              />
-              <InputOTP name="code" length={6} />
-              <Button disabled={disabled} type="submit">
-                Continue
-              </Button>
+              {!isValidEmail && !isCodeSubmitted && (
+                <InputText
+                  name="email"
+                  label="Email"
+                  placeholder="exmaple@gmail.com"
+                />
+              )}
+              {isValidEmail && !isCodeSubmitted && (
+                <InputOTP name="code" length={6} />
+              )}
+              {isValidEmail && isCodeSubmitted && (
+                <>
+                  <div className="grid grid-cols-2 gap-4">
+                    <InputText name="firstName" label="First Name" />
+                    <InputText name="lastName" label="Last Name" />
+                  </div>
+                  <InputText name="password" label="Password" />
+                </>
+              )}
+              <Button type="submit">Continue</Button>
             </Form>
           </div>
         </div>

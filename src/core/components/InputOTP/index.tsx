@@ -1,4 +1,5 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from 'react';
+import { useFormContext } from 'react-hook-form';
 
 export interface InputOTPTypeProps {
   name: string;
@@ -7,6 +8,14 @@ export interface InputOTPTypeProps {
 }
 
 const InputOTP: React.FC<InputOTPTypeProps> = (props) => {
+  const { name } = props;
+  const {
+    register,
+    formState: { errors },
+    setValue, // Update form value
+  } = useFormContext(); // retrieve all hook methods
+  register(name);
+
   const { length = 4 } = props;
   const inputsRef = useRef<Array<HTMLInputElement | null>>([]);
 
@@ -27,6 +36,9 @@ const InputOTP: React.FC<InputOTPTypeProps> = (props) => {
     if (value && index < length - 1) {
       inputsRef.current[index + 1]?.focus();
     }
+
+    const otpValue = newOtp.join("");
+    setValue(name, otpValue);
   };
 
   const handleKeyDown = (
@@ -63,34 +75,48 @@ const InputOTP: React.FC<InputOTPTypeProps> = (props) => {
     // Ensure array is 'length'
     setOTPList([...newOtp, ...Array(length - newOtp.length).fill("")]);
 
+    const otpValue = newOtp.join("");
+    setValue(name, otpValue);
+
     // Automatically focus the last filled input
     const lastInputIndex = newOtp.length - 1;
     inputsRef.current[lastInputIndex]?.focus();
   };
 
+  const error = name
+    .split(".")
+    .reduce((acc, part) => (acc as any)?.[part], errors);
+
   return (
-    <div className="w-full flex gap-4 justify-between">
-      {list.map((_, idx) => {
-        return (
-          <div key={idx}>
-            <input
-              type="text"
-              value={list[idx]}
-              ref={(el) => {
-                inputsRef.current[idx] = el;
-              }}
-              inputMode="numeric" // Ensure numeric input mode
-              autoComplete="one-time-code" // Enable auto-fill support for OTP
-              maxLength={1}
-              onChange={(e) => handleChange(e.target.value, idx)}
-              onKeyDown={(e) => handleKeyDown(e, idx)}
-              onPaste={handlePaste} // Handle paste event
-              onFocus={() => handleFocus(idx)}
-              className="w-12 h-12 text-center border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-            />
-          </div>
-        );
-      })}
+    <div>
+      <div className="w-full flex gap-4 justify-between">
+        {list.map((_, idx) => {
+          return (
+            <div key={idx}>
+              <input
+                type="text"
+                value={list[idx]}
+                ref={(el) => {
+                  inputsRef.current[idx] = el;
+                }}
+                inputMode="numeric" // Ensure numeric input mode
+                autoComplete="one-time-code" // Enable auto-fill support for OTP
+                maxLength={1}
+                onChange={(e) => handleChange(e.target.value, idx)}
+                onKeyDown={(e) => handleKeyDown(e, idx)}
+                onPaste={handlePaste} // Handle paste event
+                onFocus={() => handleFocus(idx)}
+                className="w-12 h-12 text-center border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+              />
+            </div>
+          );
+        })}
+      </div>
+      {error && (
+        <p className="text-red-500 text-xs mt-2">
+          {(error as any).message?.toString()}
+        </p>
+      )}
     </div>
   );
 };

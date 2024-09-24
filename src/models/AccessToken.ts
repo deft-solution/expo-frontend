@@ -19,3 +19,11 @@ export class AccessToken {
     this.type = type;
   }
 }
+
+export interface SignUpExhibitionParam {
+  password: string;
+  profile: {
+    firstName: string;
+    lastName: string;
+  }
+}

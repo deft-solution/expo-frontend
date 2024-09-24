@@ -1,0 +1,2 @@
+export const ERROR_USER_DOES_NOT_EXIST = 1001;
+export const ERROR_CODE_HAS_SENT = 1002;
