@@ -1,6 +1,5 @@
 import * as yup from 'yup';
 
-import { hasSendEmailVerificationSuccess } from '@/actions/Authentication';
 import { isValidEmailFormat } from '@/helper';
 
 export interface IAuthLogin {
@@ -11,6 +10,9 @@ export interface IAuthLogin {
 export interface IValidatingEmail {
   email: string;
   code: string | null;
+  firstName: string | null,
+  lastName: string | null,
+  password: string | null,
 }
 
 export interface IVerificationCodeParam {
@@ -36,58 +38,7 @@ export const EmailValidationSignUp = yup.object().shape({
     .notRequired()
     .length(6, 'OTP code must be exactly 6 digits')
     .default(null),
-});
-
-// Define a validation schema with Yup
-export const ValidateEmail = yup.object().shape({
-  email: yup
-    .string()
-    .email('Invalid email')
-    .length(6, 'OTP code must be exactly 6 digits')
-    .required('Email is required')
-    .test('checkEmailExists', 'Email already exists', async (email: string) => {
-      if (!isValidEmailFormat(email)) {
-        return false;
-      }
-      const hasSentEmailVerification = await hasSendEmailVerificationSuccess(email); // Replace with actual API call
-      return hasSentEmailVerification;
-    }),
-
-  code: yup
-    .string()
-    .when('email', {
-      is: (email: string | undefined) => Boolean(email),
-      // Define the schema that will apply based on the condition
-      then: (schema) => schema
-        .length(6, 'OTP code must be exactly 6 digits')
-        .required('OTP code is required'),
-      // For the case when the condition is false
-      otherwise: (schema) => schema.notRequired(),
-    }),
-  //
-
-  firstName: yup
-    .string()
-    .when(['email', 'code'], {
-      is: (email: string | undefined, code: string | undefined) => Boolean(email && code),
-      then: (schema) => schema.required('First name is required'),
-      otherwise: (schema) => schema.notRequired(),
-    }),
-
-  lastName: yup
-    .string()
-    .when(['email', 'code'], {
-      is: (email: string | undefined, code: string | undefined) => Boolean(email && code),
-      then: (schema) => schema.required('Last name is required'),
-      otherwise: (schema) => schema.notRequired(),
-    }),
-
-  password: yup
-    .string()
-    .min(6, 'Password must be at least 6 characters')
-    .when(['email', 'code'], {
-      is: (email: string | undefined, code: string | undefined) => Boolean(email && code),
-      then: (schema) => schema.required('Password is required'),
-      otherwise: (schema) => schema.notRequired(),
-    }),
+  firstName: yup.string().notRequired().default(null),
+  lastName: yup.string().notRequired().default(null),
+  password: yup.string().default(null).min(6, 'Password must be at least 6 characters').notRequired(),
 });

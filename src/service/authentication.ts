@@ -20,5 +20,5 @@ export function signUpWithExhibition(param: SignUpExhibitionParam, token: string
   const headers = {
     'Authorization': [TokenType.Bearer, token].join(' ')
   }
-  return POST<any, SignUpExhibitionParam>(API_URL, param, headers);
+  return POST<AccessToken, SignUpExhibitionParam>(API_URL, param, headers);
 }
