@@ -1,0 +1,60 @@
+.label {
+  font-size: 16px;
+  font-weight: 400;
+  line-height: 24px;
+  text-align: left;
+  color: #333; // Improved contrast for better readability
+  transition: all 0.2s ease; // Smooth transition for label animation
+}
+
+.input-floating {
+  width: 100%;
+  padding: 10px 30px;
+  background-color: #fff; // Use shorthand for color
+  border: none; // Remove the border on focus for a cleaner look
+  border-bottom: 1px solid rgba(0, 0, 0, 0.15); // More subtle border color
+  outline: none; // Remove the outline for a cleaner focus state
+  transition: border-color 0.2s; // Smooth transition for border color change
+
+  &:focus {
+    border-bottom-color: #007bff; // Change to a brand color or a more noticeable color on focus
+  }
+
+  &.error {
+    border-bottom-color: #bb2124;
+  }
+}
+
+.icons {
+
+  &-user,
+  &-phone,
+  &-house,
+  &-globe,
+  &-email {
+    background-position: 0 14px; // Common background position for icons
+    background-size: 19px;
+    background-repeat: no-repeat;
+    padding-left: 30px; // Space for the icon
+  }
+
+  &-user {
+    background-image: url('/assets/icons/user.svg');
+  }
+
+  &-phone {
+    background-image: url('/assets/icons/phone.svg');
+  }
+
+  &-email {
+    background-image: url('/assets/icons/email.svg');
+  }
+
+  &-house {
+    background-image: url('/assets/icons/house.svg');
+  }
+
+  &-globe {
+    background-image: url('/assets/icons/globe.svg');
+  }
+}

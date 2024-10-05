@@ -1,9 +1,9 @@
-"use client";
-import Image from "next/image";
-import React, { useEffect, useState } from "react";
-import { useFormContext } from "react-hook-form";
+'use client';
+import Image from 'next/image';
+import React, { useEffect, useState } from 'react';
+import { useFormContext } from 'react-hook-form';
 
-import { uploadFiles } from "@/service/file";
+import { uploadFiles } from '@/service/file';
 
 export interface UploadTypesProps {
   name: string;
@@ -18,7 +18,7 @@ const UploadComponent = (props: UploadTypesProps) => {
     name,
     folderName,
     label,
-    accepts = ["image/*"],
+    accepts = ['image/*'],
     isMultiple = false,
   } = props;
   const { register, setValue, getValues } = useFormContext();
@@ -62,8 +62,8 @@ const UploadComponent = (props: UploadTypesProps) => {
 
   const isFileTypeValid = (file: File): Boolean => {
     return accepts.some((type) => {
-      const mimeType = type.includes("/") ? type : `${type}/*`;
-      return file.type === type || file.type.startsWith(mimeType.split("/")[0]);
+      const mimeType = type.includes('/') ? type : `${type}/*`;
+      return file.type === type || file.type.startsWith(mimeType.split('/')[0]);
     });
   };
 
@@ -72,13 +72,13 @@ const UploadComponent = (props: UploadTypesProps) => {
       const file = files[0];
 
       const formData = new FormData();
-      formData.append("file", file);
+      formData.append('file', file);
 
       if (folderName) {
-        formData.append("folderName", folderName);
+        formData.append('folderName', folderName);
       }
 
-      formData.append("name", file.name);
+      formData.append('name', file.name);
       uploadFiles(formData)
         .then(({ url }) => {
           if (!isMultiple) {
@@ -152,7 +152,7 @@ const UploadComponent = (props: UploadTypesProps) => {
         onChange={onSelectInput}
         type="file"
         multiple={isMultiple}
-        accept={accepts.join(",")}
+        accept={accepts.join(',')}
         className="hidden"
       />
     </div>

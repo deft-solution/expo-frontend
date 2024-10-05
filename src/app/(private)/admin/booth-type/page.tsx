@@ -1,4 +1,4 @@
-"use client";
+'use client';
 import classNames from 'classnames';
 import Link from 'next/link';
 import React, { useEffect, useState } from 'react';
@@ -69,24 +69,24 @@ const Page = () => {
                     {row.price}
                   </td>
                   <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-800 dark:text-neutral-200">
-                    {formatDisplayDate(row.createdAt, "DD MMM YYYY")}
+                    {formatDisplayDate(row.createdAt, 'DD MMM YYYY')}
                   </td>
                   <td>
                     <div className="flex items-center gap-2">
                       <div
                         className={classNames(
-                          "h-2.5 w-2.5 rounded-full me-2",
-                          { "bg-green-500": row.isActive },
-                          { "bg-red-500": !row.isActive },
+                          'h-2.5 w-2.5 rounded-full me-2',
+                          { 'bg-green-500': row.isActive },
+                          { 'bg-red-500': !row.isActive },
                         )}
                       ></div>
-                      <div>{row.isActive ? "Active" : "Deactive"}</div>
+                      <div>{row.isActive ? 'Active' : 'Deactive'}</div>
                     </div>
                   </td>
                   <td>
                     <Link
                       href={{
-                        pathname: "/admin/booth-type/create",
+                        pathname: '/admin/booth-type/create',
                         query: { id: row.id },
                       }}
                     >

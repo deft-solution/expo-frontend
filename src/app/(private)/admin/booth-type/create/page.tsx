@@ -1,21 +1,21 @@
-"use client";
-import { useRouter, useSearchParams } from "next/navigation";
-import React, { useEffect } from "react";
-import { FormProvider, useForm } from "react-hook-form";
+'use client';
+import { useRouter, useSearchParams } from 'next/navigation';
+import React, { useEffect } from 'react';
+import { FormProvider, useForm } from 'react-hook-form';
 
-import { FormBoothType, IBoothTypeCreate } from "@/schema/BoothType";
+import { FormBoothType, IBoothTypeCreate } from '@/schema/BoothType';
 import {
   createBoothType,
   findBoothTypeById,
   updateBoothTypeById,
-} from "@/service/booth-type";
-import { InputText, TextArea } from "@Core";
-import { yupResolver } from "@hookform/resolvers/yup";
+} from '@/service/booth-type';
+import { InputText, TextArea } from '@Core';
+import { yupResolver } from '@hookform/resolvers/yup';
 
-import Checkbox from "../../../../../core/components/Checkbox/index";
+import Checkbox from '../../../../../core/components/Checkbox/index';
 
 const Page = () => {
-  const id = useSearchParams().get("id") ?? null; // default value is "1"
+  const id = useSearchParams().get('id') ?? null; // default value is "1"
   const router = useRouter();
   const methods = useForm({
     resolver: yupResolver(FormBoothType),
@@ -29,7 +29,7 @@ const Page = () => {
       : createBoothType(value);
     request
       .then(() => {
-        router.push("/admin/booth-type/");
+        router.push('/admin/booth-type/');
       })
       .catch((err: any) => {
         alert(err.message);
@@ -39,10 +39,10 @@ const Page = () => {
   useEffect(() => {
     if (id) {
       findBoothTypeById(id).then((res) => {
-        setValue("name", res.name);
-        setValue("isActive", res.isActive);
-        setValue("description", res.description);
-        setValue("price", res.price);
+        setValue('name', res.name);
+        setValue('isActive', res.isActive);
+        setValue('description', res.description);
+        setValue('price', res.price);
       });
     }
   }, [id]);

@@ -1,11 +1,11 @@
-import classNames from "classnames";
-import React from "react";
+import classNames from 'classnames';
+import React from 'react';
 
 export interface ButtonTypeProps {
-  type?: "submit" | "reset" | "button";
+  type?: 'submit' | 'reset' | 'button';
   className?: string;
   children?: React.ReactNode;
-  theme?: "default" | "light";
+  theme?: 'default' | 'light' | 'success';
   disabled?: boolean;
   onClick?: (event: React.MouseEvent<HTMLButtonElement, MouseEvent>) => void;
 }
@@ -14,20 +14,21 @@ const Button = (props: ButtonTypeProps) => {
     children,
     type,
     className,
-    theme = "default",
+    theme = 'default',
     disabled = false,
     onClick,
   } = props;
 
   const ctxTheme = classNames({
-    "text-white bg-blue-700 hover:bg-primary-800": theme === "default",
-    "text-gray-900 bg-white border border-gray-300 hover:bg-gray-100":
-      theme === "light",
+    'text-white bg-blue-700 hover:bg-primary-800': theme === 'default',
+    'text-white bg-[#33A16E] hover:opacity-20': theme === 'success',
+    'text-gray-900 bg-white border border-gray-300 hover:bg-gray-100':
+      theme === 'light',
   });
   const ctxClass = classNames(
     className,
-    "rounded-lg text-sm px-5 py-2.5 text-center",
-    ctxTheme,
+    'rounded-lg text-sm px-5 py-2.5 text-center',
+    ctxTheme
   );
 
   return (

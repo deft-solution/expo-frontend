@@ -10,6 +10,9 @@ export interface IBootList extends IBooth {
 export interface IBooth {
   isActive: boolean
   boothNumber: string
+  price: number;
+  description: string;
+  externalId: string;
   hall: string
   size: string
   mapUrl: string
@@ -28,6 +31,9 @@ export interface IBoothForm {
   hall: string;
   event: string;
   boothType: string;
+  description: string | null;
+  externalId: string | null;
+  price: number | null;
   mapUrl: string;
   isActive: boolean;
 }
@@ -35,6 +41,9 @@ export interface IBoothForm {
 // Define a validation schema with Yup
 export const FormBooth = yup.object().shape({
   boothNumber: yup.string().required('This field is required'),
+  price: yup.number().optional().default(null),
+  description: yup.string().optional().default(null),
+  externalId: yup.string().optional().default(null),
   size: yup.string().required('This field is required'),
   hall: yup.string().required('This field is required'),
   event: yup.string().required('Event is required'),

@@ -1,6 +1,6 @@
-"use client";
-import React from "react";
-import { useFormContext } from "react-hook-form";
+'use client';
+import React from 'react';
+import { useFormContext } from 'react-hook-form';
 
 export interface DropdownTypeProps {
   name: string;
@@ -16,7 +16,7 @@ const DropdownComponent = (props: DropdownTypeProps) => {
   } = useFormContext();
   register(name);
   const error = name
-    .split(".")
+    .split('.')
     .reduce((acc, part) => (acc as any)?.[part], errors);
 
   return (

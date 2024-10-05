@@ -18,3 +18,33 @@ body {
 .bg-gray {
   background-color: rgb(243, 243, 241);
 }
+
+.checked {
+  opacity: 0.4;
+}
+
+.disabled {
+  opacity: .5;
+  pointer-events: none;
+}
+
+rect {
+  transition: fill 0.3s ease;
+}
+
+rect.rect-hover {
+  opacity: 0.4;
+  cursor: pointer;
+}
+
+.coupon-input {
+  background-position: 0 3px; // Common background position for icons
+  background-size: 20px;
+  background-repeat: no-repeat;
+  padding-left: 30px; // Space for the icon
+  background-image: url("/assets/icons/coupons.svg");
+}
+
+.ck .ck-content {
+  padding-left: 40px !important;
+}

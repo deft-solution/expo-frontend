@@ -1,0 +1,10 @@
+.icons-upload {
+  &::before {
+    content: "";
+    background-image: url("/assets/icons/small-upload.svg");
+    background-position: left;
+    background-size: 19px;
+    background-repeat: no-repeat;
+    padding-left: 30px;
+  }
+}

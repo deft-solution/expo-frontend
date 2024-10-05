@@ -1,13 +1,13 @@
-"use client";
-import classNames from "classnames";
-import Link from "next/link";
-import { useRouter } from "next/navigation";
-import React, { useState } from "react";
+'use client';
+import classNames from 'classnames';
+import Link from 'next/link';
+import { useRouter } from 'next/navigation';
+import React, { useState } from 'react';
 
-import { AuthStorageKey } from "@/constants/Storage";
-import { useAuthContext } from "@/context/AuthContext";
+import { AuthStorageKey } from '@/constants/Storage';
+import { useAuthContext } from '@/context/AuthContext';
 
-import Style from "./style.module.scss";
+import Style from './style.module.scss';
 
 function ProfileSidebar() {
   const router = useRouter();
@@ -15,15 +15,15 @@ function ProfileSidebar() {
   const authContext = useAuthContext();
 
   const collapsibleCtx = classNames({
-    "w-20": isCollapse,
-    "w-64": !isCollapse,
+    'w-20': isCollapse,
+    'w-64': !isCollapse,
   });
 
   function onLogoutOut() {
     if (authContext?.onRefreshAuthContext) {
       localStorage.removeItem(AuthStorageKey);
       authContext.onRefreshAuthContext();
-      router.push("/auth/login");
+      router.push('/auth/login');
     }
   }
 
@@ -31,11 +31,11 @@ function ProfileSidebar() {
     <aside
       className={classNames(
         collapsibleCtx,
-        "hidden md:block",
-        Style["sidebar-wrapper"],
+        'hidden md:block',
+        Style['sidebar-wrapper'],
       )}
     >
-      <div className={Style["sidebar-content"]}>
+      <div className={Style['sidebar-content']}>
         <ul>
           <Link href="/admin/dashboard">
             <li>Dashboard</li>

@@ -17,7 +17,7 @@ export const handleSubmitLogin = (param: IAuthLogin): Promise<AccessToken> => {
       }
       throw err;
     });
-}
+};
 
 export const onSignUpWithExhibition = (param: SignUpExhibitionParam, token: string): Promise<AccessToken> => {
   return signUpWithExhibition(param, token)
@@ -30,7 +30,7 @@ export const onSignUpWithExhibition = (param: SignUpExhibitionParam, token: stri
       }
       throw err;
     });
-}
+};
 
 export const isEmailVerificationSent = (email: string): Promise<boolean> => {
   return VerificationService.sendVerification({ email }).then(() => {
@@ -43,8 +43,8 @@ export const isEmailVerificationSent = (email: string): Promise<boolean> => {
       return true;
     }
     return false;
-  })
-}
+  });
+};
 
 export const verifyEmailCode = (param: IVerifyParam): Promise<ISendVerificationResponse | null> => {
   return VerificationService.verifyUserCode(param).then((res: ISendVerificationResponse) => {
@@ -52,5 +52,5 @@ export const verifyEmailCode = (param: IVerifyParam): Promise<ISendVerificationR
   }).catch((error) => {
     alert(error.message);
     return null;
-  })
-}
+  });
+};

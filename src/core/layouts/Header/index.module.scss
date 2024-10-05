@@ -1,0 +1,29 @@
+.close-btn {
+  width: 32px;
+  height: 32px;
+  border-radius: 100px;
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: transform 0.3s ease, background-color 0.3s ease;
+
+  &:hover {
+    transform: scale(1.1);
+    /* Slightly enlarge on hover */
+    background-color: #c0c0c0;
+    /* Change background color on hover */
+  }
+
+  &::before {
+    content: "";
+    background-image: url("/assets/icons/cross.svg");
+    background-size: 15px 15px;
+    background-repeat: no-repeat;
+    background-position: center;
+    width: 15px;
+    height: 15px;
+    position: absolute;
+  }
+}

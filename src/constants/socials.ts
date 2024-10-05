@@ -17,4 +17,4 @@ export const SOCIAL_TYPE: ISocials[] = [
     type: 'YOUTUBE',
     url: '',
   },
-]
+];

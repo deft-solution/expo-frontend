@@ -1,0 +1,136 @@
+.booth-panel-wrapper {
+  position: fixed;
+  height: 100vh;
+  background: #F2F2F2;
+  box-shadow: -2px 0 5px rgba(0, 0, 0, 0.1);
+  z-index: 1001;
+  width: 0;
+  transition: width 0.3s ease;
+
+  &.open {
+    width: 447px;
+  }
+
+  &.closed {
+    width: 0;
+    overflow: hidden;
+  }
+
+  .content {
+    padding: 40px;
+    height: 100%;
+    overflow: scroll;
+    scrollbar-width: none;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+  }
+}
+
+.overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background-color: rgba(0, 0, 0, 0.5);
+  z-index: 1000;
+  transition: opacity 0.3s ease;
+  opacity: 0;
+  visibility: hidden;
+
+  &.open {
+    opacity: 1;
+    visibility: visible;
+  }
+
+  &.closed {
+    opacity: 0;
+    visibility: hidden;
+  }
+}
+
+.close-btn-wrapper {
+  position: absolute;
+  right: 18px;
+}
+
+.close-btn {
+  width: 32px;
+  height: 32px;
+  border-radius: 100px;
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  background-color: #c0c0c0;
+  transition: transform 0.3s ease, background-color 0.3s ease;
+
+  &:hover {
+    transform: scale(1.1);
+  }
+
+  &::before {
+    content: "";
+    background-image: url("/assets/icons/cross.svg");
+    background-size: 15px 15px;
+    background-repeat: no-repeat;
+    background-position: center;
+    width: 15px;
+    height: 15px;
+    position: absolute;
+  }
+}
+
+.booth-title {
+  font-weight: 700;
+  font-size: 60px;
+}
+
+.title-size {
+  font-size: 20px;
+  font-weight: 400;
+  line-height: 25.14px;
+  text-align: left;
+  color: #33A16E;
+}
+
+.title-exhibition {
+  font-size: 16px;
+  font-weight: 700;
+  line-height: 24px;
+  text-align: left;
+}
+
+.ul {
+  padding-left: 20px;
+
+  li {
+    list-style-type: disc;
+    padding: 3px 0;
+  }
+}
+
+.txt-price {
+  font-size: 12px;
+  font-weight: 400;
+  line-height: 15.08px;
+}
+
+.txt-amount {
+  font-size: 20px;
+  font-weight: 400;
+  line-height: 25.14px;
+  text-align: left;
+  color: #33A16E;
+}
+
+/* Mobile View */
+@media (max-width: 768px) {
+  .booth-panel-wrapper {
+    &.open {
+      width: 80%;
+    }
+  }
+}

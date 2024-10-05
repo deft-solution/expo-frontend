@@ -1,0 +1,38 @@
+.success-sign {
+    width: 72px;
+    height: 72px;
+    background-color: #e4f5ed;
+    border-radius: 100%;
+    position: relative;
+    animation: pulse 2s ease-in-out infinite; // Pulse animation only
+
+    &::before {
+        content: "";
+        width: 33px;
+        height: 33px;
+        background-color: #23a26d;
+        border-radius: 100%;
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%); // Centers the pseudo-element within the parent
+        background-image: url("/assets/icons/white-check.svg");
+        background-repeat: no-repeat;
+        background-position: center center;
+    }
+}
+
+// Pulse animation (scale)
+@keyframes pulse {
+    0% {
+        transform: scale(1);
+    }
+
+    50% {
+        transform: scale(1.1);
+    }
+
+    100% {
+        transform: scale(1);
+    }
+}

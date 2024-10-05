@@ -1,8 +1,8 @@
-import "./Style.scss";
+import './Style.scss';
 
-import classNames from "classnames";
-import React from "react";
-import { useFormContext } from "react-hook-form";
+import classNames from 'classnames';
+import React from 'react';
+import { useFormContext } from 'react-hook-form';
 
 export interface InputTypeProps {
   name: string;
@@ -19,12 +19,12 @@ const InputText = (props: InputTypeProps) => {
   } = useFormContext(); // retrieve all hook methods
 
   const error = name
-    .split(".")
+    .split('.')
     .reduce((acc, part) => (acc as any)?.[part], errors);
 
   const ctxClass = classNames({
-    "bg-red-50 border border-red-500 text-red-900 placeholder-red-700": error,
-    "bg-gray-50 border-gray-300 text-gray-900": !error,
+    'bg-red-50 border border-red-500 text-red-900 placeholder-red-700': error,
+    'bg-gray-50 border-gray-300 text-gray-900': !error,
   });
 
   return (
@@ -37,7 +37,7 @@ const InputText = (props: InputTypeProps) => {
       <input
         className={classNames(
           ctxClass,
-          "w-full border font-medium  rounded-lg p-2.5",
+          'w-full border font-medium  rounded-lg p-2.5',
         )}
         type="text"
         disabled={disabled}

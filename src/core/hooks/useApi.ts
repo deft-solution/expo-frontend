@@ -32,7 +32,7 @@ export function useApi<T, P = any>({ service, params = {} as any, effects = [], 
         setResponse(res);
         setLoading(false);
         setLoaded(true);
-        if (onSuccess) onSuccess(res)
+        if (onSuccess) onSuccess(res);
       })
       .catch((err: any) => {
         setError(err);

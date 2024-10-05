@@ -20,7 +20,7 @@ const InputOTP: React.FC<InputOTPTypeProps> = (props) => {
   const inputsRef = useRef<Array<HTMLInputElement | null>>([]);
 
   // Sate
-  const [list, setOTPList] = useState(Array(length).fill(""));
+  const [list, setOTPList] = useState(Array(length).fill(''));
 
   // Auto-focus on the first input when the component mounts
   useEffect(() => {
@@ -37,7 +37,7 @@ const InputOTP: React.FC<InputOTPTypeProps> = (props) => {
       inputsRef.current[index + 1]?.focus();
     }
 
-    const otpValue = newOtp.join("");
+    const otpValue = newOtp.join('');
     setValue(name, otpValue);
   };
 
@@ -45,15 +45,15 @@ const InputOTP: React.FC<InputOTPTypeProps> = (props) => {
     e: React.KeyboardEvent<HTMLInputElement>,
     index: number,
   ) => {
-    const allowedKeys = ["Backspace", "ArrowLeft", "ArrowRight", "Tab"];
+    const allowedKeys = ['Backspace', 'ArrowLeft', 'ArrowRight', 'Tab'];
 
     // Only allow numbers (0-9) and control keys (backspace, arrows, etc.)
-    if (!allowedKeys.includes(e.key) && (e.key < "0" || e.key > "9")) {
+    if (!allowedKeys.includes(e.key) && (e.key < '0' || e.key > '9')) {
       return;
     }
 
     // Move focus to the previous input when backspace is pressed
-    if (e.key === "Backspace" && !list[index] && index > 0) {
+    if (e.key === 'Backspace' && !list[index] && index > 0) {
       inputsRef.current[index - 1]?.focus();
     }
   };
@@ -64,18 +64,18 @@ const InputOTP: React.FC<InputOTPTypeProps> = (props) => {
 
   const handlePaste = (e: React.ClipboardEvent<HTMLInputElement>) => {
     e.preventDefault();
-    const clipboardData = e.clipboardData.getData("Text");
+    const clipboardData = e.clipboardData.getData('Text');
     const numericPastedValue = clipboardData
-      .replace(/\D/g, "")
+      .replace(/\D/g, '')
       .slice(0, length); // Keep only numbers and limit length
 
     // Split numeric data into array
-    const newOtp = numericPastedValue.split("").slice(0, length);
+    const newOtp = numericPastedValue.split('').slice(0, length);
 
     // Ensure array is 'length'
-    setOTPList([...newOtp, ...Array(length - newOtp.length).fill("")]);
+    setOTPList([...newOtp, ...Array(length - newOtp.length).fill('')]);
 
-    const otpValue = newOtp.join("");
+    const otpValue = newOtp.join('');
     setValue(name, otpValue);
 
     // Automatically focus the last filled input
@@ -84,7 +84,7 @@ const InputOTP: React.FC<InputOTPTypeProps> = (props) => {
   };
 
   const error = name
-    .split(".")
+    .split('.')
     .reduce((acc, part) => (acc as any)?.[part], errors);
 
   return (

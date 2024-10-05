@@ -1,0 +1,25 @@
+.green-check {
+    position: relative;
+    &::before {
+        content: "";
+        width: 18px;
+        height: 18px;
+        background-color: #23a26d;
+        position: absolute;
+        border-radius: 100px;
+        top: 50%;
+        left: 0;
+        transform: translate(0%, -50%); // Centers the pseudo-element within the parent
+        background-image: url("/assets/icons/white-check.svg");
+        background-repeat: no-repeat;
+        background-position: center center;
+        background-size: 8px;
+    }
+
+    &.small {
+        &::before {
+            width: 16px;
+            height: 16px;
+        }
+    }
+}

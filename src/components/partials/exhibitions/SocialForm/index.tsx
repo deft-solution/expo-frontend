@@ -5,7 +5,7 @@ import { ISocials } from '@/schema/Exhibition';
 import { InputText } from '@Core';
 
 const ExhibitionSocialForm = () => {
-  const name = "socials";
+  const name = 'socials';
   const { register, getValues } = useFormContext();
   const defaultValue = getValues(name);
 

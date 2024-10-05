@@ -33,7 +33,7 @@ function sendRequest<T, D = any>(config: AxiosRequestConfig<D>): Promise<T> {
  * @template Q the type of the query's `param` in URL `Optionals`.
  */
 export function GET<T, Q = any>(url: string, params?: Q, headers?: RawAxiosRequestHeaders): Promise<T> {
-  return sendRequest({ method: "GET", url, headers, params });
+  return sendRequest({ method: 'GET', url, headers, params });
 }
 
 /**
@@ -41,7 +41,7 @@ export function GET<T, Q = any>(url: string, params?: Q, headers?: RawAxiosReque
  * @template B the type of the body's `param` JSON.
  */
 export function POST<T, B = any>(url: string, data: B, headers?: RawAxiosRequestHeaders): Promise<T> {
-  return sendRequest({ method: "POST", data, url, headers });
+  return sendRequest({ method: 'POST', data, url, headers });
 }
 
 /**
@@ -53,8 +53,8 @@ export function POSTWithToken<T, B = any>(url: string, data: B, headers = {}): P
   if (!accessToken) {
     throw Error('Missing AccessToken');
   }
-  Object.assign(headers, { 'Authorization': 'Bearer ' + accessToken.accessToken })
-  return sendRequest({ method: "POST", data, url, headers });
+  Object.assign(headers, { 'Authorization': 'Bearer ' + accessToken.accessToken });
+  return sendRequest({ method: 'POST', data, url, headers });
 }
 
 /**
@@ -66,8 +66,8 @@ export function GETWithToken<T, B = any>(url: string, params: B, headers = {}): 
   if (!accessToken) {
     throw Error('Missing AccessToken');
   }
-  Object.assign(headers, { 'Authorization': 'Bearer ' + accessToken.accessToken })
-  return sendRequest({ method: "GET", url, params, headers });
+  Object.assign(headers, { 'Authorization': 'Bearer ' + accessToken.accessToken });
+  return sendRequest({ method: 'GET', url, params, headers });
 }
 
 /**
@@ -79,8 +79,8 @@ export function PUTWithToken<T, B = any>(url: string, data: B, headers = {}): Pr
   if (!accessToken) {
     throw Error('Missing AccessToken');
   }
-  Object.assign(headers, { 'Authorization': 'Bearer ' + accessToken.accessToken })
-  return sendRequest({ method: "PUT", data, url, headers });
+  Object.assign(headers, { 'Authorization': 'Bearer ' + accessToken.accessToken });
+  return sendRequest({ method: 'PUT', data, url, headers });
 }
 
 /**
@@ -88,7 +88,7 @@ export function PUTWithToken<T, B = any>(url: string, data: B, headers = {}): Pr
  * @template B the type of the body's `param` JSON.
  */
 export function PUT<T, B = any>(url: string, data: B, headers: RawAxiosRequestHeaders): Promise<T> {
-  return sendRequest({ method: "PUT", data, url, headers });
+  return sendRequest({ method: 'PUT', data, url, headers });
 }
 
 /**
@@ -96,5 +96,5 @@ export function PUT<T, B = any>(url: string, data: B, headers: RawAxiosRequestHe
  * @template B the type of the body's `param` JSON.
  */
 export function DELETE<T, B = any>(url: string, data: B, headers: RawAxiosRequestHeaders): Promise<T> {
-  return sendRequest({ method: "DELETE", data, url, headers });
+  return sendRequest({ method: 'DELETE', data, url, headers });
 }

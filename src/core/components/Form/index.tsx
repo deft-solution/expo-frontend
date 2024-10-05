@@ -1,6 +1,6 @@
-import classNames from "classnames";
-import React from "react";
-import { FieldValues, FormProvider, UseFormReturn } from "react-hook-form";
+import classNames from 'classnames';
+import React from 'react';
+import { FieldValues, FormProvider, UseFormReturn } from 'react-hook-form';
 
 export interface FormTypeProps<T extends FieldValues> {
   methods: UseFormReturn<T>;

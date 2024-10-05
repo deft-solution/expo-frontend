@@ -1,20 +1,20 @@
-"use client";
-import { useRouter, useSearchParams } from "next/navigation";
-import React, { useEffect, useState } from "react";
-import { FormProvider, useForm } from "react-hook-form";
+'use client';
+import { useRouter, useSearchParams } from 'next/navigation';
+import React, { useEffect, useState } from 'react';
+import { FormProvider, useForm } from 'react-hook-form';
 
-import { FormBooth, IBoothForm } from "@/schema/Booth";
-import { IBootTypeList } from "@/schema/BoothType";
-import { IEventList } from "@/schema/Event";
-import { createBooth, findBoothOneId, updateBoothByID } from "@/service/booth";
-import { getAllBoothTypeAutoComplete } from "@/service/booth-type";
-import { getAllEventAutoComplete } from "@/service/event";
-import { Checkbox, Dropdown, InputText, useApi } from "@Core";
-import { yupResolver } from "@hookform/resolvers/yup";
+import { FormBooth, IBoothForm } from '@/schema/Booth';
+import { IBootTypeList } from '@/schema/BoothType';
+import { IEventList } from '@/schema/Event';
+import { createBooth, findBoothOneId, updateBoothByID } from '@/service/booth';
+import { getAllBoothTypeAutoComplete } from '@/service/booth-type';
+import { getAllEventAutoComplete } from '@/service/event';
+import { Checkbox, Dropdown, InputText, RichTextCK, useApi } from '@Core';
+import { yupResolver } from '@hookform/resolvers/yup';
 
 const Page = () => {
   const router = useRouter();
-  const id = useSearchParams().get("id") ?? null; // default value is "1"
+  const id = useSearchParams().get('id') ?? null; // default value is "1"
   const methods = useForm({
     resolver: yupResolver(FormBooth),
     defaultValues: { isActive: true },
@@ -40,20 +40,24 @@ const Page = () => {
   const onFormSubmit = (data: IBoothForm) => {
     const request = id ? updateBoothByID(id, data) : createBooth(data);
     request.then(() => {
-      router.push("/admin/booth");
+      router.push('/admin/booth');
     });
   };
 
   useEffect(() => {
     if (id) {
       findBoothOneId(id).then((res) => {
-        setValue("boothNumber", res.boothNumber);
-        setValue("isActive", res.isActive);
-        setValue("hall", res.hall);
-        setValue("size", res.size);
-        setValue("mapUrl", res.mapUrl);
-        setValue("event", res.event as any);
-        setValue("boothType", res.boothType as any);
+        setValue('boothNumber', res.boothNumber);
+        setValue('isActive', res.isActive);
+        setValue('hall', res.hall);
+        setValue('size', res.size);
+        setValue('mapUrl', res.mapUrl);
+        setValue('event', res.event as any);
+        setValue('description', res.description);
+        setValue('externalId', res.externalId);
+        setValue('price', res.price);
+        setValue('event', res.event as any);
+        setValue('boothType', res.boothType as any);
       });
     }
   }, [id]);
@@ -79,7 +83,20 @@ const Page = () => {
             <InputText name="hall" label="Hall" placeholder="South Hall" />
             <InputText name="size" label="Size" placeholder="13 X 13" />
           </div>
+          <div className="grid grid-cols-2 gap-4">
+            <InputText
+              name="price"
+              label="Price"
+              placeholder="Booth Price Ex: 140$"
+            />
+            <InputText
+              name="externalId"
+              label="External ID"
+              placeholder="******"
+            />
+          </div>
           <InputText name="mapUrl" label="Map URL" />
+          <RichTextCK name="description" label="Description" />
           <Checkbox name="isActive" label="Active" />
           <div>
             <button

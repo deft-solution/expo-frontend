@@ -9,7 +9,7 @@ export const handleSubmitCreateEvent = (param: IEvents) => {
       }
       throw err;
     });
-}
+};
 
 export const handleSubmitUpdateEvent = (id: string, param: IEvents) => {
   return updateEventById(id, param)
@@ -19,4 +19,4 @@ export const handleSubmitUpdateEvent = (id: string, param: IEvents) => {
       }
       throw err;
     });
-}
+};

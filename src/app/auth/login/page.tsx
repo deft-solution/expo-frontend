@@ -1,14 +1,14 @@
-"use client";
+'use client';
 
-import { useRouter } from "next/navigation";
-import React from "react";
-import { FormProvider, useForm } from "react-hook-form";
+import { useRouter } from 'next/navigation';
+import React from 'react';
+import { FormProvider, useForm } from 'react-hook-form';
 
-import { handleSubmitLogin } from "@/actions/Authentication";
-import { useAuthContext } from "@/context/AuthContext";
-import { IAuthLogin, LoginSchema } from "@/schema";
-import { InputPassword, InputText } from "@Core";
-import { yupResolver } from "@hookform/resolvers/yup";
+import { handleSubmitLogin } from '@/actions/Authentication';
+import { useAuthContext } from '@/context/AuthContext';
+import { IAuthLogin, LoginSchema } from '@/schema';
+import { InputPassword, InputText } from '@Core';
+import { yupResolver } from '@hookform/resolvers/yup';
 
 const Page = () => {
   const router = useRouter();
@@ -21,7 +21,7 @@ const Page = () => {
       if (context) {
         context.onRefreshAuthContext();
       }
-      router.push("/admin/dashboard");
+      router.push('/admin/dashboard');
     });
   };
 

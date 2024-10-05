@@ -7,7 +7,7 @@ export interface FileResponse {
 
 export function uploadFiles(file: FormData): Promise<FileResponse> {
   const header = {
-    "Content-Type": "multipart/form-data",
+    'Content-Type': 'multipart/form-data',
   };
   return POST<FileResponse>('/api/file/v1/upload', file, header);
 }

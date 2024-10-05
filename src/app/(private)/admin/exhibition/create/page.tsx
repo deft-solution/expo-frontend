@@ -1,4 +1,4 @@
-"use client";
+'use client';
 import { useRouter, useSearchParams } from 'next/navigation';
 import React, { useEffect } from 'react';
 import { FormProvider, useForm } from 'react-hook-form';
@@ -16,17 +16,17 @@ const CreateExhibition = () => {
     defaultValues: { tags: [], socials: SOCIAL_TYPE },
   });
   const router = useRouter();
-  const id = useSearchParams().get("id") ?? null; // default value is "1"
+  const id = useSearchParams().get('id') ?? null; // default value is "1"
   const { handleSubmit, setValue } = methods;
 
   const onSubmitLoginForm = (data: any) => {
     const socials = data.socials.filter(({ url }: any) => url);
-    data["socials"] = socials;
+    data['socials'] = socials;
 
     const request = id ? updateExhibition(id, data) : createExhibition(data);
     request
       .then(() => {
-        router.push("/admin/exhibition");
+        router.push('/admin/exhibition');
       })
       .catch((err) => {
         alert(err.message);
@@ -36,28 +36,28 @@ const CreateExhibition = () => {
   useEffect(() => {
     if (id) {
       getExhibitionById(id).then((response) => {
-        setValue("name", response.name);
-        setValue("logoUrl", response.logoUrl);
-        setValue("description", response.description);
-        setValue("category", response.category);
-        setValue("tags", response.tags);
+        setValue('name', response.name);
+        setValue('logoUrl', response.logoUrl);
+        setValue('description', response.description);
+        setValue('category', response.category);
+        setValue('tags', response.tags);
         //
-        setValue("contact.name", response.contact.name);
-        setValue("contact.email", response.contact.email);
-        setValue("contact.phoneNumber", response.contact.phoneNumber);
-        setValue("contact.vatNumber", response.contact.vatNumber);
+        setValue('contact.name', response.contact.name);
+        setValue('contact.email', response.contact.email);
+        setValue('contact.phoneNumber', response.contact.phoneNumber);
+        setValue('contact.vatNumber', response.contact.vatNumber);
         //
-        setValue("location.postalCode", response.location.postalCode);
-        setValue("location.city", response.location.city);
-        setValue("location.country", response.location.country);
-        setValue("location.state", response.location.state);
-        setValue("location.addressOne", response.location.addressOne);
-        setValue("location.addressTwo", response.location.addressTwo);
+        setValue('location.postalCode', response.location.postalCode);
+        setValue('location.city', response.location.city);
+        setValue('location.country', response.location.country);
+        setValue('location.state', response.location.state);
+        setValue('location.addressOne', response.location.addressOne);
+        setValue('location.addressTwo', response.location.addressTwo);
         const socials = response.socials;
         if (socials.length) {
           SOCIAL_TYPE.forEach((row, idx) => {
             const url =
-              socials.find(({ type }) => type === row.type)?.url ?? "";
+              socials.find(({ type }) => type === row.type)?.url ?? '';
             setValue(`socials.${idx}.url`, url);
           });
         }

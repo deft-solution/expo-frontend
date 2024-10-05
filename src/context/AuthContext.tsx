@@ -1,15 +1,15 @@
-"use client";
+'use client';
 
-import {
+import React, {
   createContext,
   Suspense,
   useCallback,
   useContext,
   useEffect,
   useState,
-} from "react";
+} from 'react';
 
-import { getAccessToken } from "@/utils/LocalStorage";
+import { getAccessToken } from '@/utils/LocalStorage';
 
 export interface AuthContextType {
   isAuthenticated: boolean;

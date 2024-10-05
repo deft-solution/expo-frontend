@@ -1,0 +1,81 @@
+.step-item {
+  font-size: 16px;
+  font-weight: 500;
+  line-height: 24px;
+  position: relative;
+  transition: transform 0.3s ease; // Optional: Add transition to the step items
+
+  &::before {
+    content: "";
+    width: 40px;
+    height: 40px;
+    border-radius: 100px;
+    border: 2px solid #33A16E;
+    position: absolute;
+    left: -61px;
+    top: -8px;
+    transition: background-color 0.3s ease, transform 0.3s ease; // Add transition
+  }
+
+  &:not(:last-child) {
+    &::after {
+      content: "";
+      position: absolute;
+      width: 79px;
+      height: 1px;
+      border: 1px solid rgba(0, 0, 0, 0.2509803922);
+      top: 11px;
+      right: -93px;
+    }
+
+    /* Mobile View */
+    @media (max-width: 768px) {
+      &::after {
+        content: unset;
+      }
+    }
+  }
+}
+
+.step-completed {
+  &::before {
+    content: "" !important;
+    background-color: #33A16E;
+    background-image: url('/assets/icons/white-check.svg');
+    background-repeat: no-repeat;
+    background-position: center center;
+    transform: scale(1.1); // Scale up when completed
+    transition: background-color 0.3s ease, background-image 0.3s ease, transform 0.3s ease; // Transition on properties
+  }
+}
+
+// Individual step styling
+.step-one {
+  &::before {
+    content: "1";
+    color: #33A16E;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+}
+
+.step-two {
+  &::before {
+    content: "2";
+    color: #33A16E;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+}
+
+.step-three {
+  &::before {
+    content: "3";
+    color: #33A16E;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+}

@@ -1,15 +1,15 @@
-"use client";
+'use client';
 
-import classNames from "classnames";
-import Image from "next/image";
-import Link from "next/link";
-import React, { useEffect, useState } from "react";
+import classNames from 'classnames';
+import Image from 'next/image';
+import Link from 'next/link';
+import React, { useEffect, useState } from 'react';
 
-import { formatDisplayDate } from "@/helper/format-date";
-import { IPagination } from "@/models/Pagination";
-import { IExhibitor } from "@/schema/Exhibition";
-import { getAllExhibition } from "@/service/exhibition";
-import { Pagination, useApi } from "@Core";
+import { formatDisplayDate } from '@/helper/format-date';
+import { IPagination } from '@/models/Pagination';
+import { IExhibitor } from '@/schema/Exhibition';
+import { getAllExhibition } from '@/service/exhibition';
+import { Pagination, useApi } from '@Core';
 
 const ExhibitionPage = () => {
   const [limit, setLimit] = useState<number>(10);
@@ -106,19 +106,19 @@ const ExhibitionPage = () => {
                     <div className="flex items-center gap-2">
                       <div
                         className={classNames(
-                          "h-2.5 w-2.5 rounded-full me-2",
-                          { "bg-green-500": row.isActive },
-                          { "bg-red-500": !row.isActive },
+                          'h-2.5 w-2.5 rounded-full me-2',
+                          { 'bg-green-500': row.isActive },
+                          { 'bg-red-500': !row.isActive },
                         )}
                       ></div>
-                      <div>{row.isActive ? "Active" : "Deactive"}</div>
+                      <div>{row.isActive ? 'Active' : 'Deactive'}</div>
                     </div>
                   </td>
                   <td>
                     <Link
                       className="font-medium text-blue-600 dark:text-blue-500 hover:underline"
                       href={{
-                        pathname: "/admin/exhibition/create",
+                        pathname: '/admin/exhibition/create',
                         query: { id: row.id },
                       }}
                     >

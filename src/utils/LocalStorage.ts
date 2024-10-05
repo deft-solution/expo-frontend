@@ -13,4 +13,4 @@ export const getAccessToken = (): AccessToken | EmptyObject => {
   }
 
   return {};
-}
+};

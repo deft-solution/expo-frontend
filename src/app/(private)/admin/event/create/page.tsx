@@ -3,7 +3,10 @@ import { useRouter, useSearchParams } from 'next/navigation';
 import React, { useEffect } from 'react';
 import { FormProvider, useForm } from 'react-hook-form';
 
-import { handleSubmitCreateEvent, handleSubmitUpdateEvent } from '@/actions/event';
+import {
+  handleSubmitCreateEvent,
+  handleSubmitUpdateEvent,
+} from '@/actions/event';
 import DatePicker from '@/core/components/Datepicker';
 import { formatDisplayDate } from '@/helper/format-date';
 import { EventCreateFormSchema, IEvents } from '@/schema/Event';
@@ -59,21 +62,17 @@ const Page = () => {
               placeholder="Event Name"
             />
             <InputText
-              name="floorPlanUrl"
-              label="Floor Plan URL"
-              placeholder="Floor Plan URL"
-            />
-            <InputText
               name="mainWebsiteUrl"
               label="Main Website URL"
               placeholder="Main Website URL"
             />
-            <div className="grid gap-4 sm:grid-cols-2 sm:gap-6">
+            <div className="grid gap-4 grid-cols-2 col-span-2">
               <DatePicker name="startFrom" label="Start From" />
               <DatePicker name="endDate" label="End Date" />
             </div>
-            <div className="col-span-2">
+            <div className="grid gap-4 grid-cols-2 col-span-2">
               <Upload name="logoUrl" label="Logo URL" />
+              <Upload name="floorPlanUrl" label="Floor Plan" />
             </div>
             <div className="sm:col-span-2">
               <h2 className="border-b pb-4">Contact Information</h2>

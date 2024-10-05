@@ -1,6 +1,6 @@
-"use client";
-import React, { useEffect, useState } from "react";
-import { useFormContext } from "react-hook-form";
+'use client';
+import React, { useEffect, useState } from 'react';
+import { useFormContext } from 'react-hook-form';
 
 export interface InputTagsTypeProps {
   name: string;
@@ -18,7 +18,7 @@ const InputTag = (props: InputTagsTypeProps) => {
   } = useFormContext();
   const defaultValue = getValues(name);
 
-  const [value, setValue] = useState<string>("");
+  const [value, setValue] = useState<string>('');
   const [items, setItem] = useState<string[]>(watch(name) || []);
 
   const onClickDelete = (index: number) => {
@@ -32,7 +32,7 @@ const InputTag = (props: InputTagsTypeProps) => {
   };
 
   const handleKeyDown = (event: React.KeyboardEvent<HTMLInputElement>) => {
-    if (event.key === "Enter") {
+    if (event.key === 'Enter') {
       event.preventDefault();
       const newItems = [...items, value];
       if (value) {
@@ -40,7 +40,7 @@ const InputTag = (props: InputTagsTypeProps) => {
       }
 
       emitFormValue(newItems);
-      setValue(""); // Clear the input after pressing Enter
+      setValue(''); // Clear the input after pressing Enter
     }
   };
 
