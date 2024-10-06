@@ -18,9 +18,7 @@ const InputText = (props: InputTypeProps) => {
     formState: { errors },
   } = useFormContext(); // retrieve all hook methods
 
-  const error = name
-    .split('.')
-    .reduce((acc, part) => (acc as any)?.[part], errors);
+  const error = name.split('.').reduce((acc, part) => (acc as any)?.[part], errors);
 
   const ctxClass = classNames({
     'bg-red-50 border border-red-500 text-red-900 placeholder-red-700': error,
@@ -29,26 +27,15 @@ const InputText = (props: InputTypeProps) => {
 
   return (
     <div>
-      {label && (
-        <label className="block mb-2 text-sm font-medium text-gray-900">
-          {label}
-        </label>
-      )}
+      {label && <label className="block mb-2 text-sm font-medium text-gray-900">{label}</label>}
       <input
-        className={classNames(
-          ctxClass,
-          'w-full border font-medium  rounded-lg p-2.5',
-        )}
+        className={classNames(ctxClass, 'w-full border font-medium  rounded-lg p-2.5')}
         type="text"
         disabled={disabled}
         placeholder={placeholder}
         {...register(name)}
       />
-      {error && (
-        <p className="text-red-500 text-xs mt-2">
-          {(error as any).message?.toString()}
-        </p>
-      )}
+      {error && <p className="text-red-500 text-xs mt-2">{(error as any).message?.toString()}</p>}
     </div>
   );
 };

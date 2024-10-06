@@ -7,10 +7,11 @@ export interface FormTypeProps<T extends FieldValues> {
   children: React.ReactNode;
   classNames?: string;
   onSubmit?: (data: T) => void;
+  name?: string;
 }
 
 const Form = <T extends FieldValues>(props: FormTypeProps<T>) => {
-  const { children, methods, onSubmit, classNames } = props;
+  const { children, methods, onSubmit, classNames, name } = props;
   const { handleSubmit } = methods;
 
   const onSubmitForm = (data: T) => {
@@ -21,7 +22,7 @@ const Form = <T extends FieldValues>(props: FormTypeProps<T>) => {
 
   return (
     <FormProvider {...methods}>
-      <form className={classNames} onSubmit={handleSubmit(onSubmitForm)}>
+      <form name={name} className={classNames} onSubmit={handleSubmit(onSubmitForm)}>
         {children}
       </form>
     </FormProvider>

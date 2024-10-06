@@ -39,11 +39,17 @@ export type { InputOTPTypeProps } from './InputOTP';
 export { default as InputFloatingLabel } from './InputFloatingLabel';
 export type { InputFloatingType } from './InputFloatingLabel';
 
+export { default as Modal } from './Modals';
+export type { ModalTypeProps } from './Modals';
+
 export { default as InputUpload } from './InputUploads';
 export type { InputUploadProps } from './InputUploads';
 
+export { default as InputPhone } from './InputPhone';
+export type { InputPhoneTypProps } from './InputPhone';
+
 const LazyRichTextCK = lazy(() => import('./RichTextCK'));
-export { LazyRichTextCK as RichTextCK } ;
+export { LazyRichTextCK as RichTextCK };
 export type { CkEditorComponentProps } from './RichTextCK';
 
 export { default as ProfileSidebar } from './ProfileSidebar';

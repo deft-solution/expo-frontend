@@ -10,9 +10,7 @@ export interface BoothSelectionContextType {
   setBooths: React.Dispatch<React.SetStateAction<IBootList[]>>;
 }
 
-const BoothContext = createContext<BoothSelectionContextType | undefined>(
-  undefined
-);
+const BoothContext = createContext<BoothSelectionContextType | undefined>(undefined);
 
 // Hook to access the booth selection context
 export const useBoothSelection = () => {
@@ -24,9 +22,7 @@ export const useBoothSelection = () => {
 };
 
 // BoothProvider component
-export const BoothProvider: React.FC<{ children: React.ReactNode }> = ({
-  children,
-}) => {
+export const BoothProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const [ids, setIds] = useState<string[]>([]); // Manage booth IDs state
   const [booths, setBooths] = useState<IBootList[]>([]); // Manage booth IDs state
 

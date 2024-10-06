@@ -26,7 +26,7 @@ const AuthProvider = ({ children }: { children: React.ReactNode }) => {
 
   useEffect(() => {
     const accessToken = getAccessToken();
-    if (accessToken.accessToken) {
+    if (accessToken?.accessToken) {
       setIsAuthenticated(true);
     } else {
       setIsAuthenticated(false);
@@ -45,9 +45,7 @@ const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   return (
     <>
       <Suspense>
-        <AuthContext.Provider value={contextObject}>
-          {children}
-        </AuthContext.Provider>
+        <AuthContext.Provider value={contextObject}>{children}</AuthContext.Provider>
       </Suspense>
     </>
   );

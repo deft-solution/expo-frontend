@@ -3,7 +3,8 @@ import { AuthStorageKey } from '@/constants/Storage';
 import { AccessToken, SignUpExhibitionParam } from '@/models/AccessToken';
 import { ISendVerificationResponse, IVerifyParam } from '@/models/Verification';
 import { IAuthLogin } from '@/schema';
-import { login, signUpWithExhibition } from '@/service/authentication';
+import { ISendCodeForm } from '@/schema/Wonderpass/Authentication';
+import { login, sendCodeToPhoneNumber, signUpWithExhibition } from '@/service/authentication';
 import { VerificationService } from '@/service/verifications';
 
 export const handleSubmitLogin = (param: IAuthLogin): Promise<AccessToken> => {
@@ -11,7 +12,8 @@ export const handleSubmitLogin = (param: IAuthLogin): Promise<AccessToken> => {
     .then((response) => {
       localStorage.setItem(AuthStorageKey, JSON.stringify(response));
       return response;
-    }).catch((err) => {
+    })
+    .catch((err) => {
       if (err?.message) {
         alert(err.message);
       }
@@ -19,12 +21,16 @@ export const handleSubmitLogin = (param: IAuthLogin): Promise<AccessToken> => {
     });
 };
 
-export const onSignUpWithExhibition = (param: SignUpExhibitionParam, token: string): Promise<AccessToken> => {
+export const onSignUpWithExhibition = (
+  param: SignUpExhibitionParam,
+  token: string
+): Promise<AccessToken> => {
   return signUpWithExhibition(param, token)
     .then((response) => {
       localStorage.setItem(AuthStorageKey, JSON.stringify(response));
       return response;
-    }).catch((err) => {
+    })
+    .catch((err) => {
       if (err?.message) {
         alert(err.message);
       }
@@ -33,24 +39,28 @@ export const onSignUpWithExhibition = (param: SignUpExhibitionParam, token: stri
 };
 
 export const isEmailVerificationSent = (email: string): Promise<boolean> => {
-  return VerificationService.sendVerification({ email }).then(() => {
-    return true;
-  }).catch((error) => {
-    if (error.errorCode === ERROR_USER_DOES_NOT_EXIST) {
-      return false;
-    }
-    if (error.errorCode === ERROR_CODE_HAS_SENT) {
+  return VerificationService.sendVerification({ email })
+    .then(() => {
       return true;
-    }
-    return false;
-  });
+    })
+    .catch((error) => {
+      if (error.errorCode === ERROR_USER_DOES_NOT_EXIST) {
+        return false;
+      }
+      if (error.errorCode === ERROR_CODE_HAS_SENT) {
+        return true;
+      }
+      return false;
+    });
 };
 
 export const verifyEmailCode = (param: IVerifyParam): Promise<ISendVerificationResponse | null> => {
-  return VerificationService.verifyUserCode(param).then((res: ISendVerificationResponse) => {
-    return res;
-  }).catch((error) => {
-    alert(error.message);
-    return null;
-  });
+  return VerificationService.verifyUserCode(param)
+    .then((res: ISendVerificationResponse) => {
+      return res;
+    })
+    .catch((error) => {
+      alert(error.message);
+      return null;
+    });
 };

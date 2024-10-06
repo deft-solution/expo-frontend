@@ -1,5 +1,4 @@
 import axios, { AxiosRequestConfig, AxiosResponse, RawAxiosRequestHeaders } from 'axios';
-import getConfig from 'next/config';
 
 import { AuthStorageKey } from '@/constants/Storage';
 import { getAccessToken } from '@/utils/LocalStorage';
@@ -14,7 +13,7 @@ function sendRequest<T, D = any>(config: AxiosRequestConfig<D>): Promise<T> {
 
   return axios<any, AxiosResponse<T>>(config)
     .then((response: AxiosResponse<T>) => response.data)
-    .catch(err => {
+    .catch((err) => {
       if (err.response == null) {
         err.errorCode = -1;
         throw err;
@@ -32,7 +31,11 @@ function sendRequest<T, D = any>(config: AxiosRequestConfig<D>): Promise<T> {
  * @template T the type of the action's `response`.
  * @template Q the type of the query's `param` in URL `Optionals`.
  */
-export function GET<T, Q = any>(url: string, params?: Q, headers?: RawAxiosRequestHeaders): Promise<T> {
+export function GET<T, Q = any>(
+  url: string,
+  params?: Q,
+  headers?: RawAxiosRequestHeaders
+): Promise<T> {
   return sendRequest({ method: 'GET', url, headers, params });
 }
 
@@ -40,7 +43,11 @@ export function GET<T, Q = any>(url: string, params?: Q, headers?: RawAxiosReque
  * @template T the type of the action's `response` tag.
  * @template B the type of the body's `param` JSON.
  */
-export function POST<T, B = any>(url: string, data: B, headers?: RawAxiosRequestHeaders): Promise<T> {
+export function POST<T, B = any>(
+  url: string,
+  data: B,
+  headers?: RawAxiosRequestHeaders
+): Promise<T> {
   return sendRequest({ method: 'POST', data, url, headers });
 }
 
@@ -53,7 +60,7 @@ export function POSTWithToken<T, B = any>(url: string, data: B, headers = {}): P
   if (!accessToken) {
     throw Error('Missing AccessToken');
   }
-  Object.assign(headers, { 'Authorization': 'Bearer ' + accessToken.accessToken });
+  Object.assign(headers, { Authorization: 'Bearer ' + accessToken.accessToken });
   return sendRequest({ method: 'POST', data, url, headers });
 }
 
@@ -66,7 +73,7 @@ export function GETWithToken<T, B = any>(url: string, params: B, headers = {}): 
   if (!accessToken) {
     throw Error('Missing AccessToken');
   }
-  Object.assign(headers, { 'Authorization': 'Bearer ' + accessToken.accessToken });
+  Object.assign(headers, { Authorization: 'Bearer ' + accessToken.accessToken });
   return sendRequest({ method: 'GET', url, params, headers });
 }
 
@@ -79,7 +86,7 @@ export function PUTWithToken<T, B = any>(url: string, data: B, headers = {}): Pr
   if (!accessToken) {
     throw Error('Missing AccessToken');
   }
-  Object.assign(headers, { 'Authorization': 'Bearer ' + accessToken.accessToken });
+  Object.assign(headers, { Authorization: 'Bearer ' + accessToken.accessToken });
   return sendRequest({ method: 'PUT', data, url, headers });
 }
 
@@ -95,6 +102,10 @@ export function PUT<T, B = any>(url: string, data: B, headers: RawAxiosRequestHe
  * @template T the type of the action's `response` tag.
  * @template B the type of the body's `param` JSON.
  */
-export function DELETE<T, B = any>(url: string, data: B, headers: RawAxiosRequestHeaders): Promise<T> {
+export function DELETE<T, B = any>(
+  url: string,
+  data: B,
+  headers: RawAxiosRequestHeaders
+): Promise<T> {
   return sendRequest({ method: 'DELETE', data, url, headers });
 }
