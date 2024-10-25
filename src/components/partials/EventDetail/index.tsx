@@ -8,22 +8,25 @@ import { Header, useApi } from '@Core';
 import { useBoothSelection } from '../../../context/BoothSelectionContext';
 import BoothDetailPanel from '../BoothDetailsPanel';
 import BootSelection from '../BoothSelection';
+import { getEventById, getEventForGuest } from '@/service/event';
 
 interface EventTypeProps {
-  event: IEventList;
+  id: string;
 }
 
 const EventDetails = (props: EventTypeProps) => {
-  const { event } = props;
+  const { id } = props;
 
-  const { response } = useApi({
-    service: getAllBothForEvent,
-    params: event.id,
-    effects: [],
-  });
-
+  const [event, setEvent] = useState<IEventList | null>(null);
   const [openPanel, setOpenPanel] = useState(false);
   const { ids, setIds, setBooths, booths } = useBoothSelection();
+
+  const { response: responseEvent } = useApi({
+    service: getEventForGuest,
+    params: id,
+    effects: [id],
+  });
+  const { response } = useApi({ service: getAllBothForEvent, params: id, effects: [id] });
 
   useEffect(() => {
     if (ids.length) {
@@ -37,16 +40,22 @@ const EventDetails = (props: EventTypeProps) => {
     }
   }, [response]);
 
+  useEffect(() => {
+    if (responseEvent) {
+      setEvent(responseEvent);
+    }
+  }, [responseEvent]);
+
   return (
     <div>
-      <BoothDetailPanel
-        id={event.id}
-        isOpen={openPanel}
-        onClose={() => setOpenPanel(false)}
-      />
-      <Header />
-      {booths.length > 0 && event.floorPlanUrl && (
-        <BootSelection floorPlanUrl={event.floorPlanUrl} onChange={setIds} />
+      {event && (
+        <>
+          <BoothDetailPanel id={event.id} isOpen={openPanel} onClose={() => setOpenPanel(false)} />
+          <Header />
+          {booths.length > 0 && event.floorPlanUrl && (
+            <BootSelection floorPlanUrl={event.floorPlanUrl} onChange={setIds} />
+          )}
+        </>
       )}
     </div>
   );

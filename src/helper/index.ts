@@ -15,5 +15,5 @@ export const getWonderPassToken = () => {
     return [TokenType.Bearer, token].join(' ');
   }
 
-  throw new Error('Invalid User Token.');
+  return null;
 };

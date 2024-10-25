@@ -8,6 +8,7 @@ const nextConfig = {
     domains: [
       process.env.IMAGE_DOMAIN,
       "angkorpass-production.s3.ap-southeast-1.amazonaws.com",
+      "angkorpass-staging.s3.ap-southeast-1.amazonaws.com",
     ],
   },
   webpack: (config) => {

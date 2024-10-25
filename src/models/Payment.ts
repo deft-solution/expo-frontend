@@ -1,3 +1,6 @@
+import { Payments } from '@/enums/payments';
+import { BaseResponse } from '@/schema/Wonderpass/Base';
+
 export interface PaymentOptionItem {
   logo: Logo;
   fallback?: Fallback;
@@ -55,4 +58,97 @@ export interface Logo {
 export interface CardImage {
   name: string;
   imageUrl: string;
+}
+
+export interface ICalulcatedOrder {
+  orderItems: OrderItem[];
+  reservationDate: string | null;
+  //
+  provider?: number;
+  option?: string;
+  paymentCard?: string;
+}
+
+export interface OrderItem {
+  passTemplate: string;
+  quantity: number;
+}
+
+export interface CalulcatedDataResponse extends BaseResponse {
+  data: { shippingMethods: any; orderDetails: OrderDetails };
+}
+
+export interface OrderDetails {
+  rewardItems: any[];
+  cashbackFees: any[];
+  additionalFees: any[];
+  promotionAdditionFees: any[];
+  orderItems: OrderItemResponse[];
+  subtotal: number;
+  serviceFee: number;
+  deliveryFee: number;
+  cashbackAmount: number;
+  discountAmount: number;
+  specialRequestAmount: number;
+  total: number;
+  promoCodeValidity: string;
+}
+
+export interface OrderItemResponse {
+  passTemplate: PassTemplate;
+  price: number;
+  quantity: number;
+  subtotal: number;
+  serviceFee: number;
+  cashbackAmount: number;
+  discountAmount: number;
+  total: number;
+}
+
+export interface PassTemplate {
+  _id: string;
+  title: string;
+  subtitle: string;
+  description: string;
+  image: Logo;
+}
+
+export interface CheckoutSuccess {
+  code: string;
+  paymentId: string;
+}
+
+export interface CheckOutFormParam {
+  persons: string[];
+  passTemplate: string;
+  seatIds: string[];
+  quantity: number;
+  //
+  provider: PaymentProvider | null;
+  paymentCard: string | null;
+  option: string | null;
+  shippingMethod: ShippingAddress | null;
+  promoCode: string | null;
+  topUpNumber: string | null;
+  reservationDate?: {
+    startDate?: string | null;
+    endDate?: string | null;
+  };
+  formValues?: any[];
+}
+
+export interface ShippingAddress {
+  name: string;
+  option: string;
+  address: string;
+  note: string;
+  phone: string;
+}
+
+export type PaymentProvider = keyof typeof Payments;
+
+export interface ValidatePassesResponse {
+  data: number;
+  statusCode: number;
+  message: string;
 }

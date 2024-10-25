@@ -8,6 +8,7 @@ import React, { createContext, useContext, useEffect, useState } from 'react';
 // Define the context type
 interface AuthLiveContextType {
   isAuthenticated: boolean;
+  isFechingProfile: boolean;
   userProfile: UserLiveProfileMe | null;
   logout: () => void;
   onRefresh: () => void;
@@ -19,6 +20,7 @@ const AuthLiveContext = createContext<AuthLiveContextType | undefined>(undefined
 // Create the AuthProvider component
 export const AuthLiveProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const [isRefresh, setIsRefresh] = useState(false);
+  const [isFechingProfile, setIsFetchingProfile] = useState(false);
   const [userProfile, setUserProfile] = useState<UserLiveProfileMe | null>(null);
   const [isAuthenticated, setIsAuthenticated] = useState<boolean>(false);
 
@@ -42,24 +44,24 @@ export const AuthLiveProvider: React.FC<{ children: React.ReactNode }> = ({ chil
   };
 
   const fetchingUserProfile = () => {
+    setIsFetchingProfile(true);
     return getLiveCurrentProfile()
       .then((response) => {
+        setIsFetchingProfile(false);
         setUserProfile(response);
         setIsAuthenticated(true);
       })
       .catch((error) => {
+        setIsFetchingProfile(false);
         if (error?.statusCode === 401) {
           console.error('Unauthorized access. Logging out.');
           logout(); // Log out the user if unauthorized
         }
       });
   };
+  const conextValue = { isFechingProfile, isAuthenticated, userProfile, logout, onRefresh };
 
-  return (
-    <AuthLiveContext.Provider value={{ isAuthenticated, userProfile, logout, onRefresh }}>
-      {children}
-    </AuthLiveContext.Provider>
-  );
+  return <AuthLiveContext.Provider value={conextValue}>{children}</AuthLiveContext.Provider>;
 };
 
 export const useAuthLive = (): AuthLiveContextType => {

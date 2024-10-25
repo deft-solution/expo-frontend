@@ -1,8 +1,6 @@
-import getConfig from 'next/config';
-
 import { IPagination } from '@/models/Pagination';
 import { EventListingFilterParam, IEventList, IEvents } from '@/schema/Event';
-import { GETWithToken, POSTWithToken, PUTWithToken } from '@Core';
+import { GET, GETWithToken, POSTWithToken, PUTWithToken } from '@Core';
 
 export function createEvent(param: IEvents): Promise<IEvents> {
   const API_URL = '/api/events/v1/create';
@@ -22,6 +20,11 @@ export function getAllEvent(param: EventListingFilterParam): Promise<IPagination
 export function getEventById(id: string): Promise<IEventList> {
   const API_URL = '/api/events/v1/' + id;
   return GETWithToken<IEventList, {}>(API_URL, {});
+}
+
+export function getEventForGuest(id: string): Promise<IEventList> {
+  const API_URL = '/api/events/v1/guest/' + id;
+  return GET<IEventList, {}>(API_URL, {});
 }
 
 export function getAllEventAutoComplete(): Promise<IEventList[]> {
