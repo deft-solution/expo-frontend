@@ -4,12 +4,19 @@ import path from "path";
 const nextConfig = {
   reactStrictMode: true,
   swcMinify: true,
-  images: {
-    domains: [
-      process.env.IMAGE_DOMAIN,
-      "angkorpass-production.s3.ap-southeast-1.amazonaws.com",
-      "angkorpass-staging.s3.ap-southeast-1.amazonaws.com",
-    ],
+    images: {
+      domains: [],  // Leave empty or add trusted domains
+      remotePatterns: [
+        {
+          protocol: 'https',
+          hostname: '**',  // Allows any domain
+        },
+        {
+          protocol: 'http',
+          hostname: '**',  // Allows any domain for http
+        },
+      ],
+      unoptimized: true, // Disables image optimization, allows any domain
   },
   webpack: (config) => {
     config.resolve.alias = {

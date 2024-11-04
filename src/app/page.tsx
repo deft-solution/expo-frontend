@@ -1,14 +1,11 @@
 'use client';
-import { Header } from '@Core';
 
 export default function Home() {
   return (
-    <>
-      <Header />
-
-      <div className="container mx-auto px-4">
+    <div className="flex flex-col justify-between h-screen">
+      <div className="container mx-auto max-sm:px-4 max-xl:px-10 flex-grow flex-1">
         <h2 className="text-lg">This is Home Page</h2>
       </div>
-    </>
+    </div>
   );
 }

@@ -7,7 +7,9 @@
   align-items: center;
   justify-content: center;
   cursor: pointer;
-  transition: transform 0.3s ease, background-color 0.3s ease;
+  transition:
+    transform 0.3s ease,
+    background-color 0.3s ease;
 
   &:hover {
     transform: scale(1.1);
@@ -17,8 +19,8 @@
   }
 
   &::before {
-    content: "";
-    background-image: url("/assets/icons/cross.svg");
+    content: '';
+    background-image: url('/assets/icons/cross.svg');
     background-size: 15px 15px;
     background-repeat: no-repeat;
     background-position: center;

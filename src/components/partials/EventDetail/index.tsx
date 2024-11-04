@@ -3,12 +3,12 @@ import React, { useEffect, useState } from 'react';
 
 import { IEventList } from '@/schema/Event';
 import { getAllBothForEvent } from '@/service/booth';
-import { Header, useApi } from '@Core';
+import { getEventForGuest } from '@/service/event';
+import { useApi } from '@Core';
 
 import { useBoothSelection } from '../../../context/BoothSelectionContext';
 import BoothDetailPanel from '../BoothDetailsPanel';
 import BootSelection from '../BoothSelection';
-import { getEventById, getEventForGuest } from '@/service/event';
 
 interface EventTypeProps {
   id: string;
@@ -51,7 +51,6 @@ const EventDetails = (props: EventTypeProps) => {
       {event && (
         <>
           <BoothDetailPanel id={event.id} isOpen={openPanel} onClose={() => setOpenPanel(false)} />
-          <Header />
           {booths.length > 0 && event.floorPlanUrl && (
             <BootSelection floorPlanUrl={event.floorPlanUrl} onChange={setIds} />
           )}
