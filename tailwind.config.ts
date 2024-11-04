@@ -24,11 +24,16 @@ const config: Config = {
         },
         secondary: 'var(--color-secondary)',
         'secondary-blue': 'var(--cl-secondary-blue)',
+        main: '#47C0EB',
+        icon: '#E9282B',
       },
       backgroundImage: {
         'gradient-radial': 'radial-gradient(var(--tw-gradient-stops))',
-        'gradient-conic':
-          'conic-gradient(from 180deg at 50% 50%, var(--tw-gradient-stops))',
+        'gradient-conic': 'conic-gradient(from 180deg at 50% 50%, var(--tw-gradient-stops))',
+      },
+      fontFamily: {
+        kantumruy: ['Kantumruy', 'sans-serif'], // Add Kantumruy to the font family
+        montserrat: ['Montserrat', 'sans-serif'], // Add Montserrat to the font family
       },
     },
   },
