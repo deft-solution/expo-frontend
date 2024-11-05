@@ -1,9 +1,9 @@
 'use client';
-import * as React from 'react';
+import Image from 'next/image';
+
 import { Pagination } from '@/core';
 import { ArrowLeftRounded, ArrowRightRounded } from '@mui/icons-material';
 import { Divider } from '@mui/material';
-import Image from 'next/image';
 
 export default function Home() {
   return (
