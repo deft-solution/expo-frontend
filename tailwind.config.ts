@@ -32,8 +32,11 @@ const config: Config = {
         'gradient-conic': 'conic-gradient(from 180deg at 50% 50%, var(--tw-gradient-stops))',
       },
       fontFamily: {
-        kantumruy: ['Kantumruy', 'sans-serif'], // Add Kantumruy to the font family
-        montserrat: ['Montserrat', 'sans-serif'], // Add Montserrat to the font family
+        kantumruy: ['Kantumruy', 'sans-serif'],
+        montserrat: ['Montserrat', 'sans-serif'],
+        battambang: ['Battambang', 'sans-serif'],
+        moul: ['Moul', 'sans-serif'],
+
       },
     },
   },

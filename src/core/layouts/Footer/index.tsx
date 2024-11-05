@@ -5,10 +5,10 @@ import Link from 'next/link';
 
 const Footer = () => {
   return (
-    <div className="bg-main  max-sm:px-4 p-10 font-kantumruy">
+    <div className="bg-main p-10 font-battambang text-lg max-sm:text-base">
       <div className="container mx-auto grid grid-cols-3 h-full text-white gap-[60px]">
         <div className="flex flex-col justify-between items-start max-xl:col-span-3 col-span-1">
-          <Link href="/">
+          <Link href="/" className="max-sm:max-w-[200px]">
             <Image
               src="/assets/logo/main-logo.svg"
               alt="/assets/logo/main-logo.svg"
@@ -17,7 +17,7 @@ const Footer = () => {
             />
           </Link>
           <div className="max-xl:hidden">
-            <h2 className="text-xl font-semibold">បណ្តាញសង្គម</h2>
+            <h2 className="text-2xl font-semibold">បណ្តាញសង្គម</h2>
             <div className="flex gap-4 py-4">
               <Link href="/">
                 <FacebookSharp className="w-7 h-7" />
@@ -36,7 +36,7 @@ const Footer = () => {
         </div>
         <div className="flex flex-col justify-between items-start max-xl:col-span-3 col-span-1">
           <div className="flex flex-col gap-[20px]">
-            <h2 className="text-xl font-semibold">ទំព័រ</h2>
+            <h2 className="text-2xl font-semibold">ទំព័រ</h2>
             <ul className="grid grid-cols-2 max-sm:gap-x-[60px] sm:gap-x-[120px] xl:gap-x-[60px] gap-y-[20px]">
               <Link href="/">អំពីសមាគម</Link>
               <Link href="/">អំពីសមាជិកភាព</Link>
@@ -50,8 +50,10 @@ const Footer = () => {
         </div>
         <div className="flex flex-col justify-between items-start max-xl:col-span-3 col-span-1">
           <div className="flex flex-col gap-[20px]">
-            <h2 className="text-xl font-semibold">ទំនាក់ទំនង និង ទទួលព័ត៌មាន អំពីយើងខ្ញុំតាមរយះ</h2>
-            <ul className="flex  flex-col gap-[20px]">
+            <h2 className="text-2xl font-semibold">
+              ទំនាក់ទំនង និង ទទួលព័ត៌មាន អំពីយើងខ្ញុំតាមរយះ
+            </h2>
+            <ul className="flex flex-col gap-[20px]">
               <li className="flex items-center gap-[20px]">
                 <span>
                   <Phone className="w-7 h-7" />
@@ -68,7 +70,7 @@ const Footer = () => {
           </div>
         </div>
         <div className="hidden flex-col justify-between items-start max-xl:col-span-3 col-span-1 max-xl:flex">
-          <h2 className="text-xl font-semibold">បណ្តាញសង្គម</h2>
+          <h2 className="text-2xl font-semibold">បណ្តាញសង្គម</h2>
           <div className="flex gap-4 py-4">
             <Link href="/">
               <FacebookSharp className="w-7 h-7" />
