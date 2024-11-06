@@ -61,7 +61,7 @@ const Header = () => {
 
   const handleBookNow = () => {
     if (id) {
-      router.push(`http://159.223.41.237:4002/event/${id}`);
+      router.push(`/event/${id}`);
     } else {
       console.error('Event ID is missing');
     }
@@ -122,11 +122,12 @@ const Header = () => {
             <Link
               key={index}
               href={link.href}
+              onClick={() => setToggle(!toggle)}
               className={`${
                 isActive(link.href)
-                  ? 'animation duration-300 border-l-black border-l-4 '
-                  : 'hover:text-main animation duration-300'
-              } px-10 py-4 w-full`}
+                  ? 'text-main '
+                  : 'animation duration-300 hover:border-l-black hover:border-l-4'
+              } px-10 py-4 w-full `}
             >
               {link.label}
             </Link>
