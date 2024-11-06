@@ -2,10 +2,36 @@ import Image from 'next/image';
 import React, { useEffect, useRef, useState } from 'react';
 
 import Link from 'next/link';
+import { Close, Menu } from '@mui/icons-material';
+import { usePathname, useRouter, useSearchParams } from 'next/navigation';
+import Style from './index.module.scss';
+import { getEventForGuest } from '@/service/event';
+import { useApi } from '@/core/hooks';
+import { IEventList } from '@/schema/Event';
 
 const Header = () => {
   const [toggle, setToggle] = useState(false);
+  const [idExist, setIdExist] = useState<IEventList | null>(null);
   const menuRef = useRef<HTMLDivElement>(null);
+  const pathname = usePathname();
+  const router = useRouter();
+  const searchParams = useSearchParams();
+  const id = searchParams.get('event') ?? undefined;
+
+  const { response } = useApi({
+    service: getEventForGuest,
+    params: id,
+    effects: [id],
+  });
+
+  useEffect(() => {
+    if (response) {
+      setIdExist(response);
+    }
+  }, [response]);
+  const isActive = (path: string) => {
+    return pathname === path;
+  };
 
   useEffect(() => {
     const handleResize = () => {
@@ -33,67 +59,89 @@ const Header = () => {
     return () => document.removeEventListener('mousedown', handleClickOutside);
   }, [toggle]);
 
+  const handleBookNow = () => {
+    if (id) {
+      router.push(`http://159.223.41.237:4002/event/${id}`);
+    } else {
+      console.error('Event ID is missing');
+    }
+  };
+
+  const links = [
+    { href: '/', label: 'Home' },
+    { href: '/about-us', label: 'About' },
+    { href: '/services', label: 'Services' },
+    { href: '/upcoming-packages', label: 'Upcoming Packages' },
+  ];
+
   return (
     <nav
       ref={menuRef}
-      className="flex p-10 justify-between items-center border-b bg-main border-gray-200 text-white relative"
+      className="flex p-10 justify-between items-center border-b border-gray-200 relative"
     >
       <div className="flex container mx-auto justify-between items-center gap-[60px] w-full">
         <Link href="/" className="max-sm:max-w-[200px]">
-          <Image
-            src="/assets/logo/main-logo.svg"
-            alt="/assets/logo/main-logo.svg"
-            width={250}
-            height={100}
-          />
+          <Image src="/assets/logo/logo.svg" alt="/assets/logo/logo.svg" width={250} height={100} />
         </Link>
-        <ul className="flex items-center justify-between gap-[60px] max-xl:hidden">
-          <Link href="/">Home</Link>
-          <Link href="/">About</Link>
-          <Link href="/">Services</Link>
-          <Link href="/">Upcoming Packages</Link>
+        <ul className="flex items-center justify-between gap-[60px] font-semibold max-xl:hidden">
+          {links.map((link, index) => (
+            <Link
+              key={index}
+              className={
+                isActive(link.href)
+                  ? Style['active-link']
+                  : 'hover:text-main animation duration-300'
+              }
+              href={link.href}
+            >
+              {link.label}
+            </Link>
+          ))}
         </ul>
-        <button type="button" className="bg-icon py-4 px-8 rounded-lg max-xl:hidden">
-          Book Now
-        </button>
+
+        {idExist && (
+          <button
+            type="button"
+            onClick={handleBookNow}
+            className="bg-main text-white py-4 px-8 rounded-lg max-xl:hidden"
+          >
+            Book Now
+          </button>
+        )}
       </div>
 
       {/*Mobile View*/}
       <div onClick={() => setToggle(!toggle)} className="xl:hidden ">
-        {toggle ? (
-          <Image
-            src="/assets/icons/cross.svg"
-            alt="/assets/logo/cross.svg"
-            width={25}
-            height={25}
-          />
-        ) : (
-          <Image src="/assets/icons/menu.svg" alt="/assets/logo/menu.svg" width={25} height={25} />
-        )}
+        {toggle ? <Close className="w-7 h-7 text-main" /> : <Menu className="w-7 h-7 text-main" />}
       </div>
       <div
         className={`${toggle ? 'flex' : 'hidden'} flex-col bg-white shadow-lg text-black absolute items-start gap-[20px] pb-10 top-[100%] w-full left-0`}
       >
-        <ul className="flex flex-col items-start w-full justify-between">
-          {[
-            { href: '/', label: 'Home' },
-            { href: '/', label: 'About' },
-            { href: '/', label: 'Services' },
-            { href: '/', label: 'Upcoming Packages' },
-          ].map((link, index) => (
+        <ul className="flex flex-col font-semibold items-start w-full justify-between">
+          {links.map((link, index) => (
             <Link
               key={index}
               href={link.href}
-              className="animation duration-300 hover:border-l-icon hover:border-l-4 px-10 py-4 w-full"
+              className={`${
+                isActive(link.href)
+                  ? 'animation duration-300 border-l-black border-l-4 '
+                  : 'hover:text-main animation duration-300'
+              } px-10 py-4 w-full`}
             >
               {link.label}
             </Link>
           ))}
         </ul>
         <div className="px-10">
-          <button type="button" className="bg-icon text-white py-4 px-8 rounded-lg">
-            Book Now
-          </button>
+          {idExist && (
+            <button
+              type="button"
+              onClick={handleBookNow}
+              className="bg-main text-white py-4 px-8 rounded-lg"
+            >
+              Book Now
+            </button>
+          )}
         </div>
       </div>
     </nav>

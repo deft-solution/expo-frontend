@@ -1,11 +1,53 @@
 'use client';
 import * as React from 'react';
-import { Pagination } from '@/core';
 import { ArrowLeftRounded, ArrowRightRounded } from '@mui/icons-material';
 import { Divider } from '@mui/material';
 import Image from 'next/image';
+import PaginationComponent from '@/core/components/Pagination';
 
 export default function Home() {
+  const [offset, setOffset] = React.useState(0);
+  const data = [
+    {
+      imgSrc: '/assets/images/img-1.png',
+      title:
+        'លោកជំទាវ ចម និម្មល រដ្ឋមន្ត្រីក្រសួងពាណិជ្ជកម្ម អញ្ជើញចូលរួមពិធីសម្ពោធស្តង់ពិព័រណ៍ពាណិជ្ជកម្មរបស់កម្ពុជា នាឱកាសព្រឹត្តិការណ៍ពិព័រណ៍ចិន-កម្ពុជា',
+      desc: '(ណាននីង សាធារណរដ្ឋប្រជាមានិតចិន)៖ នាព្រឹកថ្ងៃអង្គារ ទី២៤ ខែកញ្ញា ឆ្នាំ២០២៤ នៅមជ្ឈមណ្ឌលសន្និបាត និងពិព័រណ៍អន្តរជាតិណាននីង ខេត្តក្វាងស៊ី សាធារណរដ្ឋប្រជាមានិតចិន លោកជំទាវ ចម និម្មល បានអញ្ជើញចូលរួមសម្ពោធស្តង់នៃពិព័រណ៍ពាណិជ្ជកម្មរបស់កម្ពុជាដើម្បីបង្ហាញនូវផលិតផលខ្មែរទៅកាន់ទីផ្សារអន្តរជាតិ។',
+    },
+    {
+      imgSrc: '/assets/images/img-2.png',
+      title:
+        'លោកជំទាវ សុមេធ សុមនា អនុរដ្ឋលេខាធិការ តំណាងដ៏ខ្ពង់ខ្ពស់ លោកជំទាវ ចម និម្មល រដ្ឋមន្ត្រីក្រសួងពាណិជ្ជកម្ម បានអញ្ជើញចូលរួមកម្មវិធី',
+      desc: '(ណាននីង, ចិន)៖ នាព្រឹកថ្ងៃចន្ទ ទី២៣ ខែកញ្ញា ឆ្នាំ២០២៤ នៅទីក្រុងណាននីង សាធារណរដ្ឋប្រជាមានិតចិន លោកជំទាវ សុមេធ សុមនា អនុរដ្ឋលេខាធិការ តំណាងដ៏ខ្ពង់ខ្ពស់ លោកជំទាវ ចម និម្មល រដ្ឋមន្ត្រីក្រសួងពាណិជ្ជកម្ម បានអញ្ជើញចូលរួមក្នុងកម្មវិធីពិព័រណ៍ដែលមានគោលបំណងលើកស្ទួយផលិតផលកម្ពុជាឱ្យបានស្គាល់នូវទីផ្សារជួរពិភពលោក។',
+    },
+    {
+      imgSrc: '/assets/images/img-3.png',
+      title:
+        'លោកជំទាវ ចម និម្មល រដ្ឋមន្ត្រីក្រសួងពាណិជ្ជកម្ម និងជាប្រធានគណៈកម្មការរៀបចំ និងចូលរួមពិព័រណ៍ពិភពលោក និងពិព័រណ៍ពាណិជ្ជកម្ម',
+      desc: '(ណាននីង សាធារណរដ្ឋប្រជាមានិតចិន)៖ នាព្រឹកថ្ងៃអង្គារ ទី២៤ ខែកញ្ញា ឆ្នាំ២០២៤ នៅមជ្ឈមណ្ឌលសន្និបាត និងពិព័រណ៍អន្តរជាតិណាននីង ខេត្តក្វាងស៊ី សាធារណរដ្ឋប្រជាមានិតចិន លោកជំទាវ ចម និម្មល បានអញ្ជើញចូលរួមពិព័រណ៍ពាណិជ្ជកម្មកម្ពុជាបានបង្ហាញផលិតផលថ្មីៗដើម្បីលើកស្ទួយកសិកម្ម និងឧស្សាហកម្មនៅកម្ពុជា។',
+    },
+    {
+      imgSrc: '/assets/images/img-2.png',
+      title:
+        'លោកជំទាវ សុមេធ សុមនា អនុរដ្ឋលេខាធិការ តំណាងដ៏ខ្ពង់ខ្ពស់ លោកជំទាវ ចម និម្មល រដ្ឋមន្ត្រីក្រសួងពាណិជ្ជកម្ម បានអញ្ជើញចូលរួមកម្មវិធី',
+      desc: '(ណាននីង, ចិន)៖ នាព្រឹកថ្ងៃចន្ទ ទី២៣ ខែកញ្ញា ឆ្នាំ២០២៤ នៅទីក្រុងណាននីង សាធារណរដ្ឋប្រជាមានិតចិន លោកជំទាវ សុមេធ សុមនា អនុរដ្ឋលេខាធិការ តំណាងដ៏ខ្ពង់ខ្ពស់ លោកជំទាវ ចម និម្មល រដ្ឋមន្ត្រីក្រសួងពាណិជ្ជកម្ម បានអញ្ជើញចូលរួមក្នុងកម្មវិធីពិព័រណ៍ដែលមានគោលបំណងលើកស្ទួយផលិតផលកម្ពុជាឱ្យបានស្គាល់នូវទីផ្សារជួរពិភពលោក។',
+    },
+    {
+      imgSrc: '/assets/images/img-1.png',
+      title:
+        'លោកជំទាវ ចម និម្មល រដ្ឋមន្ត្រីក្រសួងពាណិជ្ជកម្ម អញ្ជើញចូលរួមពិធីសម្ពោធស្តង់ពិព័រណ៍ពាណិជ្ជកម្មរបស់កម្ពុជា នាឱកាសព្រឹត្តិការណ៍ពិព័រណ៍ចិន-កម្ពុជា',
+      desc: '(ណាននីង សាធារណរដ្ឋប្រជាមានិតចិន)៖ នាព្រឹកថ្ងៃអង្គារ ទី២៤ ខែកញ្ញា ឆ្នាំ២០២៤ នៅមជ្ឈមណ្ឌលសន្និបាត និងពិព័រណ៍អន្តរជាតិណាននីង ខេត្តក្វាងស៊ី សាធារណរដ្ឋប្រជាមានិតចិន លោកជំទាវ ចម និម្មល បានអញ្ជើញចូលរួមសម្ពោធស្តង់នៃពិព័រណ៍ពាណិជ្ជកម្មរបស់កម្ពុជាដើម្បីបង្ហាញនូវផលិតផលខ្មែរទៅកាន់ទីផ្សារអន្តរជាតិ។',
+    },
+    {
+      imgSrc: '/assets/images/img-3.png',
+      title:
+        'លោកជំទាវ ចម និម្មល រដ្ឋមន្ត្រីក្រសួងពាណិជ្ជកម្ម និងជាប្រធានគណៈកម្មការរៀបចំ និងចូលរួមពិព័រណ៍ពិភពលោក និងពិព័រណ៍ពាណិជ្ជកម្ម',
+      desc: '(ណាននីង សាធារណរដ្ឋប្រជាមានិតចិន)៖ នាព្រឹកថ្ងៃអង្គារ ទី២៤ ខែកញ្ញា ឆ្នាំ២០២៤ នៅមជ្ឈមណ្ឌលសន្និបាត និងពិព័រណ៍អន្តរជាតិណាននីង ខេត្តក្វាងស៊ី សាធារណរដ្ឋប្រជាមានិតចិន លោកជំទាវ ចម និម្មល បានអញ្ជើញចូលរួមពិព័រណ៍ពាណិជ្ជកម្មកម្ពុជាបានបង្ហាញផលិតផលថ្មីៗដើម្បីលើកស្ទួយកសិកម្ម និងឧស្សាហកម្មនៅកម្ពុជា។',
+    },
+  ];
+
+  const paginatedData = data.slice(offset, offset + 3);
+
   return (
     <div className="flex flex-col justify-between h-100% font-battambang">
       <Image
@@ -35,7 +77,7 @@ export default function Home() {
               <h1 className="text-[22px] text-ellipsis line-clamp-2 text-[#0C2F8D] font-bold">
                 សេចក្តីជូនដំណឹងស្ដីពី៖ ការរៀបចំពិព័រណ៍នាំចូល និងនាំចេញប្រទេសចិន
               </h1>
-              <p className="line-clamp-3 max-xl:line-clamp-2 text-ellipsis leading-loose text-xl max-sm:text-base text-[#0C2F8D]">
+              <p className="line-clamp-3 max-xl:line-clamp-2 text-ellipsis leading-loose text-xl max-sm:text-base">
                 ពិព័រណ៍ពាណិជ្ជកម្មនេះ មានការចូលរួមគាំទ្រពីបណ្ដាប្រទេសនៅក្នុងតំបន់ដូចជា៖ ប្រទេសចិន
                 ជប៉ុន ថៃឡង់ដ៍ វៀតណាម ឥណ្ឌូនេស៊ី ម៉ាឡេស៊ី ឡាវ មីយ៉ាន់ម៉ា មន្ទីរពាណិជ្ជកម្មទាំង២៥
                 រាជធានី-ខេត្ត អង្គការ សមាគម ពិព័រណ៍ពាណិជ្ជកម្មនេះ
@@ -59,7 +101,7 @@ export default function Home() {
         </div>
       </div>
 
-      <div className="container xl:max-w-[80%] max-xl:px-10 pt-4 pb-10 mx-auto grid grid-cols-3 gap-10">
+      <div className="container xl:max-w-[80%] max-xl:px-10 p-10 mx-auto grid grid-cols-3 gap-10">
         {[
           {
             title: 'ព័ត៌មានទូទៅ',
@@ -77,14 +119,9 @@ export default function Home() {
               'ឯកឧត្តម ឱក ប៊ុង រដ្ឋលេខាធិការក្រសួងពាណិជ្ជកម្ម ទទួលជួបពិភាក្សាជាមួយនឹងក្រុមការងារកម្មវិធីត្រួតពិនិត្យការនាំចេញ និងសន្តិសុខព្រំដែនពាក់ព័ន្ធណាងអង្គភាពពាក់ព័ន្ធ ព្រមទាំងធុរជនកម្ពុជា-ឥណ្ឌូនេស៉ី ជាច្រើនរូប។',
           },
         ].map((section, index) => (
-          <div
-            key={index}
-            className="flex gap-4 col-span-1 flex-col text-[#0C2F8D] max-xl:col-span-3"
-          >
-            <div className="flex items-end gap-4">
-              <Image height={40} width={40} src="/assets/icons/ship.svg" alt={section.title} />
-              <h2 className="font-moul text-2xl max-sm:text-xl">{section.title}</h2>
-            </div>
+          <div key={index} className="flex gap-4 col-span-1 flex-col max-xl:col-span-3">
+            <h2 className="font-moul text-2xl max-sm:text-xl text-[#0C2F8D] ">{section.title}</h2>
+
             <p className="line-clamp-3 max-xl:line-clamp-2 text-ellipsis leading-loose text-xl max-sm:text-base">
               {section.content}
             </p>
@@ -104,34 +141,32 @@ export default function Home() {
           height={100}
           width={100}
           className="absolute -translate-x-1/2 -translate-y-1/2 inset-1/2"
-          src="/assets/logo/youtube.png"
-          alt="/assets/logo/youtube.png"
+          src="/assets/images/youtube.png"
+          alt="/assets/images/youtube.png"
         />
       </div>
 
-      <div className="bg-main w-full h-full pb-10">
-        <div className="container xl:max-w-[80%] max-xl:px-10 py-4 mx-auto gap-10">
-          <div className="flex items-end gap-4 py-4">
-            <Image
-              height={40}
-              width={40}
-              src="/assets/icons/ship-white.svg"
-              alt="/assets/icons/ship-white.svg"
-            />
-            <h2 className="font-moul text-2xl max-sm:text-xl text-white">កាលវិភាគ</h2>
-          </div>
-          <table className="w-full text-white font-battambang text-xl max-xl:text-base ">
-            <thead className="max-xl:flex items-center justify-between">
-              <ArrowLeftRounded className="w-10 h-10 max-xl:block xl:hidden" />
-              <tr className="w-full grid grid-cols-5 justify-between py-4">
-                <td className="col-span-1 max-xl:col-span-5 max-xl:text-center text-lg text-black font-semibold">
-                  ថ្ងៃទី១៣ ខែធ្នូ ឆ្នាំ២០២៤
-                </td>
-                <td className="col-span-1 max-xl:hidden">ថ្ងៃទី១៤ ខែធ្នូ ឆ្នាំ២០២៤</td>
-                <td className="col-span-1 max-xl:hidden">ថ្ងៃទី១៥ ខែធ្នូ ឆ្នាំ២០២៤</td>
-                <td className="col-span-1 max-xl:hidden">ថ្ងៃទី១៦ ខែធ្នូ ឆ្នាំ២០២៤</td>
+      <div className=" w-full h-full pt-10">
+        <div className="container xl:max-w-[80%] max-xl:px-10 mx-auto gap-10">
+          <h2 className="font-moul text-2xl max-sm:text-xl text-[#0C2F8D] pb-4">កាលវិភាគ</h2>
+          <table className="w-full font-battambang text-xl max-xl:text-base ">
+            <thead className="max-xl:flex items-center justify-start">
+              <tr className="max-xl:flex justify-between items-center w-full">
+                <th className="xl:hidden">
+                  <ArrowLeftRounded className="w-10 h-10 max-xl:block " />
+                </th>
+                <th className="w-full grid grid-cols-5 justify-start py-4">
+                  <span className="col-span-1 max-xl:col-span-5 max-xl:text-center text-start text-lg text-[#0C2F8D]">
+                    ថ្ងៃទី១៣ ខែធ្នូ ឆ្នាំ២០២៤
+                  </span>
+                  <span className="col-span-1 max-xl:hidden">ថ្ងៃទី១៤ ខែធ្នូ ឆ្នាំ២០២៤</span>
+                  <span className="col-span-1 max-xl:hidden">ថ្ងៃទី១៥ ខែធ្នូ ឆ្នាំ២០២៤</span>
+                  <span className="col-span-1 max-xl:hidden">ថ្ងៃទី១៦ ខែធ្នូ ឆ្នាំ២០២៤</span>
+                </th>
+                <th className="xl:hidden">
+                  <ArrowRightRounded className="w-10 h-10 max-xl:block " />
+                </th>
               </tr>
-              <ArrowRightRounded className="w-10 h-10 max-xl:block xl:hidden" />
             </thead>
             <tbody>
               {[
@@ -153,13 +188,15 @@ export default function Home() {
               ].map((item, index) => (
                 <tr
                   key={index}
-                  className="w-full grid grid-cols-4 py-4 border-b first:border-t max-xl:flex max-xl:flex-col"
+                  className="w-full grid grid-cols-3 py-5 border-t border-black max-xl:flex max-xl:flex-col"
                 >
-                  <div className="flex items-center justify-between">
-                    <td className="col-span-1">{item.time}</td>
-                    <td className="col-span-1 max-xl:block xl:hidden">{item.location}</td>
-                  </div>
-                  <td className="col-span-2 max-xl:font-semibold max-xl:text-lg">{item.event}</td>
+                  <td className="flex col-span-1 items-center justify-between">
+                    <span className="col-span-1">{item.time}</span>
+                    <span className="col-span-1 max-xl:block xl:hidden">{item.location}</span>
+                  </td>
+                  <td className="col-span-1 max-xl:font-semibold max-xl:text-lg  font-semibold text-[#0C2F8D]">
+                    {item.event}
+                  </td>
                   <td className="col-span-1 xl:blocks max-xl:hidden">{item.location}</td>
                 </tr>
               ))}
@@ -167,17 +204,17 @@ export default function Home() {
           </table>
         </div>
       </div>
-      <div className="w-full h-full">
-        <div className="container max-xl:px-10 py-20 mx-auto grid grid-cols-4 max-xl:grid-cols-2 gap-10">
-          {Array(4)
-            .fill({
-              id: 1,
-              src: '/assets/logo/main-logo-blue.png',
-              alt: '/assets/logo/main-logo-blue.png',
-            })
+      <div className="w-full h-full py-4">
+        <div className="container max-w-[80%] sm:my-4 max-xl:px-10 w-full py-4 mx-auto grid grid-cols-6 max-xl:grid-cols-2 gap-10">
+          {Array(6)
+            .fill(6)
+            .map((_, index) => ({
+              id: index + 1,
+              src: `/assets/sponsors/image-${index + 1}.png`,
+              alt: `sponsor-${index + 1}`,
+            }))
             .map((img) => (
               <Image
-                className="w-full col-span-1"
                 key={img.id + 1}
                 src={img.src}
                 width={250}
@@ -188,11 +225,7 @@ export default function Home() {
         </div>
       </div>
       <div className="bg-main w-full h-full py-4">
-        <h2 className="text-2xl text-white font-moul max-xl:mt-4 text-center xl:hidden">
-          ក្រុមការងារ
-        </h2>
-
-        <div className="container xl:max-w-[70%] sm:my-4 max-xl:px-10 w-full py-4 mx-auto flex xl:justify-start justify-center flex-wrap relative">
+        <div className="container max-xl:max-w-[100%] max-w-[80%] xl:my-4 max-xl:px-10 w-full py-4 mx-auto grid grid-cols-5 xl:grid-rows-2 relative">
           {Array(8)
             .fill(8)
             .map((_, index) => ({
@@ -202,27 +235,28 @@ export default function Home() {
             }))
             .map((img) => (
               <Image
-                className="max-sm:w-1/2"
                 key={img.id}
                 src={img.src}
                 width={224}
                 height={224}
                 alt={img.src as string}
+                className="w-full"
               />
             ))}
+          <div></div>
           <div className="relative">
             <Image
-              className="absolute inset-1/2 -translate-x-1/2 -translate-y-1/2"
+              className="absolute inset-1/2 -translate-x-1/2 -translate-y-1/2 xl:w-1/2 max-w-[60%]"
               src="/assets/profiles/frame.png"
               width={100}
               height={100}
               alt="/assets/profiles/frame.pn"
             />
             <Image
-              className="p-2 max-xl:hidden"
+              className="p-2"
               src="/assets/profiles/elipse.png"
-              width={220}
-              height={220}
+              width={300}
+              height={300}
               alt="/assets/profiles/elipse.png"
             />
           </div>
@@ -232,8 +266,10 @@ export default function Home() {
       <div className="w-full h-full py-4">
         <div className="container px-10 py-10 mx-auto grid grid-cols-2 gap-10 justify-between items-center">
           <div className="col-span-1 max-xl:col-span-2">
-            <h2 className="text-red-700 text-2xl font-semibold mb-4">អំពីការពិព័រណ៍ពាណិជ្ជកម្ម</h2>
-            <p className="line-clamp-6 max-xl:line-clamp-5 text-ellipsis leading-loose text-xl max-sm:text-base text-[#0C2F8D]">
+            <h2 className="text-[#0C2F8D] text-2xl font-semibold mb-4">
+              អំពីការពិព័រណ៍ពាណិជ្ជកម្ម
+            </h2>
+            <p className="line-clamp-6 max-xl:line-clamp-5 text-ellipsis leading-loose text-xl max-sm:text-base">
               សូមជម្រាបជូនផងដែរថា ពិព័រណ៍ចិន-អាស៊ាន លើកទី២១ ប្រព្រឹត្តទៅចាប់ពីថ្ងៃទី២៤-២៨ ខែកញ្ញា
               ឆ្នាំ២០២៤ ក្រោម មូលបទ “លើកកម្ពស់មិត្តភាពស្មោះត្រង់ រួមគ្នាអភិវឌ្ឍន៍
               និងចែករំលែកផលប្រយោជន៍ប្រកបដោយបរិយាប័ន្ន
@@ -263,35 +299,16 @@ export default function Home() {
 
       <div className="w-full h-full pb-4">
         <div className="container mx-auto px-10">
-          <h2 className="text-center text-2xl font-semibold text-red-700 py-4">
+          <h2 className="text-center text-2xl font-semibold text-[#0C2F8D] pb-4">
             សកម្មភាពនានា នៃពិព័រណ៍ពាណិជ្ជកម្ម
           </h2>
           <Divider className="h-1 bg-orange-500 mb-4" />
 
           <div className="grid grid-cols-1 gap-10 xl:grid-cols-3">
-            {[
-              {
-                imgSrc: '/assets/images/img-1.png',
-                title:
-                  'លោកជំទាវ ចម និម្មល រដ្ឋមន្ត្រីក្រសួងពាណិជ្ជកម្ម អញ្ជើញចូលរួមពិធីសម្ពោធស្តង់ពិព័រណ៍ពាណិជ្ជកម្មរបស់កម្ពុជា នាឱកាសព្រឹត្តិការណ៍ពិព័រណ៍ចិន-កម្ពុជា',
-                desc: '(ណាននីង សាធារណរដ្ឋប្រជាមានិតចិន)៖ នាព្រឹកថ្ងៃអង្គារ ទី២៤ ខែកញ្ញា ឆ្នាំ២០២៤ នៅមជ្ឈមណ្ឌលសន្និបាត និងពិព័រណ៍អន្តរជាតិណាននីង ខេត្តក្វាងស៊ី សាធារណរដ្ឋប្រជាមានិតចិន លោកជំទាវ ចម និម្មល បានអញ្ជើញចូលរួមសម្ពោធស្តង់នៃពិព័រណ៍ពាណិជ្ជកម្មរបស់កម្ពុជាដើម្បីបង្ហាញនូវផលិតផលខ្មែរទៅកាន់ទីផ្សារអន្តរជាតិ។',
-              },
-              {
-                imgSrc: '/assets/images/img-2.png',
-                title:
-                  'លោកជំទាវ សុមេធ សុមនា អនុរដ្ឋលេខាធិការ តំណាងដ៏ខ្ពង់ខ្ពស់ លោកជំទាវ ចម និម្មល រដ្ឋមន្ត្រីក្រសួងពាណិជ្ជកម្ម បានអញ្ជើញចូលរួមកម្មវិធី',
-                desc: '(ណាននីង, ចិន)៖ នាព្រឹកថ្ងៃចន្ទ ទី២៣ ខែកញ្ញា ឆ្នាំ២០២៤ នៅទីក្រុងណាននីង សាធារណរដ្ឋប្រជាមានិតចិន លោកជំទាវ សុមេធ សុមនា អនុរដ្ឋលេខាធិការ តំណាងដ៏ខ្ពង់ខ្ពស់ លោកជំទាវ ចម និម្មល រដ្ឋមន្ត្រីក្រសួងពាណិជ្ជកម្ម បានអញ្ជើញចូលរួមក្នុងកម្មវិធីពិព័រណ៍ដែលមានគោលបំណងលើកស្ទួយផលិតផលកម្ពុជាឱ្យបានស្គាល់នូវទីផ្សារជួរពិភពលោក។',
-              },
-              {
-                imgSrc: '/assets/images/img-3.png',
-                title:
-                  'លោកជំទាវ ចម និម្មល រដ្ឋមន្ត្រីក្រសួងពាណិជ្ជកម្ម និងជាប្រធានគណៈកម្មការរៀបចំ និងចូលរួមពិព័រណ៍ពិភពលោក និងពិព័រណ៍ពាណិជ្ជកម្ម',
-                desc: '(ណាននីង សាធារណរដ្ឋប្រជាមានិតចិន)៖ នាព្រឹកថ្ងៃអង្គារ ទី២៤ ខែកញ្ញា ឆ្នាំ២០២៤ នៅមជ្ឈមណ្ឌលសន្និបាត និងពិព័រណ៍អន្តរជាតិណាននីង ខេត្តក្វាងស៊ី សាធារណរដ្ឋប្រជាមានិតចិន លោកជំទាវ ចម និម្មល បានអញ្ជើញចូលរួមពិព័រណ៍ពាណិជ្ជកម្មកម្ពុជាបានបង្ហាញផលិតផលថ្មីៗដើម្បីលើកស្ទួយកសិកម្ម និងឧស្សាហកម្មនៅកម្ពុជា។',
-              },
-            ].map((item, index) => (
-              <div key={index} className="flex flex-col gap-4 text-[#0C2F8D]">
+            {paginatedData.map((item, index) => (
+              <div key={index} className="flex flex-col gap-4">
                 <Image className="w-full" src={item.imgSrc} height={594} width={594} alt="image" />
-                <h2 className="font-battambang text-xl font-bold line-clamp-2 leading-relaxed text-ellipsis">
+                <h2 className="font-battambang text-xl font-bold line-clamp-2 leading-relaxed text-ellipsis text-[#0C2F8D]">
                   {item.title}
                 </h2>
                 <p className="text-lg leading-relaxed line-clamp-3 text-ellipsis">{item.desc}</p>
@@ -300,7 +317,14 @@ export default function Home() {
           </div>
 
           <div className="flex justify-center py-10">
-            <Pagination total={9} pageSize={3} />
+            <div className="flex justify-center py-10 font-montserrat">
+              <PaginationComponent
+                total={data.length}
+                pageSize={3}
+                onChange={(newOffset: number) => setOffset(newOffset)}
+                showPrevNext={true}
+              />
+            </div>
           </div>
         </div>
       </div>
