@@ -36,7 +36,7 @@ const Header = () => {
   return (
     <nav
       ref={menuRef}
-      className="flex max-sm:px-4 p-10 justify-between items-center border-b bg-main border-gray-200 text-white relative"
+      className="flex p-10 justify-between items-center border-b bg-main border-gray-200 text-white relative"
     >
       <div className="flex container mx-auto justify-between items-center gap-[60px] w-full">
         <Link href="/" className="max-sm:max-w-[200px]">
