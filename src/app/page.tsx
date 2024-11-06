@@ -167,25 +167,26 @@ export default function Home() {
           </table>
         </div>
       </div>
-
-      <div className="container max-xl:px-10 py-20 mx-auto grid grid-cols-4 max-xl:grid-cols-2 gap-10">
-        {Array(4)
-          .fill({
-            id: 1,
-            src: '/assets/logo/main-logo-blue.png',
-            alt: '/assets/logo/main-logo-blue.png',
-          })
-          .map((img) => (
-            <Image
-              key={img.id + 1}
-              src={img.src}
-              width={250}
-              height={100}
-              alt={img.src as string}
-            />
-          ))}
+      <div className="w-full h-full">
+        <div className="container max-xl:px-10 py-20 mx-auto grid grid-cols-4 max-xl:grid-cols-2 gap-10">
+          {Array(4)
+            .fill({
+              id: 1,
+              src: '/assets/logo/main-logo-blue.png',
+              alt: '/assets/logo/main-logo-blue.png',
+            })
+            .map((img) => (
+              <Image
+                className="w-full col-span-1"
+                key={img.id + 1}
+                src={img.src}
+                width={250}
+                height={100}
+                alt={img.src as string}
+              />
+            ))}
+        </div>
       </div>
-
       <div className="bg-main w-full h-full py-4">
         <h2 className="text-2xl text-white font-moul max-xl:mt-4 text-center xl:hidden">
           ក្រុមការងារ
