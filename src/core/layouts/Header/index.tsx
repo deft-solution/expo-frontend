@@ -10,25 +10,29 @@ import { useApi } from '@/core/hooks';
 import { IEventList } from '@/schema/Event';
 
 const Header = () => {
-  const [toggle, setToggle] = useState(false);
-  const [idExist, setIdExist] = useState<IEventList | null>(null);
-  const menuRef = useRef<HTMLDivElement>(null);
   const pathname = usePathname();
   const router = useRouter();
   const searchParams = useSearchParams();
-  const eventId = searchParams.get('event') ?? undefined;
+  const eventId = searchParams.get('event') ?? null;
 
-  const { response } = useApi({
-    service: getEventForGuest,
-    params: eventId,
-    effects: [eventId],
-  });
+  const [toggle, setToggle] = useState(false);
+  const [event, setEvent] = useState<IEventList | null>(null);
+  const menuRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    if (response) {
-      setIdExist(response);
+    if (eventId) {
+      getEventForGuest(eventId)
+        .then((response) => {
+          if (response) {
+            setEvent(response);
+          }
+        })
+        .catch((error) => {
+          console.error(error);
+        });
     }
-  }, [response]);
+  }, [eventId]);
+
   const isActive = (path: string) => {
     return pathname === path;
   };
@@ -62,17 +66,18 @@ const Header = () => {
   const handleBookNow = () => {
     if (eventId) {
       router.push(`/event/${eventId}`);
-      setToggle(!toggle);
     } else {
       console.error('Event ID is missing');
     }
   };
 
+  const getUrl = (url: string) => (event ? `${url}/?event=${event.id}` : '/');
+
   const links = [
-    { href: '/', label: 'Home' },
-    { href: '/about-us', label: 'About' },
-    { href: '/services', label: 'Services' },
-    { href: '/upcoming-packages', label: 'Upcoming Packages' },
+    { href: getUrl('/'), label: 'Home' },
+    { href: getUrl('/about-us'), label: 'About' },
+    { href: getUrl('/services'), label: 'Services' },
+    { href: getUrl('/upcoming-packages'), label: 'Upcoming Packages' },
   ];
 
   return (
@@ -81,7 +86,7 @@ const Header = () => {
       className="flex p-10 justify-between items-center border-b border-gray-200 relative"
     >
       <div className="flex container mx-auto justify-between items-center gap-[60px] w-full">
-        <Link href="/" className="max-sm:max-w-[200px]">
+        <Link href={getUrl('/')} className="max-sm:max-w-[200px]">
           <Image src="/assets/logo/logo.svg" alt="/assets/logo/logo.svg" width={250} height={100} />
         </Link>
         <ul className="flex items-center justify-between gap-[60px] font-semibold max-xl:hidden">
@@ -100,7 +105,7 @@ const Header = () => {
           ))}
         </ul>
 
-        {idExist && (
+        {event && (
           <button
             type="button"
             onClick={handleBookNow}
@@ -116,7 +121,9 @@ const Header = () => {
         {toggle ? <Close className="w-7 h-7 text-main" /> : <Menu className="w-7 h-7 text-main" />}
       </div>
       <div
-        className={`${toggle ? 'flex' : 'hidden'} flex-col border-t bg-white shadow-lg text-black absolute items-start gap-[20px] pb-10 top-[100%] w-full left-0`}
+        className={`${
+          toggle ? 'flex' : 'hidden'
+        } flex-col border-t bg-white shadow-lg text-black absolute items-start gap-[20px] pb-10 top-[100%] w-full left-0`}
       >
         <ul className="flex flex-col font-semibold items-start w-full justify-between">
           {links.map((link, index) => (
@@ -135,7 +142,7 @@ const Header = () => {
           ))}
         </ul>
         <div className="px-10">
-          {idExist && (
+          {event && (
             <button
               type="button"
               onClick={handleBookNow}
