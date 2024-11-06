@@ -111,11 +111,11 @@ const Header = () => {
       </div>
 
       {/*Mobile View*/}
-      <div onClick={() => setToggle(!toggle)} className="xl:hidden ">
+      <div onClick={() => setToggle(!toggle)} className="xl:hidden">
         {toggle ? <Close className="w-7 h-7 text-main" /> : <Menu className="w-7 h-7 text-main" />}
       </div>
       <div
-        className={`${toggle ? 'flex' : 'hidden'} flex-col bg-white shadow-lg text-black absolute items-start gap-[20px] pb-10 top-[100%] w-full left-0`}
+        className={`${toggle ? 'flex' : 'hidden'} flex-col border-t bg-white shadow-lg text-black absolute items-start gap-[20px] pb-10 top-[100%] w-full left-0`}
       >
         <ul className="flex flex-col font-semibold items-start w-full justify-between">
           {links.map((link, index) => (
