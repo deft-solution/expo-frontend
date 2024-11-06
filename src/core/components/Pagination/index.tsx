@@ -38,8 +38,10 @@ const PaginationComponent = (props: PaginationTypeProps) => {
           {showPrevNext && (
             <li
               onClick={() => currentPage > 1 && onPaginationChange(currentPage - 1)}
-              className={`flex items-center justify-center p-5 h-8 leading-tight rounded-sm cursor-pointer ${
-                currentPage > 1 ? 'bg-main text-white' : 'bg-white text-gray-500 cursor-not-allowed'
+              className={`flex items-center justify-center p-5 h-8 leading-tight rounded-sm  ${
+                currentPage > 1
+                  ? 'bg-main text-white cursor-pointer'
+                  : 'bg-white text-gray-500 cursor-not-allowed'
               }`}
             >
               Previous
@@ -61,9 +63,9 @@ const PaginationComponent = (props: PaginationTypeProps) => {
           {showPrevNext && (
             <li
               onClick={() => currentPage < totalPage && onPaginationChange(currentPage + 1)}
-              className={`flex items-center justify-center p-5 h-8 leading-tight rounded-sm cursor-pointer ${
+              className={`flex items-center justify-center p-5 h-8 leading-tight rounded-sm ${
                 currentPage < totalPage
-                  ? 'bg-main text-white'
+                  ? 'bg-main text-white cursor-pointer'
                   : 'bg-white text-gray-500 cursor-not-allowed'
               }`}
             >

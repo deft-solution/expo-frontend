@@ -16,12 +16,12 @@ const Header = () => {
   const pathname = usePathname();
   const router = useRouter();
   const searchParams = useSearchParams();
-  const id = searchParams.get('event') ?? undefined;
+  const eventId = searchParams.get('event') ?? undefined;
 
   const { response } = useApi({
     service: getEventForGuest,
-    params: id,
-    effects: [id],
+    params: eventId,
+    effects: [eventId],
   });
 
   useEffect(() => {
@@ -60,8 +60,9 @@ const Header = () => {
   }, [toggle]);
 
   const handleBookNow = () => {
-    if (id) {
-      router.push(`/event/${id}`);
+    if (eventId) {
+      router.push(`/event/${eventId}`);
+      setToggle(!toggle);
     } else {
       console.error('Event ID is missing');
     }
@@ -103,7 +104,7 @@ const Header = () => {
           <button
             type="button"
             onClick={handleBookNow}
-            className="bg-main text-white py-4 px-8 rounded-lg max-xl:hidden"
+            className="bg-main text-white py-4 px-8 rounded-lg max-xl:hidden transform active:scale-95 transition-transform duration-150"
           >
             Book Now
           </button>
@@ -138,7 +139,7 @@ const Header = () => {
             <button
               type="button"
               onClick={handleBookNow}
-              className="bg-main text-white py-4 px-8 rounded-lg"
+              className="bg-main text-white py-4 px-8 rounded-lg transform active:scale-95 transition-transform duration-150"
             >
               Book Now
             </button>
