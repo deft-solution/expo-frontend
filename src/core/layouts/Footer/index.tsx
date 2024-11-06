@@ -5,13 +5,13 @@ import Link from 'next/link';
 
 const Footer = () => {
   return (
-    <div className="bg-main p-10 font-battambang text-lg max-sm:text-base">
+    <footer className="bg-main p-10 font-battambang text-lg max-sm:text-base">
       <div className="container mx-auto grid grid-cols-3 h-full text-white gap-[60px]">
         <div className="flex flex-col justify-between items-start max-xl:col-span-3 col-span-1">
           <Link href="/" className="max-sm:max-w-[200px]">
             <Image
-              src="/assets/logo/main-logo.svg"
-              alt="/assets/logo/main-logo.svg"
+              src="/assets/logo/logo-white.svg"
+              alt="/assets/logo/logo-white.svg"
               width={250}
               height={100}
             />
@@ -87,7 +87,7 @@ const Footer = () => {
           </div>
         </div>
       </div>
-    </div>
+    </footer>
   );
 };
 

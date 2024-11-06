@@ -78,7 +78,6 @@ const PageCheckOut = () => {
           ></iframe>
         )}
       </Modal>
-      <Header />
       <Form methods={methods} onSubmit={onSubmitForm}>
         <PaymentStep isCompleted={isSuccess} />
         <div className="container mx-auto max-md:px-4">

@@ -2,10 +2,40 @@ import Image from 'next/image';
 import React, { useEffect, useRef, useState } from 'react';
 
 import Link from 'next/link';
+import { Close, Menu } from '@mui/icons-material';
+import { usePathname, useRouter, useSearchParams } from 'next/navigation';
+import Style from './index.module.scss';
+import { getEventForGuest } from '@/service/event';
+import { useApi } from '@/core/hooks';
+import { IEventList } from '@/schema/Event';
 
 const Header = () => {
+  const pathname = usePathname();
+  const router = useRouter();
+  const searchParams = useSearchParams();
+  const eventId = searchParams.get('event') ?? null;
+
   const [toggle, setToggle] = useState(false);
+  const [event, setEvent] = useState<IEventList | null>(null);
   const menuRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    if (eventId) {
+      getEventForGuest(eventId)
+        .then((response) => {
+          if (response) {
+            setEvent(response);
+          }
+        })
+        .catch((error) => {
+          console.error(error);
+        });
+    }
+  }, [eventId]);
+
+  const isActive = (path: string) => {
+    return pathname === path;
+  };
 
   useEffect(() => {
     const handleResize = () => {
@@ -33,67 +63,94 @@ const Header = () => {
     return () => document.removeEventListener('mousedown', handleClickOutside);
   }, [toggle]);
 
+  const handleBookNow = () => {
+    if (eventId) {
+      router.push(`/event/${eventId}`);
+    } else {
+      console.error('Event ID is missing');
+    }
+  };
+
+  const getUrl = (url: string) => (event ? `${url}/?event=${event.id}` : '/');
+
+  const links = [
+    { href: getUrl('/'), label: 'Home' },
+    { href: getUrl('/about-us'), label: 'About' },
+    { href: getUrl('/services'), label: 'Services' },
+    { href: getUrl('/upcoming-packages'), label: 'Upcoming Packages' },
+  ];
+
   return (
     <nav
       ref={menuRef}
-      className="flex p-10 justify-between items-center border-b bg-main border-gray-200 text-white relative"
+      className="flex p-10 justify-between items-center border-b border-gray-200 relative"
     >
       <div className="flex container mx-auto justify-between items-center gap-[60px] w-full">
-        <Link href="/" className="max-sm:max-w-[200px]">
-          <Image
-            src="/assets/logo/main-logo.svg"
-            alt="/assets/logo/main-logo.svg"
-            width={250}
-            height={100}
-          />
+        <Link href={getUrl('/')} className="max-sm:max-w-[200px]">
+          <Image src="/assets/logo/logo.svg" alt="/assets/logo/logo.svg" width={250} height={100} />
         </Link>
-        <ul className="flex items-center justify-between gap-[60px] max-xl:hidden">
-          <Link href="/">Home</Link>
-          <Link href="/">About</Link>
-          <Link href="/">Services</Link>
-          <Link href="/">Upcoming Packages</Link>
+        <ul className="flex items-center justify-between gap-[60px] font-semibold max-xl:hidden">
+          {links.map((link, index) => (
+            <Link
+              key={index}
+              className={
+                isActive(link.href)
+                  ? Style['active-link']
+                  : 'hover:text-main animation duration-300'
+              }
+              href={link.href}
+            >
+              {link.label}
+            </Link>
+          ))}
         </ul>
-        <button type="button" className="bg-icon py-4 px-8 rounded-lg max-xl:hidden">
-          Book Now
-        </button>
+
+        {event && (
+          <button
+            type="button"
+            onClick={handleBookNow}
+            className="bg-main text-white py-4 px-8 rounded-lg max-xl:hidden transform active:scale-95 transition-transform duration-150"
+          >
+            Book Now
+          </button>
+        )}
       </div>
 
       {/*Mobile View*/}
-      <div onClick={() => setToggle(!toggle)} className="xl:hidden ">
-        {toggle ? (
-          <Image
-            src="/assets/icons/cross.svg"
-            alt="/assets/logo/cross.svg"
-            width={25}
-            height={25}
-          />
-        ) : (
-          <Image src="/assets/icons/menu.svg" alt="/assets/logo/menu.svg" width={25} height={25} />
-        )}
+      <div onClick={() => setToggle(!toggle)} className="xl:hidden">
+        {toggle ? <Close className="w-7 h-7 text-main" /> : <Menu className="w-7 h-7 text-main" />}
       </div>
       <div
-        className={`${toggle ? 'flex' : 'hidden'} flex-col bg-white shadow-lg text-black absolute items-start gap-[20px] pb-10 top-[100%] w-full left-0`}
+        className={`${
+          toggle ? 'flex' : 'hidden'
+        } flex-col border-t bg-white shadow-lg text-black absolute items-start gap-[20px] pb-10 top-[100%] w-full left-0`}
       >
-        <ul className="flex flex-col items-start w-full justify-between">
-          {[
-            { href: '/', label: 'Home' },
-            { href: '/', label: 'About' },
-            { href: '/', label: 'Services' },
-            { href: '/', label: 'Upcoming Packages' },
-          ].map((link, index) => (
+        <ul className="flex flex-col font-semibold items-start w-full justify-between">
+          {links.map((link, index) => (
             <Link
               key={index}
               href={link.href}
-              className="animation duration-300 hover:border-l-icon hover:border-l-4 px-10 py-4 w-full"
+              onClick={() => setToggle(!toggle)}
+              className={`${
+                isActive(link.href)
+                  ? 'text-main '
+                  : 'animation duration-300 hover:border-l-black hover:border-l-4'
+              } px-10 py-4 w-full `}
             >
               {link.label}
             </Link>
           ))}
         </ul>
         <div className="px-10">
-          <button type="button" className="bg-icon text-white py-4 px-8 rounded-lg">
-            Book Now
-          </button>
+          {event && (
+            <button
+              type="button"
+              onClick={handleBookNow}
+              className="bg-main text-white py-4 px-8 rounded-lg transform active:scale-95 transition-transform duration-150"
+            >
+              Book Now
+            </button>
+          )}
         </div>
       </div>
     </nav>
