@@ -88,7 +88,6 @@ const Header = () => {
     { href: getUrl('/services'), label: 'Services' },
     { href: getUrl('/upcoming-packages'), label: 'Upcoming Packages' },
   ];
-  console.log(pathname);
   return (
     <nav ref={menuRef} className="flex p-10 justify-between items-center border-b  relative">
       <div className="flex container mx-auto justify-between items-center gap-[60px] w-full">
