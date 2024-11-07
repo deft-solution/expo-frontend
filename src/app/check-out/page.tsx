@@ -66,8 +66,8 @@ const PageCheckOut = () => {
   const { setPaymentId, isSuccess, setPolling } = usePaymentPolling({ onSuccess: cancelPayment });
 
   return (
-    <div>
-      <Modal contentClassName="md:!max-w-md lg:!max-w-[40%]" visible={showAuthForm}>
+    <div className="max-md:mb-10">
+      <Modal contentClassName="md:!max-w-md lg:!max-w-[40%]" visible={false}>
         <AuthenctionForm />
       </Modal>
       <Modal contentClassName="max-w-[800px] !h-[800px]" visible={submitModal}>

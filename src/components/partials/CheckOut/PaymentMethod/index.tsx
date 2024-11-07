@@ -6,6 +6,7 @@ import { useFormContext } from 'react-hook-form';
 import { getPaymentOptionsForCheckOut } from '@/actions/payment';
 import { PaymentOptionFormat } from '@/models/Payment';
 import { useApi } from '@Core';
+import Link from 'next/link';
 
 const SelectPaymentMethod = () => {
   const providerName = 'provider';
@@ -46,10 +47,10 @@ const SelectPaymentMethod = () => {
   const error = providerName.split('.').reduce((acc, part) => (acc as any)?.[part], errors);
 
   return (
-    <div className="flex flex-col gap-4">
+    <div className="flex flex-col gap-4 my-4">
       <div>
         <label htmlFor="">Payment Method</label>
-        <div className="grid grid-cols-2 gap-4 mt-2">
+        <div className="grid grid-cols-2 gap-4 mt-4">
           {payments.map((payment, idx) => {
             const logo = payment.logo;
             return (
@@ -57,7 +58,7 @@ const SelectPaymentMethod = () => {
                 key={payment._id}
                 onClick={() => onSelectPayment(idx)}
                 className={classNames(
-                  'flex items-center border gap-3 border-gray-200 p-4 rounded-md cursor-pointer',
+                  'flex items-center border gap-6 justify-center border-gray-200 p-6 rounded-2xl cursor-pointer',
                   { 'bg-[#d9d9d9]': activeIdx === idx }
                 )}
               >
@@ -71,9 +72,28 @@ const SelectPaymentMethod = () => {
         </div>
         {error && <p className="text-red-500 text-xs mt-2">{(error as any).message?.toString()}</p>}
       </div>
-      <button type="submit" className="w-full rounded-md h-[48px] bg-[#33A16E] text-white">
-        Confirm to Pay
+      <button
+        type="submit"
+        className={classNames('w-full h-[48px] text-white rounded-md bg-[#33A16E]', {
+          'bg-[#d9d9d9]': activeIdx === -1,
+        })}
+      >
+        {activeIdx === -1 ? 'Please Select Payment Method' : 'Confirm to Pay'}
       </button>
+      <div className="flex justify-between items-center text-sm">
+        <div>
+          <Link href="/">Term | Privacy</Link>
+        </div>
+        <div className="flex items-center justify-between gap-2">
+          <span>Powered by:</span>
+          <Image
+            src="/assets/logo/wonderpass.svg"
+            alt="/assets/logo/wonderpass.svg"
+            width={100}
+            height={60}
+          />
+        </div>
+      </div>
     </div>
   );
 };
