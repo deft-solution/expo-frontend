@@ -74,7 +74,7 @@ export default function Home() {
               December 10, 2024
             </div>
             <div className=" grid gap-3">
-              <h1 className="text-[22px] text-ellipsis line-clamp-2 text-[#0C2F8D] font-bold">
+              <h1 className="text-[22px] text-ellipsis line-clamp-2 text-header font-bold">
                 សេចក្តីជូនដំណឹងស្ដីពី៖ ការរៀបចំពិព័រណ៍នាំចូល និងនាំចេញប្រទេសចិន
               </h1>
               <p className="line-clamp-3 max-xl:line-clamp-2 text-ellipsis leading-loose text-xl max-sm:text-base">
@@ -120,7 +120,7 @@ export default function Home() {
           },
         ].map((section, index) => (
           <div key={index} className="flex gap-4 col-span-1 flex-col max-xl:col-span-3">
-            <h2 className="font-moul text-2xl max-sm:text-xl text-[#0C2F8D] ">{section.title}</h2>
+            <h2 className="font-moul text-2xl max-sm:text-xl text-header ">{section.title}</h2>
 
             <p className="line-clamp-3 max-xl:line-clamp-2 text-ellipsis leading-loose text-xl max-sm:text-base">
               {section.content}
@@ -148,7 +148,7 @@ export default function Home() {
 
       <div className=" w-full h-full pt-10">
         <div className="container xl:max-w-[80%] max-xl:px-10 mx-auto gap-10">
-          <h2 className="font-moul text-2xl max-sm:text-xl text-[#0C2F8D] pb-4">កាលវិភាគ</h2>
+          <h2 className="font-moul text-2xl max-sm:text-xl text-header pb-4">កាលវិភាគ</h2>
           <table className="w-full font-battambang text-xl max-xl:text-base ">
             <thead className="max-xl:flex items-center justify-start">
               <tr className="max-xl:flex justify-between items-center w-full">
@@ -156,7 +156,7 @@ export default function Home() {
                   <ArrowLeftRounded className="w-10 h-10 max-xl:block " />
                 </th>
                 <th className="w-full grid grid-cols-5 justify-start py-4">
-                  <span className="col-span-1 max-xl:col-span-5 max-xl:text-center text-start text-lg text-[#0C2F8D]">
+                  <span className="col-span-1 max-xl:col-span-5 max-xl:text-center text-start text-lg text-header">
                     ថ្ងៃទី១៣ ខែធ្នូ ឆ្នាំ២០២៤
                   </span>
                   <span className="col-span-1 max-xl:hidden">ថ្ងៃទី១៤ ខែធ្នូ ឆ្នាំ២០២៤</span>
@@ -194,7 +194,7 @@ export default function Home() {
                     <span className="col-span-1">{item.time}</span>
                     <span className="col-span-1 max-xl:block xl:hidden">{item.location}</span>
                   </td>
-                  <td className="col-span-1 max-xl:font-semibold max-xl:text-lg  font-semibold text-[#0C2F8D]">
+                  <td className="col-span-1 max-xl:font-semibold max-xl:text-lg  font-semibold text-header">
                     {item.event}
                   </td>
                   <td className="col-span-1 xl:blocks max-xl:hidden">{item.location}</td>
@@ -266,9 +266,7 @@ export default function Home() {
       <div className="w-full h-full py-4">
         <div className="container px-10 py-10 mx-auto grid grid-cols-2 gap-10 justify-between items-center">
           <div className="col-span-1 max-xl:col-span-2">
-            <h2 className="text-[#0C2F8D] text-2xl font-semibold mb-4">
-              អំពីការពិព័រណ៍ពាណិជ្ជកម្ម
-            </h2>
+            <h2 className="text-header text-2xl font-semibold mb-4">អំពីការពិព័រណ៍ពាណិជ្ជកម្ម</h2>
             <p className="line-clamp-6 max-xl:line-clamp-5 text-ellipsis leading-loose text-xl max-sm:text-base">
               សូមជម្រាបជូនផងដែរថា ពិព័រណ៍ចិន-អាស៊ាន លើកទី២១ ប្រព្រឹត្តទៅចាប់ពីថ្ងៃទី២៤-២៨ ខែកញ្ញា
               ឆ្នាំ២០២៤ ក្រោម មូលបទ “លើកកម្ពស់មិត្តភាពស្មោះត្រង់ រួមគ្នាអភិវឌ្ឍន៍
@@ -299,7 +297,7 @@ export default function Home() {
 
       <div className="w-full h-full pb-4">
         <div className="container mx-auto px-10">
-          <h2 className="text-center text-2xl font-semibold text-[#0C2F8D] pb-4">
+          <h2 className="text-center text-2xl font-semibold text-header pb-4">
             សកម្មភាពនានា នៃពិព័រណ៍ពាណិជ្ជកម្ម
           </h2>
           <Divider className="h-1 bg-orange-500 mb-4" />
@@ -308,7 +306,7 @@ export default function Home() {
             {paginatedData.map((item, index) => (
               <div key={index} className="flex flex-col gap-4">
                 <Image className="w-full" src={item.imgSrc} height={594} width={594} alt="image" />
-                <h2 className="font-battambang text-xl font-bold line-clamp-2 leading-relaxed text-ellipsis text-[#0C2F8D]">
+                <h2 className="font-battambang text-xl font-bold line-clamp-2 leading-relaxed text-ellipsis text-header">
                   {item.title}
                 </h2>
                 <p className="text-lg leading-relaxed line-clamp-3 text-ellipsis">{item.desc}</p>
