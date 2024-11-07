@@ -6,7 +6,6 @@ import { Close, Menu } from '@mui/icons-material';
 import { usePathname, useRouter, useSearchParams } from 'next/navigation';
 import Style from './index.module.scss';
 import { getEventForGuest } from '@/service/event';
-import { useApi } from '@/core/hooks';
 import { IEventList } from '@/schema/Event';
 
 const Header = () => {
@@ -32,10 +31,6 @@ const Header = () => {
         });
     }
   }, [eventId]);
-
-  const isActive = (path: string) => {
-    return pathname === path;
-  };
 
   useEffect(() => {
     const handleResize = () => {
@@ -69,9 +64,23 @@ const Header = () => {
     } else {
       console.error('Event ID is missing');
     }
+    setToggle(false);
   };
 
-  const getUrl = (url: string) => (event ? `${url}/?event=${event.id}` : '/');
+  const getUrl = (url: string) => (event ? `${url}?event=${event.id}` : url);
+
+  const isActive = (path: string) => {
+    const currentPath = pathname.split('?')[0];
+    const targetPath = path.split('?')[0];
+
+    if (currentPath === targetPath) {
+      const currentParams = searchParams;
+      const targetParams = new URLSearchParams(path.split('?')[1] || '');
+      return currentParams.get('event') === targetParams.get('event');
+    }
+
+    return false;
+  };
 
   const links = [
     { href: getUrl('/'), label: 'Home' },
@@ -79,12 +88,9 @@ const Header = () => {
     { href: getUrl('/services'), label: 'Services' },
     { href: getUrl('/upcoming-packages'), label: 'Upcoming Packages' },
   ];
-
+  console.log(pathname);
   return (
-    <nav
-      ref={menuRef}
-      className="flex p-10 justify-between items-center border-b border-gray-200 relative"
-    >
+    <nav ref={menuRef} className="flex p-10 justify-between items-center border-b  relative">
       <div className="flex container mx-auto justify-between items-center gap-[60px] w-full">
         <Link href={getUrl('/')} className="max-sm:max-w-[200px]">
           <Image src="/assets/logo/logo.svg" alt="/assets/logo/logo.svg" width={250} height={100} />
@@ -130,10 +136,10 @@ const Header = () => {
             <Link
               key={index}
               href={link.href}
-              onClick={() => setToggle(!toggle)}
+              onClick={() => setToggle(false)}
               className={`${
                 isActive(link.href)
-                  ? 'text-main '
+                  ? 'text-main'
                   : 'animation duration-300 hover:border-l-black hover:border-l-4'
               } px-10 py-4 w-full `}
             >
