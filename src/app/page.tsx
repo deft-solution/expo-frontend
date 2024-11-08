@@ -233,43 +233,6 @@ export default function Home() {
               />
             ))}
         </section>
-
-        {/* <section className="container bg-main max-xl:max-w-[100%] max-w-[80%] max-xl:px-10 w-full py-4 mx-auto grid grid-cols-5 xl:grid-rows-2 relative">
-          {Array(8)
-            .fill(8)
-            .map((_, index) => ({
-              id: index + 1,
-              src: `/assets/profiles/image-${index + 1}.png`,
-              alt: `profile-${index + 1}`,
-            }))
-            .map((img) => (
-              <Image
-                key={img.id}
-                src={img.src}
-                width={224}
-                height={224}
-                alt={img.src as string}
-                className="w-full"
-              />
-            ))}
-          <div></div>
-          <div className="relative">
-            <Image
-              className="absolute inset-1/2 -translate-x-1/2 -translate-y-1/2 xl:w-1/2 max-w-[60%]"
-              src="/assets/profiles/frame.png"
-              width={100}
-              height={100}
-              alt="/assets/profiles/frame.pn"
-            />
-            <Image
-              className="p-2"
-              src="/assets/profiles/elipse.png"
-              width={300}
-              height={300}
-              alt="/assets/profiles/elipse.png"
-            />
-          </div>
-        </section> */}
         <section className=" py-4 relative">
           <Image
             height={597}
