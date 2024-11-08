@@ -15,11 +15,13 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body>
+      <body className="flex min-h-screen flex-col">
         <AuthProvider>
           <AuthLiveProvider>
             <Header />
-            <BoothProvider>{children}</BoothProvider>
+            <BoothProvider>
+              <div className="flex-grow">{children}</div>
+            </BoothProvider>
             <Footer />
           </AuthLiveProvider>
         </AuthProvider>

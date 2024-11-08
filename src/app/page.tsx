@@ -1,9 +1,10 @@
 'use client';
 import * as React from 'react';
-import { ArrowLeftRounded, ArrowRightRounded } from '@mui/icons-material';
+import { ArrowCircleRightOutlined, CallMade } from '@mui/icons-material';
 import { Divider } from '@mui/material';
 import Image from 'next/image';
 import PaginationComponent from '@/core/components/Pagination';
+import { Fade } from 'react-awesome-reveal';
 
 export default function Home() {
   const [offset, setOffset] = React.useState(0);
@@ -49,122 +50,132 @@ export default function Home() {
   const paginatedData = data.slice(offset, offset + 3);
 
   return (
-    <div className="flex flex-col justify-between h-100% font-battambang">
-      <Image
-        height={594}
-        width={594}
-        className="w-full"
-        src="/assets/images/ph-hall.png"
-        alt="/assets/images/ph-hall.png"
-      />
-
-      <div className="container xl:max-w-[80%] max-xl:px-10 py-4  mx-auto">
-        <div className="grid grid-cols-2 gap-[40px] mt-[40px]">
-          <div className="max-xl:col-span-2">
-            <Image
-              height={40}
-              width={600}
-              className="w-full object-cover h-full"
-              src="/assets/images/image-1.png"
-              alt="/assets/images/image-1.png"
-            />
-          </div>
-          <div className="flex flex-col max-xl:col-span-2 gap-4">
-            <div className="text-[#E9282B] font-medium text-[16px] font-montserrat">
-              December 10, 2024
-            </div>
-            <div className=" grid gap-3">
-              <h1 className="text-[22px] text-ellipsis line-clamp-2 text-header font-bold">
-                សេចក្តីជូនដំណឹងស្ដីពី៖ ការរៀបចំពិព័រណ៍នាំចូល និងនាំចេញប្រទេសចិន
-              </h1>
-              <p className="line-clamp-3 max-xl:line-clamp-2 text-ellipsis leading-loose text-xl max-sm:text-base">
-                ពិព័រណ៍ពាណិជ្ជកម្មនេះ មានការចូលរួមគាំទ្រពីបណ្ដាប្រទេសនៅក្នុងតំបន់ដូចជា៖ ប្រទេសចិន
-                ជប៉ុន ថៃឡង់ដ៍ វៀតណាម ឥណ្ឌូនេស៊ី ម៉ាឡេស៊ី ឡាវ មីយ៉ាន់ម៉ា មន្ទីរពាណិជ្ជកម្មទាំង២៥
-                រាជធានី-ខេត្ត អង្គការ សមាគម ពិព័រណ៍ពាណិជ្ជកម្មនេះ
-                មានការចូលរួមគាំទ្រពីបណ្ដាប្រទេសនៅក្នុងតំបន់ដូចជា៖ ប្រទេសចិន ជប៉ុន ថៃឡង់ដ៍ វៀតណាម
-                ឥណ្ឌូនេស៊ី ម៉ាឡេស៊ី ឡាវ មីយ៉ាន់ម៉ា មន្ទីរពាណិជ្ជកម្មទាំង២៥ រាជធានី-ខេត្ត អង្គការ
-                សមាគម ព្រមទាំងក្រុមហ៊ុនក្នុងស្រុក និងក្រៅប្រទេស ដែលមានស្ដង់សរុបជិត ៤០០ស្ដង់
-                ដើម្បីតាំងបង្ហាញផលិតផលសក្តានុពលកម្ពុជា និងទំនិញនាំចូលដូចជា សម្ភារៈការិយាល័យ ក្រណាត់
-                និងសម្លៀកបំពាក់ សម្ភារៈប្រើប្រាស់ទូទៅ ផលិតផលសម្រាប់តុបតែងក្នុងគេហដ្ឋាន គ្រឿងអលង្ការ
-                និងត្បូងថ្មមាន
-              </p>
-            </div>
-
-            <Image
-              height={40}
-              width={100}
-              className="w-full object-cover h-full"
-              src="/assets/images/image-2.png"
-              alt="/assets/images/image-2.png"
-            />
-          </div>
-        </div>
-      </div>
-
-      <div className="container xl:max-w-[80%] max-xl:px-10 p-10 mx-auto grid grid-cols-3 gap-10">
-        {[
-          {
-            title: 'ព័ត៌មានទូទៅ',
-            content:
-              'រដ្ឋលេខាធិការក្រសួងពាណិជ្ជកម្មនិងជាប្រធានក្រុមការងារជំរុញការនាំចេញ និង លោកជំទាវ សុមេធ ការរួមចំណែកយ៉ាងសកម្មជាមួយរាជរដ្ឋាភិបាលកម្ពុជា សំដៅចូលរួមកសាង និងអភិវឌ្ឍសង្គម សេដ្ឋកិច្ចកម្ពុជា ស្របតាមគោលនយោបាយ ជាយុទ្ធសាស្ដ្រផ្សេងៗ ទាំងក្នុងក្រប ខណ្ឌជាតិ និងអន្តរជាតិ ជាពិសេសសកម្មភាពសង្គមកិច្ច មនុស្សធម៌ និងសប្បុរសធម៌ សុមនា អនុរដ្ឋ សមាគមឧកញ៉ាកម្ពុជាក្នុងបញ្ជីសមាគមនិងអង្គការមិនមែនរដ្ឋាភិបាល។ សមាគមឧកញ៉ាកម្ពុជា គឺជាសមាគមអព្យាក្រឹត មិនស្វែងរកប្រាក់កម្រៃ និងធ្វើសកម្មភាពដោយមិនមានការរើសអើង ការប្រកាន់ពូជសាសន៍ ពណ៌សម្បុរ ភេទ ឬសាសនា ណាមួយឡើយ។ ស.ឧ.ក. មានគោលបំណងលើកកម្ពស់គុណតម្លៃ នៃគោរមងារឧកញ៉ា និងធានាបាននូវសេចក្តីថ្លៃថ្នូរ សីលធម៌ និងសាមគ្គីភាពរឹងមាំរបស់ឧកញ៉ា ដើម្បីជាមូលដ្ឋានក្នុង ដើម្បីធានាបាននូវភាពសុខសាន្ត សុខដុមនីយកម្ម និងការរីកចម្រើនរបស់ប្រជាជនកម្ពុជា។',
-          },
-          {
-            title: 'សេចក្តីប្រកាសព័ត៌មាន',
-            content:
-              'អនុរដ្ឋលេខាធិការក្រសួងពាណិជ្ជកម្ម បានអញ្ជើញចូលរួមពិធីរាត្រីថ្លែងអំណរគុណធុរកិច្ច ឥណ្ឌូនេស៉ី-កម្ពុជា ឯកអគ្គរដ្ឋទូតឥណ្ឌូនេស៊ីប្រចាំកម្ពុជា ឯកឧត្តម លោកជំទាវតំណាងអង្គភាពពាក់ព័ន្ធ ព្រមទាំងធុរជនកម្ពុជា-ឥណ្ឌូនេស៉ី ជាច្រើនរូប។',
-          },
-          {
-            title: 'កិច្ចប្រជុំ',
-            content:
-              'ឯកឧត្តម ឱក ប៊ុង រដ្ឋលេខាធិការក្រសួងពាណិជ្ជកម្ម ទទួលជួបពិភាក្សាជាមួយនឹងក្រុមការងារកម្មវិធីត្រួតពិនិត្យការនាំចេញ និងសន្តិសុខព្រំដែនពាក់ព័ន្ធណាងអង្គភាពពាក់ព័ន្ធ ព្រមទាំងធុរជនកម្ពុជា-ឥណ្ឌូនេស៉ី ជាច្រើនរូប។',
-          },
-        ].map((section, index) => (
-          <div key={index} className="flex gap-4 col-span-1 flex-col max-xl:col-span-3">
-            <h2 className="font-moul text-2xl max-sm:text-xl text-header ">{section.title}</h2>
-
-            <p className="line-clamp-3 max-xl:line-clamp-2 text-ellipsis leading-loose text-xl max-sm:text-base">
-              {section.content}
-            </p>
-          </div>
-        ))}
-      </div>
-
-      <div className="relative">
+    <main className="flex flex-col gap-4 justify-between h-100% font-battambang">
+      <section className="relative">
         <Image
-          height={597}
+          height={500}
+          width={500}
+          className="object-cover absolute bottom-0 left-10"
+          src="/assets/images/title-white.png"
+          alt="/assets/images/title-white.png"
+        />
+        <Image
+          height={594}
           width={594}
           className="w-full"
-          src="/assets/images/image-3.png"
-          alt="/assets/images/image-3.png"
+          src="/assets/images/ph-grandhall.png"
+          alt="/assets/images/ph-grandhall.png"
         />
-        <Image
-          height={100}
-          width={100}
-          className="absolute -translate-x-1/2 -translate-y-1/2 inset-1/2"
-          src="/assets/images/youtube.png"
-          alt="/assets/images/youtube.png"
-        />
-      </div>
+      </section>
+      <Fade>
+        <section className="container xl:max-w-[70%] max-xl:px-10 py-4 mx-auto mt-[40px]">
+          <div className="grid grid-cols-2 gap-4 xl:gap-[40px]">
+            <div className="max-xl:col-span-2">
+              <Image
+                height={40}
+                width={600}
+                className="w-full object-cover h-full"
+                src="/assets/images/image-1.png"
+                alt="/assets/images/image-1.png"
+              />
+            </div>
+            <div className="flex flex-col max-xl:col-span-2 gap-4">
+              <div className="text-[#E9282B] font-medium text-[16px] font-montserrat">
+                December 10, 2024
+              </div>
+              <div className="grid gap-4">
+                <h2 className="text-[22px] text-ellipsis line-clamp-2 text-header font-bold">
+                  សេចក្តីជូនដំណឹងស្ដីពី៖ ការរៀបចំពិព័រណ៍នាំចូល និងនាំចេញប្រទេសចិន
+                </h2>
+                <p className="line-clamp-3 max-xl:line-clamp-2 text-ellipsis leading-loose text-xl max-sm:text-base">
+                  ពិព័រណ៍ពាណិជ្ជកម្មនេះ មានការចូលរួមគាំទ្រពីបណ្ដាប្រទេសនៅក្នុងតំបន់ដូចជា៖ ប្រទេសចិន
+                  ជប៉ុន ថៃឡង់ដ៍ វៀតណាម ឥណ្ឌូនេស៊ី ម៉ាឡេស៊ី ឡាវ មីយ៉ាន់ម៉ា មន្ទីរពាណិជ្ជកម្មទាំង២៥
+                  រាជធានី-ខេត្ត អង្គការ សមាគម ពិព័រណ៍ពាណិជ្ជកម្មនេះ
+                  មានការចូលរួមគាំទ្រពីបណ្ដាប្រទេសនៅក្នុងតំបន់ដូចជា៖ ប្រទេសចិន ជប៉ុន ថៃឡង់ដ៍ វៀតណាម
+                  ឥណ្ឌូនេស៊ី ម៉ាឡេស៊ី ឡាវ មីយ៉ាន់ម៉ា មន្ទីរពាណិជ្ជកម្មទាំង២៥ រាជធានី-ខេត្ត អង្គការ
+                  សមាគម ព្រមទាំងក្រុមហ៊ុនក្នុងស្រុក និងក្រៅប្រទេស ដែលមានស្ដង់សរុបជិត ៤០០ស្ដង់
+                  ដើម្បីតាំងបង្ហាញផលិតផលសក្តានុពលកម្ពុជា និងទំនិញនាំចូលដូចជា សម្ភារៈការិយាល័យ
+                  ក្រណាត់ និងសម្លៀកបំពាក់ សម្ភារៈប្រើប្រាស់ទូទៅ ផលិតផលសម្រាប់តុបតែងក្នុងគេហដ្ឋាន
+                  គ្រឿងអលង្ការ និងត្បូងថ្មមាន
+                </p>
+              </div>
 
-      <div className=" w-full h-full pt-10">
-        <div className="container xl:max-w-[80%] max-xl:px-10 mx-auto gap-10">
-          <h2 className="font-moul text-2xl max-sm:text-xl text-header pb-4">កាលវិភាគ</h2>
-          <table className="w-full font-battambang text-xl max-xl:text-base ">
+              <Image
+                height={40}
+                width={100}
+                className="w-full object-cover h-full"
+                src="/assets/images/image-2.png"
+                alt="/assets/images/image-2.png"
+              />
+            </div>
+          </div>
+        </section>
+
+        <section className="container xl:max-w-[80%] max-xl:px-10 py-4 mx-auto grid grid-cols-3 gap-10">
+          {[
+            {
+              title: 'ព័ត៌មានទូទៅ',
+              content:
+                'រដ្ឋលេខាធិការក្រសួងពាណិជ្ជកម្មនិងជាប្រធានក្រុមការងារជំរុញការនាំចេញ និង លោកជំទាវ សុមេធ ការរួមចំណែកយ៉ាងសកម្មជាមួយរាជរដ្ឋាភិបាលកម្ពុជា សំដៅចូលរួមកសាង និងអភិវឌ្ឍសង្គម សេដ្ឋកិច្ចកម្ពុជា ស្របតាមគោលនយោបាយ ជាយុទ្ធសាស្ដ្រផ្សេងៗ ទាំងក្នុងក្រប ខណ្ឌជាតិ និងអន្តរជាតិ ជាពិសេសសកម្មភាពសង្គមកិច្ច មនុស្សធម៌ និងសប្បុរសធម៌ សុមនា អនុរដ្ឋ សមាគមឧកញ៉ាកម្ពុជាក្នុងបញ្ជីសមាគមនិងអង្គការមិនមែនរដ្ឋាភិបាល។ សមាគមឧកញ៉ាកម្ពុជា គឺជាសមាគមអព្យាក្រឹត មិនស្វែងរកប្រាក់កម្រៃ និងធ្វើសកម្មភាពដោយមិនមានការរើសអើង ការប្រកាន់ពូជសាសន៍ ពណ៌សម្បុរ ភេទ ឬសាសនា ណាមួយឡើយ។ ស.ឧ.ក. មានគោលបំណងលើកកម្ពស់គុណតម្លៃ នៃគោរមងារឧកញ៉ា និងធានាបាននូវសេចក្តីថ្លៃថ្នូរ សីលធម៌ និងសាមគ្គីភាពរឹងមាំរបស់ឧកញ៉ា ដើម្បីជាមូលដ្ឋានក្នុង ដើម្បីធានាបាននូវភាពសុខសាន្ត សុខដុមនីយកម្ម និងការរីកចម្រើនរបស់ប្រជាជនកម្ពុជា។',
+            },
+            {
+              title: 'សេចក្តីប្រកាសព័ត៌មាន',
+              content:
+                'អនុរដ្ឋលេខាធិការក្រសួងពាណិជ្ជកម្ម បានអញ្ជើញចូលរួមពិធីរាត្រីថ្លែងអំណរគុណធុរកិច្ច ឥណ្ឌូនេស៉ី-កម្ពុជា ឯកអគ្គរដ្ឋទូតឥណ្ឌូនេស៊ីប្រចាំកម្ពុជា ឯកឧត្តម លោកជំទាវតំណាងអង្គភាពពាក់ព័ន្ធ ព្រមទាំងធុរជនកម្ពុជា-ឥណ្ឌូនេស៉ី ជាច្រើនរូប។',
+            },
+            {
+              title: 'កិច្ចប្រជុំ',
+              content:
+                'ឯកឧត្តម ឱក ប៊ុង រដ្ឋលេខាធិការក្រសួងពាណិជ្ជកម្ម ទទួលជួបពិភាក្សាជាមួយនឹងក្រុមការងារកម្មវិធីត្រួតពិនិត្យការនាំចេញ និងសន្តិសុខព្រំដែនពាក់ព័ន្ធណាងអង្គភាពពាក់ព័ន្ធ ព្រមទាំងធុរជនកម្ពុជា-ឥណ្ឌូនេស៉ី ជាច្រើនរូប។',
+            },
+          ].map((section, index) => (
+            <div key={index} className="flex gap-4 col-span-1 flex-col max-xl:col-span-3">
+              <div className="flex items-center justify-between border-b border-b-black pb-4">
+                <h2 className="font-moul text-2xl text-header">{section.title}</h2>
+                <CallMade className="w-7 h-7" />
+              </div>
+              <p className="line-clamp-3 max-xl:line-clamp-2 text-ellipsis leading-loose text-xl max-sm:text-base">
+                {section.content}
+              </p>
+            </div>
+          ))}
+        </section>
+
+        <section className=" py-4 relative">
+          <Image
+            height={597}
+            width={594}
+            className="w-full"
+            src="/assets/images/image-3.png"
+            alt="/assets/images/image-3.png"
+          />
+          <Image
+            height={100}
+            width={100}
+            className="absolute -translate-x-1/2 -translate-y-1/2 inset-1/2"
+            src="/assets/images/youtube.png"
+            alt="/assets/images/youtube.png"
+          />
+        </section>
+
+        <section className="container xl:max-w-[80%] max-xl:px-10 py-4 mx-auto gap-10">
+          <div className="flex items-center justify-between">
+            <h2 className="font-moul text-2xl text-header">កាលវិភាគ</h2>
+            <div className="flex items-center font-bold gap-4 max-sm:self-end">
+              <h2 className="">មើលបន្ថែម</h2>
+              <ArrowCircleRightOutlined className="w-7 h-7" />
+            </div>
+          </div>
+          <table className="w-full font-battambang text-xl mt-4 max-xl:text-base ">
             <thead className="max-xl:flex items-center justify-start">
               <tr className="max-xl:flex justify-between items-center w-full">
-                <th className="xl:hidden">
-                  <ArrowLeftRounded className="w-10 h-10 max-xl:block " />
-                </th>
-                <th className="w-full grid grid-cols-5 justify-start py-4">
-                  <span className="col-span-1 max-xl:col-span-5 max-xl:text-center text-start text-lg text-header">
+                <th className="w-full font-normal flex gap-x-20 justify-start items-center max-xl:justify-center text-xl py-4">
+                  <span className="bg-header text-white p-4 max-xl:w-full h-full">
                     ថ្ងៃទី១៣ ខែធ្នូ ឆ្នាំ២០២៤
                   </span>
-                  <span className="col-span-1 max-xl:hidden">ថ្ងៃទី១៤ ខែធ្នូ ឆ្នាំ២០២៤</span>
-                  <span className="col-span-1 max-xl:hidden">ថ្ងៃទី១៥ ខែធ្នូ ឆ្នាំ២០២៤</span>
-                  <span className="col-span-1 max-xl:hidden">ថ្ងៃទី១៦ ខែធ្នូ ឆ្នាំ២០២៤</span>
-                </th>
-                <th className="xl:hidden">
-                  <ArrowRightRounded className="w-10 h-10 max-xl:block " />
+                  <span className="max-xl:hidden">ថ្ងៃទី១៤ ខែធ្នូ ឆ្នាំ២០២៤</span>
+                  <span className="max-xl:hidden">ថ្ងៃទី១៥ ខែធ្នូ ឆ្នាំ២០២៤</span>
+                  <span className="max-xl:hidden">ថ្ងៃទី១៦ ខែធ្នូ ឆ្នាំ២០២៤</span>
                 </th>
               </tr>
             </thead>
@@ -188,24 +199,22 @@ export default function Home() {
               ].map((item, index) => (
                 <tr
                   key={index}
-                  className="w-full grid grid-cols-3 py-5 border-t border-black max-xl:flex max-xl:flex-col"
+                  className="w-full grid justify-between grid-cols-4 py-5 border-t border-black max-xl:flex max-xl:flex-col"
                 >
                   <td className="flex col-span-1 items-center justify-between">
                     <span className="col-span-1">{item.time}</span>
                     <span className="col-span-1 max-xl:block xl:hidden">{item.location}</span>
                   </td>
-                  <td className="col-span-1 max-xl:font-semibold max-xl:text-lg  font-semibold text-header">
+                  <td className="col-span-2 max-xl:font-semibold max-xl:text-lg font-semibold text-header xl:text-center">
                     {item.event}
                   </td>
-                  <td className="col-span-1 xl:blocks max-xl:hidden">{item.location}</td>
+                  <td className="col-span-1 xl:blocks max-xl:hidden text-end">{item.location}</td>
                 </tr>
               ))}
             </tbody>
           </table>
-        </div>
-      </div>
-      <div className="w-full h-full py-4">
-        <div className="container max-w-[80%] sm:my-4 max-xl:px-10 w-full py-4 mx-auto grid grid-cols-6 max-xl:grid-cols-2 gap-10">
+        </section>
+        <section className="container max-w-[80%] py-4 w-full mx-auto grid grid-cols-6 max-xl:grid-cols-3 gap-6">
           {Array(6)
             .fill(6)
             .map((_, index) => ({
@@ -215,6 +224,7 @@ export default function Home() {
             }))
             .map((img) => (
               <Image
+                className="object-contain"
                 key={img.id + 1}
                 src={img.src}
                 width={250}
@@ -222,10 +232,9 @@ export default function Home() {
                 alt={img.src as string}
               />
             ))}
-        </div>
-      </div>
-      <div className="bg-main w-full h-full py-4">
-        <div className="container max-xl:max-w-[100%] max-w-[80%] xl:my-4 max-xl:px-10 w-full py-4 mx-auto grid grid-cols-5 xl:grid-rows-2 relative">
+        </section>
+
+        {/* <section className="container bg-main max-xl:max-w-[100%] max-w-[80%] max-xl:px-10 w-full py-4 mx-auto grid grid-cols-5 xl:grid-rows-2 relative">
           {Array(8)
             .fill(8)
             .map((_, index) => ({
@@ -260,13 +269,20 @@ export default function Home() {
               alt="/assets/profiles/elipse.png"
             />
           </div>
-        </div>
-      </div>
+        </section> */}
+        <section className=" py-4 relative">
+          <Image
+            height={597}
+            width={594}
+            className="w-full"
+            src="/assets/images/exhibition-booth.png"
+            alt="/assets/images/exhibition-booth.png"
+          />
+        </section>
 
-      <div className="w-full h-full py-4">
-        <div className="container px-10 py-10 mx-auto grid grid-cols-2 gap-10 justify-between items-center">
+        <section className="container max-w-[80%] py-10 mx-auto grid grid-cols-2 gap-10 justify-between items-center">
           <div className="col-span-1 max-xl:col-span-2">
-            <h2 className="text-header text-2xl font-semibold mb-4">អំពីការពិព័រណ៍ពាណិជ្ជកម្ម</h2>
+            <h2 className="text-header text-2xl font-moul mb-4">អំពីការពិព័រណ៍ពាណិជ្ជកម្ម</h2>
             <p className="line-clamp-6 max-xl:line-clamp-5 text-ellipsis leading-loose text-xl max-sm:text-base">
               សូមជម្រាបជូនផងដែរថា ពិព័រណ៍ចិន-អាស៊ាន លើកទី២១ ប្រព្រឹត្តទៅចាប់ពីថ្ងៃទី២៤-២៨ ខែកញ្ញា
               ឆ្នាំ២០២៤ ក្រោម មូលបទ “លើកកម្ពស់មិត្តភាពស្មោះត្រង់ រួមគ្នាអភិវឌ្ឍន៍
@@ -292,12 +308,10 @@ export default function Home() {
               alt="image"
             />
           </div>
-        </div>
-      </div>
+        </section>
 
-      <div className="w-full h-full pb-4">
-        <div className="container mx-auto px-10">
-          <h2 className="text-center text-2xl font-semibold text-header pb-4">
+        <section className="container max-w-[80%] mx-auto py-4">
+          <h2 className="text-center text-2xl font-moul text-header mb-4">
             សកម្មភាពនានា នៃពិព័រណ៍ពាណិជ្ជកម្ម
           </h2>
           <Divider className="h-1 bg-orange-500 mb-4" />
@@ -314,18 +328,16 @@ export default function Home() {
             ))}
           </div>
 
-          <div className="flex justify-center py-10">
-            <div className="flex justify-center py-10 font-montserrat">
-              <PaginationComponent
-                total={data.length}
-                pageSize={3}
-                onChange={(newOffset: number) => setOffset(newOffset)}
-                showPrevNext={true}
-              />
-            </div>
+          <div className="flex justify-center py-10 font-montserrat">
+            <PaginationComponent
+              total={data.length}
+              pageSize={3}
+              onChange={(newOffset: number) => setOffset(newOffset)}
+              showPrevNext={true}
+            />
           </div>
-        </div>
-      </div>
-    </div>
+        </section>
+      </Fade>
+    </main>
   );
 }

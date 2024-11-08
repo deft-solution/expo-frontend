@@ -89,7 +89,10 @@ const Header = () => {
     { href: getUrl('/upcoming-packages'), label: 'Upcoming Packages' },
   ];
   return (
-    <nav ref={menuRef} className="flex p-10 justify-between items-center border-b  relative">
+    <nav
+      ref={menuRef}
+      className="flex p-10 justify-between items-center shadow-lg shadow-[#00EEFF40] z-30 relative"
+    >
       <div className="flex container mx-auto justify-between items-center gap-[60px] w-full">
         <Link href={getUrl('/')} className="max-sm:max-w-[200px]">
           <Image src="/assets/logo/logo.svg" alt="/assets/logo/logo.svg" width={250} height={100} />
