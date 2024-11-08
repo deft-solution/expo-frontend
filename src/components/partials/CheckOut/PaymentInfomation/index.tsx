@@ -23,9 +23,9 @@ const PaymentInformation: React.FC<TypePropsPaymentInfo> = (props) => {
       <div className="p-4 content flex flex-col gap-4">
         <section className="text-center border-b border-[#00000040] pb-4">
           <div>
-            <div>Total Amount</div>
+            <div className="font-bold">Total Amount</div>
             {data?.orderDetails && (
-              <h2 className="text-3xl mt-2 font-medium text-[#33A16E]">
+              <h2 className="text-3xl mt-2 font-bold text-[#33A16E]">
                 KHR {formatNumber(data.orderDetails.total * 4000)}
               </h2>
             )}
@@ -87,7 +87,7 @@ const PaymentInformation: React.FC<TypePropsPaymentInfo> = (props) => {
         </section>
         <section>
           <div className="flex items-center justify-between">
-            <div className="text-xl font-medium">Total</div>
+            <div className="text-xl font-bold">Total</div>
             <div className="font-medium text-[#33A16E] text-xl">
               <span>KHR </span>
               <span className="ml-1">{formatNumber((total ?? 0) * 4000)}</span>

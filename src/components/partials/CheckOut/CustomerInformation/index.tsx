@@ -9,38 +9,18 @@ const CustomerInformation = () => {
 
       <div className="border border-[#00000026] rounded-md p-4 grid gap-y-3">
         <div className="grid grid-cols-2 gap-4">
-          <InputFloatingLabel
-            name="firstName"
-            icons="User"
-            placeholder="First Name"
-          />
-          <InputFloatingLabel
-            icons="User"
-            name="lastName"
-            placeholder="Last Name"
-          />
+          <InputFloatingLabel name="firstName" icons="User" placeholder="First Name" />
+          <InputFloatingLabel icons="User" name="lastName" placeholder="Last Name" />
         </div>
         <div className="grid grid-cols-2 gap-4">
-          <InputFloatingLabel
-            name="phoneNumber"
-            icons="Phone"
-            placeholder="Phone Number"
-          />
-          <InputFloatingLabel icons="Email" name="email" placeholder="Email" />
+          <InputFloatingLabel name="phoneNumber" icons="Phone" placeholder="Phone Number" />
+          <InputFloatingLabel icons="Email" name="email" placeholder="Company Email" />
         </div>
         <div className="grid grid-cols-1 gap-4">
-          <InputFloatingLabel
-            name="companyName"
-            icons="House"
-            placeholder="Company Name"
-          />
+          <InputFloatingLabel name="companyName" icons="House" placeholder="Company Name" />
         </div>
         <div className="grid grid-cols-1 gap-4">
-          <InputFloatingLabel
-            name="nationality"
-            icons="Globe"
-            placeholder="Nationality"
-          />
+          <InputFloatingLabel name="nationality" icons="Globe" placeholder="Nationality" />
         </div>
         <div className="grid grid-cols-1 gap-4">
           <InputUpload name="companyName" label="Attach company patents" />
