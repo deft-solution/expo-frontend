@@ -185,6 +185,7 @@ export default function Home() {
               <ArrowCircleRightOutlined className="w-7 h-7" />
             </div>
           </div>
+
           <table className="w-full font-battambang text-xl mt-4 max-xl:text-base ">
             <thead className="max-xl:flex items-center justify-start">
               <tr className="max-xl:flex justify-between items-center w-full">
@@ -234,7 +235,7 @@ export default function Home() {
           </table>
         </section>
         <section className="py-4">
-          <Marquee speed={20} gradient={false}>
+          <Marquee speed={60} gradient={false}>
             {Array(6)
               .fill(6)
               .map((_, index) => ({
@@ -298,7 +299,7 @@ export default function Home() {
         <section className="container max-w-[80%] py-10 mx-auto">
           <h2 className="text-header text-2xl font-moul mb-10 text-center">ភ្ញៀវកិត្តិយស</h2>
 
-          <Marquee speed={20} gradient={false} direction="right">
+          <Marquee speed={60} gradient={false} direction="right">
             {profiles.map((profile, index) => (
               <div key={index} className="flex flex-col gap-4 justify-center items-center">
                 <Image
