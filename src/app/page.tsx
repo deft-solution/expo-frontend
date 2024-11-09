@@ -1,13 +1,25 @@
 'use client';
 import * as React from 'react';
-import { ArrowCircleRightOutlined, CallMade } from '@mui/icons-material';
-import { Divider } from '@mui/material';
 import Image from 'next/image';
 import PaginationComponent from '@/core/components/Pagination';
+import { ArrowCircleRightOutlined, CallMade } from '@mui/icons-material';
+import { Divider } from '@mui/material';
 import { Fade } from 'react-awesome-reveal';
+import Marquee from 'react-fast-marquee';
 
 export default function Home() {
   const [offset, setOffset] = React.useState(0);
+
+  const profiles = [
+    { name: 'អ្នកនាង មុនីតា', src: '/assets/profiles/image-1.png' },
+    { name: 'អ្នកនាង មុនីនាថ', src: '/assets/profiles/image-2.png' },
+    { name: ' អ្នកនាង នីតា', src: '/assets/profiles/image-3.png' },
+    { name: 'លោកស្រី កញ្ញា', src: '/assets/profiles/image-4.png' },
+    { name: 'សេង ហុក', src: '/assets/profiles/image-5.png' },
+    { name: ' គង់ វិបុល', src: '/assets/profiles/image-6.png' },
+    { name: ' លី គង់', src: '/assets/profiles/image-7.png' },
+  ];
+
   const data = [
     {
       imgSrc: '/assets/images/img-1.png',
@@ -48,6 +60,12 @@ export default function Home() {
   ];
 
   const paginatedData = data.slice(offset, offset + 3);
+  const socialIcons = Array(4)
+    .fill(null)
+    .map((_, index) => ({
+      src: `/assets/icons/social-${index + 1}.svg`,
+      alt: `social-${index + 1}`,
+    }));
 
   return (
     <main className="flex flex-col gap-4 justify-between h-100% font-battambang">
@@ -55,10 +73,11 @@ export default function Home() {
         <Image
           height={500}
           width={500}
-          className="object-cover absolute bottom-0 left-10"
+          className="object-cover w-1/2 absolute bottom-0 left-10"
           src="/assets/images/title-white.png"
           alt="/assets/images/title-white.png"
         />
+
         <Image
           height={594}
           width={594}
@@ -141,7 +160,7 @@ export default function Home() {
           ))}
         </section>
 
-        <section className=" py-4 relative">
+        <section className="py-4 relative">
           <Image
             height={597}
             width={594}
@@ -166,6 +185,7 @@ export default function Home() {
               <ArrowCircleRightOutlined className="w-7 h-7" />
             </div>
           </div>
+
           <table className="w-full font-battambang text-xl mt-4 max-xl:text-base ">
             <thead className="max-xl:flex items-center justify-start">
               <tr className="max-xl:flex justify-between items-center w-full">
@@ -214,26 +234,29 @@ export default function Home() {
             </tbody>
           </table>
         </section>
-        <section className="container max-w-[80%] py-4 w-full mx-auto grid grid-cols-6 max-xl:grid-cols-3 gap-6">
-          {Array(6)
-            .fill(6)
-            .map((_, index) => ({
-              id: index + 1,
-              src: `/assets/sponsors/image-${index + 1}.png`,
-              alt: `sponsor-${index + 1}`,
-            }))
-            .map((img) => (
-              <Image
-                className="object-contain"
-                key={img.id + 1}
-                src={img.src}
-                width={250}
-                height={100}
-                alt={img.src as string}
-              />
-            ))}
+        <section className="py-4">
+          <Marquee speed={60} gradient={false}>
+            {Array(6)
+              .fill(6)
+              .map((_, index) => ({
+                id: index + 1,
+                src: `/assets/sponsors/image-${index + 1}.png`,
+                alt: `sponsor-${index + 1}`,
+              }))
+              .map((img) => (
+                <Image
+                  className="object-cover mx-4 xl:mx-20"
+                  key={img.id + 1}
+                  src={img.src}
+                  width={200}
+                  height={150}
+                  alt={img.src as string}
+                />
+              ))}
+          </Marquee>
         </section>
-        <section className=" py-4 relative">
+
+        <section className="py-4 relative">
           <Image
             height={597}
             width={594}
@@ -273,6 +296,48 @@ export default function Home() {
           </div>
         </section>
 
+        <section className="container max-w-[80%] py-10 mx-auto">
+          <h2 className="text-header text-2xl font-moul mb-10 text-center">ភ្ញៀវកិត្តិយស</h2>
+
+          <Marquee speed={60} gradient={false} direction="right">
+            {profiles.map((profile, index) => (
+              <div key={index} className="flex flex-col gap-4 justify-center items-center">
+                <Image
+                  src={profile.src}
+                  width={180}
+                  height={300}
+                  alt={`profile-${index + 1}`}
+                  className="object-cover mx-20"
+                />
+                <h2 className="font-moul text-xl text-header">{profile.name}</h2>
+                <div className="flex gap-x-10">
+                  {socialIcons.map((icon, index) => (
+                    <Image
+                      key={index}
+                      src={icon.src}
+                      width={30}
+                      height={30}
+                      alt={icon.alt}
+                      className="object-cover"
+                    />
+                  ))}
+                </div>
+              </div>
+            ))}
+          </Marquee>
+        </section>
+        <section className="container max-w-[80%] py-4 mx-auto">
+          <h2 className="text-header text-2xl text-center font-moul mb-4">
+            ទីតាំងនៃការពិព័រណ៍ពាណិជ្ជកម្ម
+          </h2>
+          <Image
+            className="xl:w-[80%] mx-auto"
+            src="/assets/images/exhibition-location.png"
+            height={594}
+            width={594}
+            alt="image"
+          />
+        </section>
         <section className="container max-w-[80%] mx-auto py-4">
           <h2 className="text-center text-2xl font-moul text-header mb-4">
             សកម្មភាពនានា នៃពិព័រណ៍ពាណិជ្ជកម្ម

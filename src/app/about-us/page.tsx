@@ -1,13 +1,14 @@
 'use client';
 import React, { useState } from 'react';
 import Image from 'next/image';
-import { ArrowCircleRightOutlined } from '@mui/icons-material';
 import PaginationComponent from '@/core/components/Pagination';
+import { ArrowCircleRightOutlined } from '@mui/icons-material';
 import { Divider } from '@mui/material';
 import { Fade } from 'react-awesome-reveal';
 
 const About = () => {
   const [offset, setOffset] = useState(0);
+
   const data = [
     {
       imgSrc: '/assets/images/img-1.png',
@@ -48,22 +49,23 @@ const About = () => {
   ];
 
   const paginatedData = data.slice(offset, offset + 3);
+
   return (
     <main className="font-battambang flex flex-col justify-between h-100% gap-4 mt-[40px]">
       <Fade>
         <section className="container xl:max-w-[70%] mx-auto max-xl:px-10 py-4">
           <h2 className="font-moul text-2xl text-header text-center mb-4">អំពីការពិព័រណ៍</h2>
-          <div className="grid grid-cols-5 gap-4 xl:gap-[40px]">
-            <div className="max-xl:col-span-5 col-span-2">
+          <div className="grid grid-cols-6 gap-4  justify-between">
+            <div className="max-xl:col-span-6 col-span-3">
               <Image
-                height={700}
-                width={700}
-                className="w-4/5 max-xl:w-full object-cover max-xl:h-full h-4/5"
+                height={401}
+                width={459}
+                className="max-xl:w-full object-cover max-xl:h-full"
                 src="/assets/images/exhibition.png"
                 alt="/assets/images/exhibition.png"
               />
             </div>
-            <div className="flex flex-col max-xl:col-span-5 col-span-3 gap-4">
+            <div className="flex flex-col max-xl:col-span-6 col-span-3 gap-4">
               <div className="text-[#E9282B] font-medium text-[16px] font-montserrat">
                 December 10, 2024
               </div>
@@ -93,6 +95,7 @@ const About = () => {
             </div>
           </div>
         </section>
+
         <section className="container xl:max-w-[80%] mx-auto max-xl:px-10 py-4">
           <div className="grid grid-cols-5">
             <div className="max-xl:col-span-5 col-span-2">
