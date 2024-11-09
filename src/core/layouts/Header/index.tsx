@@ -16,6 +16,7 @@ const Header = () => {
 
   const [toggle, setToggle] = useState(false);
   const [event, setEvent] = useState<IEventList | null>(null);
+  const [isSticky, setIsSticky] = useState(false); // New state to track sticky
   const menuRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -41,6 +42,19 @@ const Header = () => {
     window.addEventListener('resize', handleResize);
     handleResize();
     return () => window.removeEventListener('resize', handleResize);
+  }, []);
+
+  useEffect(() => {
+    const handleScroll = () => {
+      if (window.scrollY > 148) {
+        // Adjust this threshold value as needed
+        setIsSticky(true);
+      } else {
+        setIsSticky(false);
+      }
+    };
+    window.addEventListener('scroll', handleScroll);
+    return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
   useEffect(() => {
@@ -88,10 +102,13 @@ const Header = () => {
     { href: getUrl('/services'), label: 'Services' },
     { href: getUrl('/upcoming-packages'), label: 'Upcoming Packages' },
   ];
+
   return (
     <nav
       ref={menuRef}
-      className="flex p-10 justify-between items-center shadow-lg shadow-[#00EEFF40] z-30 relative"
+      className={`flex p-10 justify-between items-center shadow-lg shadow-[#00EEFF40] z-30 relative bg-white ${
+        isSticky ? Style.sticky : ''
+      }`}
     >
       <div className="flex container mx-auto justify-between items-center gap-[60px] w-full">
         <Link href={getUrl('/')} className="max-sm:max-w-[200px]">

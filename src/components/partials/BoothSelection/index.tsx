@@ -22,10 +22,7 @@ const BootSelection = (props: BootSelectionTypeProps) => {
           if (svgRef.current) {
             svgRef.current.innerHTML = svg;
 
-            const updatedSvg = svg.replace(
-              '<svg',
-              '<svg width="100%" height="100%"',
-            );
+            const updatedSvg = svg.replace('<svg', '<svg width="100%" height="100vh"');
             svgRef.current.innerHTML = updatedSvg; // Attach event listeners to all rect elements
 
             const rects = svgRef.current.querySelectorAll('rect');
