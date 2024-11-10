@@ -21,12 +21,10 @@ export const usePaymentPolling = (props: HookProps = {}) => {
     const intervalId = setInterval(async () => {
       try {
         const result = await validatePaymentById(paymentId);
-        console.log('Response received:', result);
         setResponse(result);
 
         // Stop polling if the response meets the stop condition
         if (result.data === 1) {
-          console.log('Validation successful. Stopping polling.');
           clearInterval(intervalId);
           setIsSuccess(true);
           setPolling(false); // Stop polling

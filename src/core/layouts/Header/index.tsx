@@ -5,33 +5,16 @@ import Link from 'next/link';
 import { Close, Menu } from '@mui/icons-material';
 import { usePathname, useRouter, useSearchParams } from 'next/navigation';
 import Style from './index.module.scss';
-import { getEventForGuest } from '@/service/event';
-import { IEventList } from '@/schema/Event';
+import { useEvent } from '@/context/EventContext';
 
 const Header = () => {
   const pathname = usePathname();
   const router = useRouter();
   const searchParams = useSearchParams();
-  const eventId = searchParams.get('event') ?? null;
-
+  const { event, eventId } = useEvent();
   const [toggle, setToggle] = useState(false);
-  const [event, setEvent] = useState<IEventList | null>(null);
   const [isSticky, setIsSticky] = useState(false); // New state to track sticky
   const menuRef = useRef<HTMLDivElement>(null);
-
-  useEffect(() => {
-    if (eventId) {
-      getEventForGuest(eventId)
-        .then((response) => {
-          if (response) {
-            setEvent(response);
-          }
-        })
-        .catch((error) => {
-          console.error(error);
-        });
-    }
-  }, [eventId]);
 
   useEffect(() => {
     const handleResize = () => {

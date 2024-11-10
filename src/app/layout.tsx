@@ -7,6 +7,7 @@ import AuthProvider from '@/context/AuthContext';
 import { AuthLiveProvider } from '@/context/AuthLiveContext';
 import { BoothProvider } from '@/context/BoothSelectionContext';
 import { Footer, Header } from '@Core';
+import EventProvider from '@/context/EventContext';
 
 export default function RootLayout({
   children,
@@ -16,15 +17,17 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className="flex min-h-screen flex-col">
-        <AuthProvider>
-          <AuthLiveProvider>
-            <Header />
-            <BoothProvider>
-              <div className="flex-grow">{children}</div>
-            </BoothProvider>
-            <Footer />
-          </AuthLiveProvider>
-        </AuthProvider>
+        <EventProvider>
+          <AuthProvider>
+            <AuthLiveProvider>
+              <Header />
+              <BoothProvider>
+                <div className="flex-grow">{children}</div>
+              </BoothProvider>
+              <Footer />
+            </AuthLiveProvider>
+          </AuthProvider>
+        </EventProvider>
       </body>
     </html>
   );
