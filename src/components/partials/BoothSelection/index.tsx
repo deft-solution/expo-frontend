@@ -55,21 +55,21 @@ const BootSelection = (props: BootSelectionTypeProps) => {
 
   const onClickBooth = (rect: SVGRectElement) => {
     const rectId = rect.id; // Ensure rect.id is defined
-    const isValidId = booths.find(({ externalId }) => externalId === rectId);
-
-    if (!isValidId) {
+    const booth = booths.find(({ boothNumber }) => boothNumber === rectId);
+    if (!booth) {
       const message = `Booth with ID ${rectId} does not exist. Please verify and try again.`;
       alert(message);
       return;
     }
+    const externalId = booth.externalId;
 
     rect.classList.toggle('checked');
 
     // Determine the new IDs without setting state yet
     setIds((oldIds) => {
-      const newIds = oldIds.includes(rectId)
-        ? oldIds.filter((id) => id !== rectId) // Remove the id if already present
-        : [...oldIds, rectId]; // Add the id if not present
+      const newIds = oldIds.includes(externalId)
+        ? oldIds.filter((id) => id !== externalId) // Remove the id if already present
+        : [...oldIds, externalId]; // Add the id if not present
       return newIds;
     });
   };

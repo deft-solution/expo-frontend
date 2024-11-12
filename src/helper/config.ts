@@ -6,3 +6,7 @@ export const API_URL = (): string => {
   } = getConfig();
   return API_URL;
 };
+
+export const getAcceptPayments = (): string[] => {
+  return ['khr-khqr'];
+};

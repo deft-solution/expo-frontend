@@ -63,14 +63,24 @@ const PageCheckOut = () => {
   const cancelPayment = () => {
     setShowSubmitModal(false);
   };
+
   const { setPaymentId, isSuccess, setPolling } = usePaymentPolling({ onSuccess: cancelPayment });
+
+  const onClickOutSide = () => {
+    cancelPayment();
+    setShowSubmitModal(false);
+  };
 
   return (
     <div className="max-md:mb-10">
       <Modal contentClassName="md:!max-w-md lg:!max-w-[40%]" visible={false}>
         <AuthenctionForm />
       </Modal>
-      <Modal contentClassName="max-w-[800px] !h-[800px]" visible={submitModal}>
+      <Modal
+        contentClassName="max-w-[800px] !h-[800px]"
+        visible={submitModal}
+        onClickOutSide={onClickOutSide}
+      >
         {token && token.length && (
           <iframe
             className="checkout-frame w-full h-full"

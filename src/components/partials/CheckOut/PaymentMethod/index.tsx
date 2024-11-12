@@ -7,11 +7,16 @@ import { getPaymentOptionsForCheckOut } from '@/actions/payment';
 import { PaymentOptionFormat } from '@/models/Payment';
 import { useApi } from '@Core';
 import Link from 'next/link';
+import { getAcceptPayments } from '@/helper/config';
+import getConfig from 'next/config';
 
 const SelectPaymentMethod = () => {
   const providerName = 'provider';
   const optionName = 'option';
   const paymentCard = 'paymentCard';
+
+  const publicRuntimeConfig = getConfig();
+
   const [payments, setPayments] = useState<PaymentOptionFormat[]>([]);
   const [activeIdx, setActiveIdx] = useState<number>(-1);
   const { response } = useApi({
@@ -31,7 +36,11 @@ const SelectPaymentMethod = () => {
 
   useEffect(() => {
     if (response) {
-      setPayments(response);
+      const allowPayments = getAcceptPayments();
+
+      const acceptPayment = response.filter(({ key }) => allowPayments.includes(key));
+
+      setPayments(acceptPayment);
     }
   }, [response]);
 

@@ -4,6 +4,7 @@ import React, { useEffect, useState } from 'react';
 import { useFormContext } from 'react-hook-form';
 
 import { uploadFiles } from '@/service/file';
+import { error } from 'console';
 
 export interface UploadTypesProps {
   name: string;
@@ -14,13 +15,7 @@ export interface UploadTypesProps {
 }
 
 const UploadComponent = (props: UploadTypesProps) => {
-  const {
-    name,
-    folderName,
-    label,
-    accepts = ['image/*'],
-    isMultiple = false,
-  } = props;
+  const { name, folderName, label, accepts = ['image/*'], isMultiple = false } = props;
   const { register, setValue, getValues } = useFormContext();
   register(name);
   const defaultValue = getValues(name);
@@ -33,9 +28,7 @@ const UploadComponent = (props: UploadTypesProps) => {
   const onDroppedFiled = (e: React.DragEvent<HTMLDivElement>) => {
     e.preventDefault();
     const droppedFiles = Array.from(e.dataTransfer.files);
-    const isValidFileType = droppedFiles
-      .map((file) => isFileTypeValid(file))
-      .every(Boolean);
+    const isValidFileType = droppedFiles.map((file) => isFileTypeValid(file)).every(Boolean);
 
     if (isValidFileType) {
       const files = isMultiple ? droppedFiles : [droppedFiles[0]];
@@ -87,7 +80,7 @@ const UploadComponent = (props: UploadTypesProps) => {
           }
         })
         .catch((err) => {
-          alert(err?.message);
+          alert(err?.message ?? 'Something Went Wrong.');
         });
     }
   }, [files]);
@@ -101,9 +94,7 @@ const UploadComponent = (props: UploadTypesProps) => {
   return (
     <div>
       {label && (
-        <div className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
-          {label}
-        </div>
+        <div className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">{label}</div>
       )}
       <div
         onDrop={onDroppedFiled}
@@ -136,8 +127,7 @@ const UploadComponent = (props: UploadTypesProps) => {
                 height={24}
               />
               <p className="mb-2 text-sm text-gray-500 dark:text-gray-400">
-                <span className="font-semibold">Click to upload</span> or drag
-                and drop
+                <span className="font-semibold">Click to upload</span> or drag and drop
               </p>
               <p className="text-xs text-gray-500 dark:text-gray-400">
                 SVG, PNG, JPG or GIF (MAX. 800x400px)
