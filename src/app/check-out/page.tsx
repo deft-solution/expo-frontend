@@ -2,21 +2,21 @@
 import React, { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
 
+import AuthenctionForm from '@/components/authentication';
+import CheckOutSuccess from '@/components/partials/CheckOut/CheckOutSuccess';
 import PaymentDetail from '@/components/partials/CheckOut/PaymentDetails';
 import PaymentInformation from '@/components/partials/CheckOut/PaymentInfomation';
 import PaymentStep from '@/components/partials/CheckOut/PaymentStep';
-import { CheckOutForm, ICheckoutForm } from '@/schema/Checkout';
-import { Form, Header, Modal } from '@Core';
-import { yupResolver } from '@hookform/resolvers/yup';
-import CheckOutSuccess from '@/components/partials/CheckOut/CheckOutSuccess';
 import SuccessSign from '@/components/partials/CheckOut/SuccessSign';
-import AuthenctionForm from '@/components/authentication';
 import { useAuthLive } from '@/context/AuthLiveContext';
-import { IPayments, useCalculatedCheckout } from '@/hooks/useCalculatedCheckout';
 import { useBoothSelection } from '@/context/BoothSelectionContext';
-import { submitPayment } from '@/service/payment';
 import { getWonderPassToken } from '@/helper';
+import { IPayments, useCalculatedCheckout } from '@/hooks/useCalculatedCheckout';
 import { usePaymentPolling } from '@/hooks/usePaymentPolling';
+import { CheckOutForm, ICheckoutForm } from '@/schema/Checkout';
+import { submitPayment } from '@/service/payment';
+import { Form, Modal } from '@Core';
+import { yupResolver } from '@hookform/resolvers/yup';
 
 const PageCheckOut = () => {
   const { isAuthenticated } = useAuthLive();
@@ -73,7 +73,7 @@ const PageCheckOut = () => {
 
   return (
     <div className="max-md:mb-10">
-      <Modal contentClassName="md:!max-w-md lg:!max-w-[40%]" visible={false}>
+      <Modal contentClassName="md:!max-w-md lg:!max-w-[40%]" visible={showAuthForm}>
         <AuthenctionForm />
       </Modal>
       <Modal
