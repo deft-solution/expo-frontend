@@ -67,11 +67,13 @@ const PageCheckOut = () => {
     setShowSubmitModal(false);
   };
 
-  const { setPaymentId, isSuccess, setPolling } = usePaymentPolling({ onSuccess: cancelPayment });
+  const { setPaymentId, isSuccess, setPolling, cancelPolling } = usePaymentPolling({
+    onSuccess: cancelPayment,
+  });
 
   const onClickOutSide = () => {
-    cancelPayment();
     setShowSubmitModal(false);
+    cancelPolling();
   };
 
   return (
@@ -93,7 +95,7 @@ const PageCheckOut = () => {
       </Modal>
       <Form methods={methods} onSubmit={onSubmitForm}>
         <PaymentStep isCompleted={isSuccess} />
-        <div className="container mx-auto max-md:px-4">
+        <div className="container mx-auto xl:max-w-screen-xl max-md:px-4">
           {!isSuccess && (
             <div className="grid grid-cols-1 md:grid-cols-2 gap-5 mt-7">
               <PaymentDetail />

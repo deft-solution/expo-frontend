@@ -1,7 +1,7 @@
 'use client';
 import { ValidatePassesResponse } from '@/models/Payment';
 import { validatePaymentById } from '@/service/payment';
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState, useRef } from 'react';
 
 export interface HookProps {
   onSuccess?: () => void;
@@ -13,38 +13,52 @@ export const usePaymentPolling = (props: HookProps = {}) => {
   const [paymentId, setPaymentId] = useState<string | null>(null);
   const [response, setResponse] = useState<ValidatePassesResponse | null>(null);
   const [isSuccess, setIsSuccess] = useState(false);
+  const intervalIdRef = useRef<ReturnType<typeof setInterval> | null>(null);
 
   useEffect(() => {
-    if (!paymentId) {
+    if (!paymentId || !polling) {
       return;
     }
-    const intervalId = setInterval(async () => {
+
+    intervalIdRef.current = setInterval(async () => {
       try {
         const result = await validatePaymentById(paymentId);
         setResponse(result);
 
         // Stop polling if the response meets the stop condition
         if (result.data === 1) {
-          clearInterval(intervalId);
+          clearInterval(intervalIdRef.current!);
+          intervalIdRef.current = null;
           setIsSuccess(true);
-          setPolling(false); // Stop polling
+          setPolling(false);
           if (onSuccess) {
             onSuccess();
           }
         }
       } catch (err) {
         console.error('Error during polling:', err);
-        // Optional: You can stp polling on error if needed
         setPolling(false);
+        clearInterval(intervalIdRef.current!);
+        intervalIdRef.current = null;
       }
-    }, 2000); // Poll every 4 seconds
+    }, 2000); // Poll every 2 seconds
 
     return () => {
-      if (intervalId) {
-        clearInterval(intervalId);
+      if (intervalIdRef.current) {
+        clearInterval(intervalIdRef.current);
+        intervalIdRef.current = null;
       }
     };
   }, [paymentId, polling]);
+
+  // Function to cancel polling
+  const cancelPolling = () => {
+    if (intervalIdRef.current) {
+      clearInterval(intervalIdRef.current);
+      intervalIdRef.current = null;
+      setPolling(false);
+    }
+  };
 
   // Return values and functions to control polling externally
   return {
@@ -53,5 +67,6 @@ export const usePaymentPolling = (props: HookProps = {}) => {
     polling,
     setPolling,
     setPaymentId,
+    cancelPolling, // Add the cancel function to the returned object
   };
 };

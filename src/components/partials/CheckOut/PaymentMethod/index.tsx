@@ -59,7 +59,7 @@ const SelectPaymentMethod = () => {
     <div className="flex flex-col gap-4 my-4">
       <div>
         <label htmlFor="">Payment Method</label>
-        <div className="grid grid-cols-2 gap-4 mt-4">
+        <div className="flex mt-4">
           {payments.map((payment, idx) => {
             const logo = payment.logo;
             return (
@@ -83,7 +83,7 @@ const SelectPaymentMethod = () => {
       </div>
       <button
         type="submit"
-        className={classNames('w-full h-[48px] text-white rounded-md bg-[#33A16E]', {
+        className={classNames('w-full h-[48px] mt-4 text-white rounded-md bg-[#33A16E]', {
           'bg-[#d9d9d9]': activeIdx === -1,
         })}
       >

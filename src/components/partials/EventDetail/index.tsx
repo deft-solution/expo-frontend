@@ -32,6 +32,10 @@ const EventDetails = (props: EventTypeProps) => {
     if (ids.length) {
       setOpenPanel(true);
     }
+
+    return () => {
+      setOpenPanel(false);
+    };
   }, [ids]);
 
   useEffect(() => {

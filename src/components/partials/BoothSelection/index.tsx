@@ -66,12 +66,7 @@ const BootSelection = (props: BootSelectionTypeProps) => {
     rect.classList.toggle('checked');
 
     // Determine the new IDs without setting state yet
-    setIds((oldIds) => {
-      const newIds = oldIds.includes(externalId)
-        ? oldIds.filter((id) => id !== externalId) // Remove the id if already present
-        : [...oldIds, externalId]; // Add the id if not present
-      return newIds;
-    });
+    setIds([externalId]);
   };
 
   function fetchingSvg() {
