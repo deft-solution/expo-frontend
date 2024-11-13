@@ -1,7 +1,9 @@
-import { useBoothSelection } from '@/context/BoothSelectionContext';
-import { CalulcatedDataResponse, ICalulcatedOrder, OrderItem } from '@/models/Payment';
-import { calculatedCheckOut } from '@/service/payment';
 import { useEffect, useState } from 'react';
+
+import { useAuthLive } from '@/context/AuthLiveContext';
+import { useBoothSelection } from '@/context/BoothSelectionContext';
+import { CalculatedDataResponse, ICalculatedOrder, OrderItem } from '@/models/Payment';
+import { calculatedCheckOut } from '@/service/payment';
 
 export interface TypeProps {
   payment?: IPayments;
@@ -15,9 +17,10 @@ export interface IPayments {
 
 export const useCalculatedCheckout = (props: TypeProps) => {
   const { payment } = props;
+  const { isAuthenticated } = useAuthLive();
   const { ids } = useBoothSelection();
   const [items, setItems] = useState<OrderItem[]>([]);
-  const [response, setResponse] = useState<CalulcatedDataResponse | null>(null);
+  const [response, setResponse] = useState<CalculatedDataResponse | null>(null);
   const [isLoading, setIsLoading] = useState<boolean>(false);
 
   useEffect(() => {
@@ -28,14 +31,16 @@ export const useCalculatedCheckout = (props: TypeProps) => {
   }, [ids.length]);
 
   useEffect(() => {
-    onCalculcated();
-  }, [items.length, payment]);
+    if (isAuthenticated) {
+      onCalculated();
+    }
+  }, [items.length, payment, isAuthenticated]);
 
-  const onCalculcated = () => {
+  const onCalculated = () => {
     if (items.length) {
       setIsLoading(true);
       //
-      const param: ICalulcatedOrder = {
+      const param: ICalculatedOrder = {
         orderItems: items,
         reservationDate: null,
       };

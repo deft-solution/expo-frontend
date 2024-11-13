@@ -1,13 +1,14 @@
 import Image from 'next/image';
 import React from 'react';
 
-import InputCoupon from '../InputCoupon';
 import { useBoothSelection } from '@/context/BoothSelectionContext';
 import { formatNumber } from '@/helper/format-number';
-import { CalulcatedDataResponse } from '@/models/Payment';
+import { CalculatedDataResponse } from '@/models/Payment';
+
+import InputCoupon from '../InputCoupon';
 
 export interface TypePropsPaymentInfo {
-  paymentCalculated: CalulcatedDataResponse | null;
+  paymentCalculated: CalculatedDataResponse | null;
 }
 
 const PaymentInformation: React.FC<TypePropsPaymentInfo> = (props) => {

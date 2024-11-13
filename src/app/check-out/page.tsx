@@ -2,7 +2,7 @@
 import React, { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
 
-import AuthenctionForm from '@/components/authentication';
+import AuthenticationForm from '@/components/authentication';
 import CheckOutSuccess from '@/components/partials/CheckOut/CheckOutSuccess';
 import PaymentDetail from '@/components/partials/CheckOut/PaymentDetails';
 import PaymentInformation from '@/components/partials/CheckOut/PaymentInfomation';
@@ -22,17 +22,20 @@ const PageCheckOut = () => {
   const { isAuthenticated } = useAuthLive();
   const { ids } = useBoothSelection();
 
-  const [showAuthForm, setShowAuthForm] = useState(false);
   const methods = useForm({ resolver: yupResolver(CheckOutForm) });
-  const [payment, setPayment] = useState<IPayments>();
   const { watch, setValue } = methods;
+
+  const [showAuthForm, setShowAuthForm] = useState(false);
+  const [payment, setPayment] = useState<IPayments>();
   const [code, setCode] = useState<string | null>(null);
   const [submitModal, setShowSubmitModal] = useState<boolean>(false);
+
   const { response: calculatedPayment } = useCalculatedCheckout({ payment });
 
   const provider = watch('provider');
   const option = watch('option');
   const paymentCard = watch('paymentCard');
+  //
   const token = getWonderPassToken()?.split(' ');
 
   const onSubmitForm = (data: ICheckoutForm) => {
@@ -74,7 +77,7 @@ const PageCheckOut = () => {
   return (
     <div className="max-md:mb-10">
       <Modal contentClassName="md:!max-w-md lg:!max-w-[40%]" visible={showAuthForm}>
-        <AuthenctionForm />
+        <AuthenticationForm />
       </Modal>
       <Modal
         contentClassName="max-w-[800px] !h-[800px]"

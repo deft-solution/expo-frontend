@@ -60,7 +60,7 @@ export interface CardImage {
   imageUrl: string;
 }
 
-export interface ICalulcatedOrder {
+export interface ICalculatedOrder {
   orderItems: OrderItem[];
   reservationDate: string | null;
   //
@@ -74,7 +74,7 @@ export interface OrderItem {
   quantity: number;
 }
 
-export interface CalulcatedDataResponse extends BaseResponse {
+export interface CalculatedDataResponse extends BaseResponse {
   data: { shippingMethods: any; orderDetails: OrderDetails };
 }
 

@@ -1,0 +1,34 @@
+.link-item {
+  color: #797C7F;
+  transition: all 0.3s ease;
+
+  &:hover {
+    margin-left: 9px;
+  }
+
+  a {
+    position: relative;
+    display: inline-block;
+
+    &:hover {
+      &::after {
+        width: 100%;
+      }
+    }
+
+    &::after {
+      content: "";
+      display: block;
+      position: absolute;
+      z-index: 1;
+      top: auto;
+      bottom: -5px;
+      left: 0;
+      transform: none;
+      width: 0;
+      height: 2px;
+      transition: all 0.3s ease;
+      background-color: #000000;
+    }
+  }
+}

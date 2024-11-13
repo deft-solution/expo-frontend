@@ -1,9 +1,10 @@
 import React, { useState } from 'react';
-import AuthenticationTab, { TypeAuthTabs } from './Tabs';
+
 import LoginEmailForm from './Login/EmailForm';
 import PhoneNumberForm from './Login/PhoneNumberForm';
+import AuthenticationTab, { TypeAuthTabs } from './Tabs';
 
-const AuthenctionForm = () => {
+const AuthenticationForm = () => {
   const [formType, setFormType] = useState<TypeAuthTabs>('EMAIL');
 
   return (
@@ -19,4 +20,4 @@ const AuthenctionForm = () => {
   );
 };
 
-export default AuthenctionForm;
+export default AuthenticationForm;

@@ -37,17 +37,12 @@ const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     setIsRefresh(!isRefresh);
   }, []);
 
-  const contextObject = {
-    isAuthenticated,
-    onRefreshAuthContext,
-  };
-
   return (
-    <>
-      <Suspense>
-        <AuthContext.Provider value={contextObject}>{children}</AuthContext.Provider>
-      </Suspense>
-    </>
+    <Suspense>
+      <AuthContext.Provider value={{ isAuthenticated, onRefreshAuthContext }}>
+        {children}
+      </AuthContext.Provider>
+    </Suspense>
   );
 };
 
