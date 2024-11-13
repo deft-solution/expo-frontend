@@ -80,7 +80,7 @@ const Header = () => {
   };
 
   const links = [
-    { href: getUrl('/'), label: 'Home' },
+    { href: getUrl('https://cambodiaexpo.testing.wonderpass.asia/'), label: 'Home' },
     { href: getUrl('/about-us'), label: 'About' },
     { href: getUrl('/services'), label: 'Services' },
     { href: getUrl('/upcoming-packages'), label: 'Upcoming Packages' },
@@ -89,39 +89,17 @@ const Header = () => {
   return (
     <nav
       ref={menuRef}
-      className={`flex p-10 justify-between items-center shadow-lg shadow-[#00EEFF40] z-30 relative bg-white ${
-        isSticky ? Style.sticky : ''
-      }`}
+      className={`flex p-10 justify-between items-center shadow-lg shadow-[#00EEFF40] z-30 relative bg-white
+         ${isSticky ? Style.sticky : ''}
+        `}
     >
       <div className="flex container mx-auto justify-between items-center gap-[60px] w-full">
-        <Link href={getUrl('/')} className="max-sm:max-w-[200px]">
+        <Link
+          href={getUrl('https://cambodiaexpo.testing.wonderpass.asia/')}
+          className="max-sm:max-w-[200px]"
+        >
           <Image src="/assets/logo/logo.svg" alt="/assets/logo/logo.svg" width={250} height={100} />
         </Link>
-        <ul className="flex items-center justify-between gap-[60px] font-semibold max-xl:hidden">
-          {links.map((link, index) => (
-            <Link
-              key={index}
-              className={
-                isActive(link.href)
-                  ? Style['active-link']
-                  : 'hover:text-main animation duration-300'
-              }
-              href={link.href}
-            >
-              {link.label}
-            </Link>
-          ))}
-        </ul>
-
-        {event && (
-          <button
-            type="button"
-            onClick={handleBookNow}
-            className="bg-main text-white py-4 px-8 rounded-lg max-xl:hidden transform active:scale-95 transition-transform duration-150"
-          >
-            Book Now
-          </button>
-        )}
       </div>
 
       {/*Mobile View*/}

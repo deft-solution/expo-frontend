@@ -9,7 +9,7 @@ interface TypeTabProps {
 }
 
 const AuthenticationTab: React.FC<TypeTabProps> = (props) => {
-  const [loginType, setType] = useState<TypeAuthTabs>('EMAIL');
+  const [loginType, setType] = useState<TypeAuthTabs>('PHONE_NUMBER');
 
   const activeCtx = (type: TypeAuthTabs) =>
     classNames('p-2 cursor-pointer rounded-md', {
@@ -28,14 +28,7 @@ const AuthenticationTab: React.FC<TypeTabProps> = (props) => {
   };
 
   return (
-    <div className="grid grid-cols-2 gap-4 p-4 text-center bg-[#f5f5f5] rounded-md">
-      <div
-        id="EMAIL"
-        onClick={onClickItem}
-        className={classNames(activeCtx('EMAIL'))}
-      >
-        Email
-      </div>
+    <div className="grid grid-cols-1 gap-4 p-4 text-center bg-[#f5f5f5] rounded-md">
       <div
         id="PHONE_NUMBER"
         onClick={onClickItem}

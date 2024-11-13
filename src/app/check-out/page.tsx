@@ -78,7 +78,10 @@ const PageCheckOut = () => {
 
   return (
     <div className="max-md:mb-10">
-      <Modal contentClassName="md:!max-w-md lg:!max-w-[40%]" visible={showAuthForm}>
+      <Modal
+        contentClassName="max-sm:!max-w-xs md:!max-w-md lg:!max-w-[40%]"
+        visible={showAuthForm}
+      >
         <AuthenticationForm />
       </Modal>
       <Modal

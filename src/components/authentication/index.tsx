@@ -5,7 +5,7 @@ import PhoneNumberForm from './Login/PhoneNumberForm';
 import AuthenticationTab, { TypeAuthTabs } from './Tabs';
 
 const AuthenticationForm = () => {
-  const [formType, setFormType] = useState<TypeAuthTabs>('EMAIL');
+  const [formType, setFormType] = useState<TypeAuthTabs>('PHONE_NUMBER');
 
   return (
     <div className="grid gap-4">
