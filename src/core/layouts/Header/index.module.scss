@@ -7,9 +7,7 @@
   align-items: center;
   justify-content: center;
   cursor: pointer;
-  transition:
-    transform 0.3s ease,
-    background-color 0.3s ease;
+  transition: transform 0.3s ease, background-color 0.3s ease;
 
   &:hover {
     transform: scale(1.1);
@@ -19,8 +17,8 @@
   }
 
   &::before {
-    content: "";
-    background-image: url("/assets/icons/cross.svg");
+    content: '';
+    background-image: url('/assets/icons/cross.svg');
     background-size: 15px 15px;
     background-repeat: no-repeat;
     background-position: center;
@@ -35,7 +33,7 @@
 }
 
 .active-link::after {
-  content: "";
+  content: '';
   position: absolute;
   bottom: -4px; /* Adjust for spacing between the text and line */
   left: 0;
@@ -53,4 +51,25 @@
   z-index: 9999; /* Ensures it stays on top of other content */
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
   background-color: white; /* Ensures background is white when sticky */
+}
+
+.underline-effect {
+  position: relative;
+  display: inline-block;
+}
+
+.underline-effect::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  bottom: -5px;
+  width: 0;
+  height: 3px;
+  background-color: black;
+  transition: width 0.3s ease-in-out;
+  z-index: -1;
+}
+
+.underline-effect:hover::after {
+  width: 100%;
 }

@@ -15,7 +15,6 @@
     "@emotion/styled": "^11.13.0",
     "@hookform/resolvers": "^3.9.0",
     "@mui/icons-material": "^6.1.6",
-    "@mui/material": "^6.1.6",
     "axios": "^1.7.5",
     "classnames": "^2.5.1",
     "intl-tel-input": "^24.5.2",
