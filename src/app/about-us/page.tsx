@@ -261,7 +261,6 @@ const About = () => {
               total={data.length}
               pageSize={3}
               onChange={(newOffset: number) => setOffset(newOffset)}
-              showPrevNext={true}
             />
           </div>
         </section>
