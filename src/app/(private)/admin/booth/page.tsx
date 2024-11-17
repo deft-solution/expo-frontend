@@ -7,7 +7,7 @@ import React, { useEffect, useState } from 'react';
 import { formatDisplayDate } from '@/helper/format-date';
 import { IBootList } from '@/schema/Booth';
 import { getAllBooths } from '@/service/booth';
-import { useApi } from '@Core';
+import { Pagination, useApi } from '@Core';
 
 const Page = () => {
   const [list, setList] = useState<IBootList[]>([]);
@@ -18,7 +18,7 @@ const Page = () => {
   // API
   const { response } = useApi({
     service: getAllBooths,
-    params: {},
+    params: { limit, offset },
     effects: [offset],
   });
 
@@ -29,14 +29,21 @@ const Page = () => {
     }
   }, [response]);
 
+  const goToEventDetail = (id: string) => {
+    return '/admin/event/' + id;
+  };
+
   return (
     <div>
-      <Link
-        className="col-end-7 text-white bg-primary hover:bg-primary-800 font-medium rounded-lg text-sm px-5 py-2.5 text-center"
-        href="/admin/booth/create"
-      >
-        Create Booth
-      </Link>
+      <div className="flex justify-between items-center">
+        <h2 className="text-xl font-bold">All Booth ({total})</h2>
+        <Link
+          className="col-end-7 text-white bg-primary hover:bg-primary-800 font-medium rounded-lg text-sm px-5 py-2.5 text-center"
+          href="/admin/booth/create"
+        >
+          Create Booth
+        </Link>
+      </div>
       <table className="w-full min-w-max table-auto mt-4 text-left">
         <thead>
           <tr>
@@ -62,26 +69,27 @@ const Page = () => {
           {list.length > 0 &&
             list.map((row, idx) => {
               return (
-                <tr
-                  key={idx}
-                  className="hover:bg-gray-100 dark:hover:bg-neutral-700"
-                >
+                <tr key={idx} className="hover:bg-gray-100 dark:hover:bg-neutral-700">
                   <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-800 dark:text-neutral-200">
                     {row.boothNumber}
                   </td>
                   <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-800 dark:text-neutral-200">
-                    <div className="flex items-center gap-2">
-                      {row?.event?.logoUrl && (
-                        <Image
-                          className="w-10 h-10 rounded-full object-cover"
-                          width={100}
-                          height={100}
-                          src={row.event.logoUrl}
-                          alt={row.event.logoUrl}
-                        />
-                      )}
-                      {row?.event?.name}
-                    </div>
+                    {row.event?.id && (
+                      <Link href={goToEventDetail(row.event.id)}>
+                        <div className="flex items-center gap-2">
+                          {row?.event?.logoUrl && (
+                            <Image
+                              className="w-10 h-10 rounded-full object-cover"
+                              width={100}
+                              height={100}
+                              src={row.event.logoUrl}
+                              alt={row.event.logoUrl}
+                            />
+                          )}
+                          {row?.event?.name}
+                        </div>
+                      </Link>
+                    )}
                   </td>
                   <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-800 dark:text-neutral-200">
                     {row.boothType?.name}
@@ -95,7 +103,7 @@ const Page = () => {
                         className={classNames(
                           'h-2.5 w-2.5 rounded-full me-2',
                           { 'bg-green-500': row.isActive },
-                          { 'bg-red-500': !row.isActive },
+                          { 'bg-red-500': !row.isActive }
                         )}
                       ></div>
                       <div>{row.isActive ? 'Active' : 'Deactive'}</div>
@@ -116,6 +124,9 @@ const Page = () => {
             })}
         </tbody>
       </table>
+      <div className="mt-4">
+        <Pagination total={total} pageSize={limit} onChange={setOffset} />
+      </div>
     </div>
   );
 };

@@ -119,17 +119,17 @@ export interface CheckoutSuccess {
 }
 
 export interface CheckOutFormParam {
-  persons: string[];
+  persons?: string[];
   passTemplate: string;
-  seatIds: string[];
+  seatIds?: string[];
   quantity: number;
   //
-  provider: PaymentProvider | null;
+  provider: number | null;
   paymentCard: string | null;
   option: string | null;
-  shippingMethod: ShippingAddress | null;
-  promoCode: string | null;
-  topUpNumber: string | null;
+  shippingMethod?: ShippingAddress | null;
+  promoCode?: string | null;
+  topUpNumber?: string | null;
   reservationDate?: {
     startDate?: string | null;
     endDate?: string | null;

@@ -19,7 +19,7 @@ const EventDetails = (props: EventTypeProps) => {
 
   const [event, setEvent] = useState<IEventList | null>(null);
   const [openPanel, setOpenPanel] = useState(false);
-  const { ids, setIds, setBooths, booths } = useBoothSelection();
+  const { ids, setIds, setEventId, setBooths, booths } = useBoothSelection();
 
   const { response: responseEvent } = useApi({
     service: getEventForGuest,
@@ -46,6 +46,7 @@ const EventDetails = (props: EventTypeProps) => {
 
   useEffect(() => {
     if (responseEvent) {
+      setEventId(responseEvent.id);
       setEvent(responseEvent);
     }
   }, [responseEvent]);

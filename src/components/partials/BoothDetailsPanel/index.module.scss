@@ -106,12 +106,13 @@
   text-align: left;
 }
 
-.ul {
-  padding-left: 20px;
-
-  li {
-    list-style-type: disc;
-    padding: 3px 0;
+.html-summary {
+  ol,
+  ul,
+  menu {
+    list-style: normal;
+    margin: 0;
+    padding: 0 0 0 20px;
   }
 }
 

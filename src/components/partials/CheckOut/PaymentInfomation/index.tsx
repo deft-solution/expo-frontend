@@ -2,7 +2,7 @@ import Image from 'next/image';
 import React from 'react';
 
 import { useBoothSelection } from '@/context/BoothSelectionContext';
-import { formatNumber } from '@/helper/format-number';
+import { formatNumberKHR } from '@/helper/format-number';
 import { CalculatedDataResponse } from '@/models/Payment';
 
 import InputCoupon from '../InputCoupon';
@@ -27,7 +27,7 @@ const PaymentInformation: React.FC<TypePropsPaymentInfo> = (props) => {
             <div className="font-bold">Total Amount</div>
             {data?.orderDetails && (
               <h2 className="text-3xl mt-2 font-bold text-[#33A16E]">
-                KHR {formatNumber(data.orderDetails.total * 4000)}
+                KHR {formatNumberKHR(data.orderDetails.total)}
               </h2>
             )}
           </div>
@@ -58,7 +58,7 @@ const PaymentInformation: React.FC<TypePropsPaymentInfo> = (props) => {
                   <div>
                     <div className="font-bold text-xl text-right">
                       <span className="mr-2">KHR</span>
-                      {formatNumber((order.total ?? 0) * 4000)}
+                      {formatNumberKHR(order.total)}
                     </div>
                   </div>
                 </div>
@@ -75,13 +75,13 @@ const PaymentInformation: React.FC<TypePropsPaymentInfo> = (props) => {
               <div>Sub Total</div>
               <div>
                 <span className="mr-2">KHR</span>
-                {formatNumber(subtotal * 4000)}
+                {formatNumberKHR(subtotal)}
               </div>
             </div>
             {serviceFee > 0 && (
               <div className="flex items-center justify-between">
                 <div>Service Fee</div>
-                <div>KHR {formatNumber(serviceFee * 4000)}</div>
+                <div>KHR {formatNumberKHR(serviceFee)}</div>
               </div>
             )}
           </div>
@@ -91,7 +91,7 @@ const PaymentInformation: React.FC<TypePropsPaymentInfo> = (props) => {
             <div className="text-xl font-bold">Total</div>
             <div className="font-medium text-[#33A16E] text-xl">
               <span>KHR </span>
-              <span className="ml-1">{formatNumber((total ?? 0) * 4000)}</span>
+              <span className="ml-1">{formatNumberKHR(total ?? 0)}</span>
             </div>
           </div>
         </section>

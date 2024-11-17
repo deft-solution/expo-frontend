@@ -35,12 +35,13 @@ const nextConfig = {
     API_URL: process.env.API_URL,
     API_KEY: process.env.API_KEY,
     API_SECRET: process.env.API_SECRET,
+    PAYMENT_URL: process.env.PAYMENT_URL,
     ACCPET_PAYMENT: ['khr-khqr'],
   },
   async rewrites() {
     const API_URL = process.env.API_URL || "http://localhost:4000";
-    const WONDER_PASS_API_URL =
-      process.env.WONDER_PASS_API_URL || "http://localhost:4000";
+    const WONDER_PASS_API_URL = process.env.WONDER_PASS_API_URL || "http://localhost:4000";
+    const PAYMENT_URL = process.env.PAYMENT_URL || "http://localhost:4000";
 
     return [
       {
@@ -50,6 +51,10 @@ const nextConfig = {
       {
         source: "/wonderpass-api/:path*",
         destination: `${WONDER_PASS_API_URL}/api/:path*`,
+      },
+      {
+        source: '/payment-processing/:path*', // Define the source path
+        destination: `${PAYMENT_URL}/payment-processing/:path*`, // Define the destination URL
       },
     ];
   },

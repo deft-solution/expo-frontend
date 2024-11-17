@@ -1,4 +1,5 @@
 import { IPagination } from '@/models/Pagination';
+import { IBootList } from '@/schema/Booth';
 import { EventListingFilterParam, IEventList, IEvents } from '@/schema/Event';
 import { GET, GETWithToken, POSTWithToken, PUTWithToken } from '@Core';
 

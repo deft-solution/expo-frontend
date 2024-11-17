@@ -4,7 +4,6 @@ import React, { useEffect, useState } from 'react';
 import { useFormContext } from 'react-hook-form';
 
 import { uploadFiles } from '@/service/file';
-import { error } from 'console';
 
 export interface UploadTypesProps {
   name: string;
@@ -12,11 +11,26 @@ export interface UploadTypesProps {
   folderName?: string;
   accepts?: string[]; // Optional prop as an array of strings
   isMultiple?: boolean;
+  isFormDataFile?: boolean;
 }
 
 const UploadComponent = (props: UploadTypesProps) => {
-  const { name, folderName, label, accepts = ['image/*'], isMultiple = false } = props;
-  const { register, setValue, getValues } = useFormContext();
+  const {
+    name,
+    folderName,
+    label,
+    accepts = ['image/*'],
+    isMultiple = false,
+    isFormDataFile = false,
+  } = props;
+
+  const {
+    register,
+    setValue,
+    getValues,
+    formState: { errors },
+  } = useFormContext();
+
   register(name);
   const defaultValue = getValues(name);
 
@@ -66,30 +80,36 @@ const UploadComponent = (props: UploadTypesProps) => {
 
       const formData = new FormData();
       formData.append('file', file);
+      formData.append('name', file.name);
 
       if (folderName) {
         formData.append('folderName', folderName);
       }
-
-      formData.append('name', file.name);
-      uploadFiles(formData)
-        .then(({ url }) => {
-          if (!isMultiple) {
-            setFileUrls((oldFiles) => [...oldFiles, url]);
-            setValue(name, url);
-          }
-        })
-        .catch((err) => {
-          alert(err?.message ?? 'Something Went Wrong.');
-        });
+      if (!isFormDataFile) {
+        uploadFiles(formData)
+          .then(({ url }) => {
+            if (!isMultiple) {
+              setFileUrls((oldFiles) => [...oldFiles, url]);
+              setValue(name, url);
+            }
+          })
+          .catch((err) => {
+            const message = err?.message ?? 'Something Went Wrong.';
+            alert(message);
+          });
+      } else {
+        setValue(name, formData);
+      }
     }
   }, [files]);
 
   useEffect(() => {
-    if (defaultValue) {
+    if (defaultValue && !isFormDataFile) {
       setFileUrls([defaultValue]);
     }
   }, [defaultValue]);
+
+  const error = name.split('.').reduce((acc, part) => (acc as any)?.[part], errors);
 
   return (
     <div>
@@ -130,12 +150,15 @@ const UploadComponent = (props: UploadTypesProps) => {
                 <span className="font-semibold">Click to upload</span> or drag and drop
               </p>
               <p className="text-xs text-gray-500 dark:text-gray-400">
-                SVG, PNG, JPG or GIF (MAX. 800x400px)
+                {accepts.join(', ')}
+                <span className="ml-2">(MAX. 800x400px)</span>
               </p>
             </div>
           )}
         </label>
       </div>
+
+      {error && <p className="text-red-500 text-xs mt-2">{(error as any).message?.toString()}</p>}
 
       <input
         id={name}

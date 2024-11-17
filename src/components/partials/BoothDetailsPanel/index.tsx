@@ -4,10 +4,9 @@ import { useRouter } from 'next/navigation';
 import React from 'react';
 
 import { useBoothSelection } from '@/context/BoothSelectionContext';
-import { formatNumber } from '@/helper/format-number';
+import { formatNumber, formatNumberKHR } from '@/helper/format-number';
 
 import Style from './index.module.scss';
-import { getWonderPassToken } from '@/helper';
 
 interface TypeProps {
   id: string;
@@ -59,12 +58,15 @@ const BoothDetailPanel: React.FC<TypeProps> = (props) => {
                   </div>
                 </div>
               </div>
-              <div>
-                <div className={Style['title-exhibition']}>Exhibition Stand Includes:</div>
-                <ul className={Style['ul']}>
-                  <li dangerouslySetInnerHTML={{ __html: booth.description }}></li>
-                </ul>
-              </div>
+              {booth.description && (
+                <div>
+                  <div className={Style['title-exhibition']}>Exhibition Stand Includes:</div>
+                  <div
+                    className={`${Style['html-summary']} mt-4`}
+                    dangerouslySetInnerHTML={{ __html: booth.description }}
+                  ></div>
+                </div>
+              )}
               <div>
                 <p>Would you like a quotation for printing stickers for your booth?</p>
                 <div>Yes, I would like a quotation for sticker printing.</div>
@@ -75,7 +77,7 @@ const BoothDetailPanel: React.FC<TypeProps> = (props) => {
                 <div className={classNames('text-gray-500', Style['txt-price'])}>Price</div>
                 <div className={Style['txt-amount']}>
                   <span>KHR</span>
-                  <span className="ml-3">{formatNumber(booth.price * 4000)}</span>
+                  <span className="ml-3">{formatNumberKHR(booth.price)}</span>
                 </div>
               </div>
               <button

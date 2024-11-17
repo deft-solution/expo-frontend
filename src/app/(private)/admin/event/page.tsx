@@ -17,13 +17,11 @@ const Page = () => {
   const [limit, _] = useState<number>(25);
   const [offset, setOffset] = useState<number>(0);
 
-  const { response } = useApi<IPagination<IEventList>, EventListingFilterParam>(
-    {
-      service: getAllEvent,
-      params: { limit: limit, offset: offset },
-      effects: [offset],
-    },
-  );
+  const { response } = useApi<IPagination<IEventList>, EventListingFilterParam>({
+    service: getAllEvent,
+    params: { limit: limit, offset: offset },
+    effects: [offset],
+  });
 
   useEffect(() => {
     if (response && response.data.length) {
@@ -32,6 +30,10 @@ const Page = () => {
       setTotal(response.total);
     }
   }, [response]);
+
+  const goToEventDetail = (id: string) => {
+    return '/admin/event/' + id;
+  };
 
   return (
     <div>
@@ -66,41 +68,42 @@ const Page = () => {
           {list.length > 0 &&
             list.map((row, idx) => {
               return (
-                <tr
-                  key={idx}
-                  className="hover:bg-gray-100 dark:hover:bg-neutral-700"
-                >
+                <tr key={idx} className="hover:bg-gray-100 dark:hover:bg-neutral-700">
                   <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-800 dark:text-neutral-200">
-                    <div className="flex items-center gap-2">
-                      {row.logoUrl && (
-                        <Image
-                          className="w-10 h-10 rounded-full object-cover"
-                          width={100}
-                          height={100}
-                          src={row.logoUrl}
-                          alt={row.logoUrl}
-                        />
-                      )}
-                      {row.name}
-                    </div>
+                    <Link href={goToEventDetail(row.id)}>
+                      <div className="flex items-center gap-2">
+                        {row.logoUrl && (
+                          <Image
+                            className="w-10 h-10 rounded-full object-cover"
+                            width={100}
+                            height={100}
+                            src={row.logoUrl}
+                            alt={row.logoUrl}
+                          />
+                        )}
+                        {row.name}
+                      </div>
+                    </Link>
                   </td>
                   <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-800 dark:text-neutral-200">
-                    {formatDisplayDate(row.startFrom)}
+                    <Link href={goToEventDetail(row.id)}>{formatDisplayDate(row.startFrom)}</Link>
                   </td>
                   <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-800 dark:text-neutral-200">
-                    {formatDisplayDate(row.endDate)}
+                    <Link href={goToEventDetail(row.id)}>{formatDisplayDate(row.endDate)}</Link>
                   </td>
                   <td>
-                    <div className="flex items-center gap-2">
-                      <div
-                        className={classNames(
-                          'h-2.5 w-2.5 rounded-full me-2',
-                          { 'bg-green-500': row.isActive },
-                          { 'bg-red-500': !row.isActive },
-                        )}
-                      ></div>
-                      <div>{row.isActive ? 'Active' : 'Deactive'}</div>
-                    </div>
+                    <Link href={goToEventDetail(row.id)}>
+                      <div className="flex items-center gap-2">
+                        <div
+                          className={classNames(
+                            'h-2.5 w-2.5 rounded-full me-2',
+                            { 'bg-green-500': row.isActive },
+                            { 'bg-red-500': !row.isActive }
+                          )}
+                        ></div>
+                        <div>{row.isActive ? 'Active' : 'Deactive'}</div>
+                      </div>
+                    </Link>
                   </td>
                   <td>
                     <Link

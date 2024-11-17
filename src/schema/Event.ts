@@ -38,3 +38,13 @@ export const EventCreateFormSchema = yup.object().shape({
   phoneNumber: yup.string().optional().default(null),
   isActive: yup.boolean().optional().default(null),
 });
+
+export interface IEventBoothForm {
+  file: any;
+}
+
+// Define a validation schema with Yup
+export const IEventUploadBooth = yup.object().shape({
+  // Existing validation rules...
+  file: yup.mixed().required('File is required'),
+});

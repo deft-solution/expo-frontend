@@ -6,9 +6,13 @@ export interface ICheckoutForm {
   phoneNumber: string;
   email: string;
   provider: number;
+  companyName: string;
+  patentUrl?: string;
+  nationality: string;
   option: string;
   quantity: number;
   passTemplate: string;
+  paymentCard: string;
 }
 
 // Define a validation schema with Yup
@@ -16,6 +20,9 @@ export const CheckOutForm = yup.object().shape({
   firstName: yup.string().required('First Name is required'),
   lastName: yup.string().required('Last Name is required'),
   quantity: yup.number().default(1).optional(),
+  companyName: yup.string().optional().default(null),
+  patentUrl: yup.string().optional(),
+  nationality: yup.string().optional().default(null),
   passTemplate: yup.string().required('Pass template cant be null'),
   phoneNumber: yup
     .string()

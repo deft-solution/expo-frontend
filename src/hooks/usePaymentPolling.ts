@@ -1,5 +1,6 @@
 'use client';
 import { ValidatePassesResponse } from '@/models/Payment';
+import { orderIsCompleted } from '@/service/order';
 import { validatePaymentById } from '@/service/payment';
 import { useEffect, useState, useRef } from 'react';
 
@@ -11,6 +12,7 @@ export const usePaymentPolling = (props: HookProps = {}) => {
   const { onSuccess } = props;
   const [polling, setPolling] = useState<boolean>(false);
   const [paymentId, setPaymentId] = useState<string | null>(null);
+  const [orderId, setOrderId] = useState<string | null>(null);
   const [response, setResponse] = useState<ValidatePassesResponse | null>(null);
   const [isSuccess, setIsSuccess] = useState(false);
   const intervalIdRef = useRef<ReturnType<typeof setInterval> | null>(null);
@@ -31,6 +33,9 @@ export const usePaymentPolling = (props: HookProps = {}) => {
           intervalIdRef.current = null;
           setIsSuccess(true);
           setPolling(false);
+          if (orderId) {
+            await orderIsCompleted(orderId);
+          }
           if (onSuccess) {
             onSuccess();
           }
@@ -60,13 +65,19 @@ export const usePaymentPolling = (props: HookProps = {}) => {
     }
   };
 
+  const startPolling = () => {
+    setPolling(true);
+  };
+
   // Return values and functions to control polling externally
   return {
     isSuccess,
     response,
     polling,
-    setPolling,
+    paymentId,
+    startPolling,
     setPaymentId,
+    setOrderId,
     cancelPolling, // Add the cancel function to the returned object
   };
 };

@@ -9,6 +9,7 @@ import React, { createContext, useContext, useEffect, useState } from 'react';
 interface AuthLiveContextType {
   isAuthenticated: boolean;
   isFechingProfile: boolean;
+  userId: string | null;
   userProfile: UserLiveProfileMe | null;
   logout: () => void;
   onRefresh: () => void;
@@ -23,6 +24,7 @@ export const AuthLiveProvider: React.FC<{ children: React.ReactNode }> = ({ chil
   const [isFechingProfile, setIsFetchingProfile] = useState(false);
   const [userProfile, setUserProfile] = useState<UserLiveProfileMe | null>(null);
   const [isAuthenticated, setIsAuthenticated] = useState<boolean>(false);
+  const [userId, setUserId] = useState<string | null>(null);
 
   // Check for token in local storage on initial render
   useEffect(() => {
@@ -49,6 +51,7 @@ export const AuthLiveProvider: React.FC<{ children: React.ReactNode }> = ({ chil
       .then((response) => {
         setIsFetchingProfile(false);
         setUserProfile(response);
+        setUserId(response.data._id);
         setIsAuthenticated(true);
       })
       .catch((error) => {
@@ -59,7 +62,7 @@ export const AuthLiveProvider: React.FC<{ children: React.ReactNode }> = ({ chil
         }
       });
   };
-  const conextValue = { isFechingProfile, isAuthenticated, userProfile, logout, onRefresh };
+  const conextValue = { isFechingProfile, isAuthenticated, userId, userProfile, logout, onRefresh };
 
   return <AuthLiveContext.Provider value={conextValue}>{children}</AuthLiveContext.Provider>;
 };

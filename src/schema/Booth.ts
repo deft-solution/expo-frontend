@@ -2,25 +2,29 @@ import * as yup from 'yup';
 
 import { IBootTypeList } from './BoothType';
 import { IEventList } from './Event';
+import { IPaginationParam } from '@/models/Pagination';
+
+export interface IBoothFilterParam extends IPaginationParam {}
 
 export interface IBootList extends IBooth {
   id: string;
 }
 
 export interface IBooth {
-  isActive: boolean
-  boothNumber: string
+  isActive: boolean;
+  boothNumber: string;
   price: number;
   description: string;
   externalId: string;
-  hall: string
-  size: string
-  mapUrl: string
-  exhibitor?: string
-  createdBy: string
-  createdAt: string
-  updatedAt: string
-  id: string
+  hall: string;
+  size: string;
+  mapUrl: string;
+  isReserved: boolean;
+  exhibitor?: string;
+  createdBy: string;
+  createdAt: string;
+  updatedAt: string;
+  id: string;
   event?: IEventList;
   boothType?: IBootTypeList;
 }

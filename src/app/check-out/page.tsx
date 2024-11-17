@@ -1,14 +1,14 @@
 'use client';
 import React, { useEffect, useState } from 'react';
-import { useForm } from 'react-hook-form';
+import { useForm, SubmitHandler } from 'react-hook-form';
+import { yupResolver } from '@hookform/resolvers/yup';
 
-import AuthenticationForm from '@/components/authentication';
 import CheckOutSuccess from '@/components/partials/CheckOut/CheckOutSuccess';
 import PaymentDetail from '@/components/partials/CheckOut/PaymentDetails';
 import PaymentInformation from '@/components/partials/CheckOut/PaymentInfomation';
 import PaymentStep from '@/components/partials/CheckOut/PaymentStep';
 import SuccessSign from '@/components/partials/CheckOut/SuccessSign';
-import { useAuthLive } from '@/context/AuthLiveContext';
+
 import { useBoothSelection } from '@/context/BoothSelectionContext';
 import { getWonderPassToken } from '@/helper';
 import { IPayments, useCalculatedCheckout } from '@/hooks/useCalculatedCheckout';
@@ -16,100 +16,120 @@ import { usePaymentPolling } from '@/hooks/usePaymentPolling';
 import { CheckOutForm, ICheckoutForm } from '@/schema/Checkout';
 import { submitPayment } from '@/service/payment';
 import { Form, Modal } from '@Core';
-import { yupResolver } from '@hookform/resolvers/yup';
+import { useAuthLive } from '@/context/AuthLiveContext';
+import { onSubmitOrder } from '@/actions/Order';
 
-const PageCheckOut = () => {
-  const { isAuthenticated } = useAuthLive();
-  const { ids } = useBoothSelection();
+const PageCheckOut: React.FC = () => {
+  const { ids, eventId, selectedBooth } = useBoothSelection();
 
-  const methods = useForm({ resolver: yupResolver(CheckOutForm) });
+  const methods = useForm<ICheckoutForm>({
+    resolver: yupResolver(CheckOutForm),
+  });
+
   const { watch, setValue } = methods;
+  const { provider, option, paymentCard } = watch();
 
-  const [showAuthForm, setShowAuthForm] = useState(false);
   const [payment, setPayment] = useState<IPayments>();
-  const [code, setCode] = useState<string | null>(null);
-  const [submitModal, setShowSubmitModal] = useState<boolean>(false);
+  const [paymentCode, setPaymentCode] = useState<string | null>(null);
+  const [isSubmitModalVisible, setSubmitModalVisibility] = useState(false);
+  const { userId } = useAuthLive();
 
   const { response: calculatedPayment } = useCalculatedCheckout({ payment });
 
-  const provider = watch('provider');
-  const option = watch('option');
-  const paymentCard = watch('paymentCard');
-  //
+  const onSuccessPayment = async () => {
+    setSubmitModalVisibility(false);
+  };
+
+  const { setPaymentId, paymentId, isSuccess, startPolling, setOrderId, cancelPolling } =
+    usePaymentPolling({
+      onSuccess: onSuccessPayment,
+    });
+
   const token = getWonderPassToken()?.split(' ');
 
-  const onSubmitForm = (data: ICheckoutForm) => {
-    submitPayment(data as any)
-      .then((reponse) => {
-        setCode(reponse.code);
-        setPaymentId(reponse.paymentId);
-        setPolling(true);
-        setShowSubmitModal(true);
+  const handleFormSubmit: SubmitHandler<ICheckoutForm> = (data) => {
+    if (!eventId) {
+      return;
+    }
+
+    submitPayment(data)
+      .then(async (response) => {
+        await submitOrder(data, response.paymentId);
+        setPaymentCode(response.code);
+        setPaymentId(response.paymentId);
+        startPolling();
+        setSubmitModalVisibility(true);
       })
-      .catch((err) => {
-        alert(err.message);
+      .catch((error) => {
+        if (error?.message) {
+          alert(`Error: ${error.message}`);
+        }
       });
   };
 
   useEffect(() => {
-    setShowAuthForm(!isAuthenticated);
-  }, [isAuthenticated]);
-
-  useEffect(() => {
     setPayment({ provider, option, paymentCard });
-  }, [paymentCard, option, provider]);
+  }, [provider, option, paymentCard]);
 
   useEffect(() => {
     setValue('passTemplate', ids[0]);
-  }, [ids]);
+  }, [ids, setValue]);
 
-  const cancelPayment = () => {
-    setShowSubmitModal(false);
+  const handleModalClose = () => {
+    setSubmitModalVisibility(false);
+    cancelPolling();
   };
 
-  const { setPaymentId, isSuccess, setPolling, cancelPolling } = usePaymentPolling({
-    onSuccess: cancelPayment,
-  });
+  // Submit order after payment
+  const submitOrder = async (data: ICheckoutForm, paymentId: string) => {
+    try {
+      if (!eventId || !userId || !selectedBooth?.id) {
+        return;
+      }
 
-  const onClickOutSide = () => {
-    setShowSubmitModal(false);
-    cancelPolling();
+      data['passTemplate'] = selectedBooth.id;
+
+      const orderResponse = await onSubmitOrder(data, { event: eventId, userId, paymentId });
+      if (orderResponse._id) {
+        setOrderId(orderResponse._id);
+      }
+    } catch (error) {
+      throw new Error('Error creating the order');
+    }
   };
 
   return (
     <div className="max-md:mb-10">
       <Modal
-        contentClassName="max-sm:!max-w-xs md:!max-w-md lg:!max-w-[40%]"
-        visible={showAuthForm}
-      >
-        <AuthenticationForm />
-      </Modal>
-      <Modal
         contentClassName="max-w-[800px] !h-[800px]"
-        visible={submitModal}
-        onClickOutSide={onClickOutSide}
+        visible={isSubmitModalVisible}
+        onClickOutSide={handleModalClose}
       >
-        {token && token.length && (
+        {token && token.length > 1 && (
           <iframe
             className="checkout-frame w-full h-full"
-            src={`https://dev.wonderpass.asia/payment-processing?code=${code}&token=${token[1]}&platformType=2`}
+            src={`https://dev.wonderpass.asia/payment-processing?code=${paymentCode}&token=${token[1]}&platformType=2`}
           ></iframe>
         )}
       </Modal>
-      <Form methods={methods} onSubmit={onSubmitForm}>
+
+      {/* Main Checkout Form */}
+      <Form methods={methods} onSubmit={handleFormSubmit}>
         <PaymentStep isCompleted={isSuccess} />
         <div className="container mx-auto xl:max-w-screen-xl max-md:px-4">
-          {!isSuccess && (
+          {!isSuccess ? (
             <div className="grid grid-cols-1 md:grid-cols-2 gap-5 mt-7">
               <PaymentDetail />
               <PaymentInformation paymentCalculated={calculatedPayment} />
             </div>
-          )}
-
-          {isSuccess && (
+          ) : (
             <div className="grid grid-cols-1 md:grid-cols-2 gap-5 mt-7">
               <SuccessSign className="col-span-1 md:col-span-2 items-center flex flex-col gap-5" />
-              <CheckOutSuccess />
+              <CheckOutSuccess
+                option={payment?.option}
+                paymentRef={paymentId}
+                paymentCalculated={calculatedPayment}
+              />
             </div>
           )}
         </div>

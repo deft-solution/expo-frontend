@@ -1,5 +1,5 @@
 import { IPagination } from '@/models/Pagination';
-import { IBoothForm, IBootList } from '@/schema/Booth';
+import { IBoothFilterParam, IBoothForm, IBootList } from '@/schema/Booth';
 import { GET, GETWithToken, POSTWithToken, PUTWithToken } from '@Core';
 
 export function createBooth(param: IBoothForm): Promise<IBootList> {
@@ -22,7 +22,14 @@ export function updateBoothByID(id: string, param: IBoothForm): Promise<IBootLis
   return PUTWithToken<IBootList, IBoothForm>(API_URL, param);
 }
 
-export function getAllBooths(): Promise<IPagination<IBootList>> {
+export function getAllBooths(params: IBoothFilterParam): Promise<IPagination<IBootList>> {
   const API_URL = '/api/booths/v1/list';
-  return GETWithToken<IPagination<IBootList>, {}>(API_URL, {});
+  return GETWithToken<IPagination<IBootList>, {}>(API_URL, params);
+}
+
+export function uploadBoothTemplate(file: FormData): Promise<IBootList[]> {
+  const header = { 'Content-Type': 'multipart/form-data' };
+  const API_URL = '/api/booths/v1/xlsx/upload';
+
+  return POSTWithToken<IBootList[]>(API_URL, file, header);
 }

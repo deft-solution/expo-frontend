@@ -5,69 +5,117 @@ export interface PaginationTypeProps {
   total: number;
   pageSize: number;
   onChange?: (page: number) => void;
-  showPrevNext?: boolean; // New prop to show "Previous" and "Next" buttons
 }
 
 const PaginationComponent = (props: PaginationTypeProps) => {
-  const { total, pageSize, onChange, showPrevNext = false } = props;
+  const { total, pageSize, onChange } = props;
   const [totalPage, setTotalPage] = useState<number>(0);
-  const [list, setList] = useState<number[]>([]);
-  const [currentPage, setCurrentPage] = useState<number>(1);
+  const [activePage, setActivePage] = useState<number>(1);
 
   useEffect(() => {
     setTotalPage(Math.ceil(total / pageSize));
   }, [total, pageSize]);
 
-  useEffect(() => {
-    const items = Array.from({ length: totalPage }, (_, index) => index + 1);
-    setList(items);
-  }, [totalPage]);
-
   const onPaginationChange = (page: number) => {
-    setCurrentPage(page);
-    const nextOffset = (page - 1) * pageSize;
-    if (onChange) {
-      onChange(nextOffset);
+    if (page >= 1 && page <= totalPage) {
+      setActivePage(page);
+      const nextOffset = (page - 1) * pageSize;
+      if (onChange) {
+        onChange(nextOffset);
+      }
     }
   };
+
+  const renderPageNumbers = () => {
+    const pages = [];
+    const pageRange = 4;
+
+    // Show the first page and ellipsis if necessary
+    if (activePage > 1 + pageRange) {
+      pages.push(
+        <li
+          key={1}
+          onClick={() => onPaginationChange(1)}
+          className="flex items-center justify-center px-3 h-8 leading-tight text-gray-500 bg-white border border-gray-300 hover:bg-gray-100 hover:text-gray-700"
+        >
+          1
+        </li>
+      );
+      pages.push(
+        <li
+          key="start-ellipsis"
+          className="flex items-center justify-center px-3 h-8 leading-tight text-gray-500 bg-white border border-gray-300"
+        >
+          ...
+        </li>
+      );
+    }
+
+    // Pages around the current page
+    for (
+      let i = Math.max(1, activePage - pageRange);
+      i <= Math.min(totalPage, activePage + pageRange);
+      i++
+    ) {
+      pages.push(
+        <li
+          key={i}
+          onClick={() => onPaginationChange(i)}
+          className={`flex items-center justify-center px-3 h-8 leading-tight border ${
+            i === activePage
+              ? 'text-blue-600 bg-blue-100 border-blue-300'
+              : 'text-gray-500 bg-white border-gray-300 hover:bg-gray-100 hover:text-gray-700'
+          }`}
+        >
+          {i}
+        </li>
+      );
+    }
+
+    // Show the last page and ellipsis if necessary
+    if (activePage < totalPage - pageRange) {
+      pages.push(
+        <li
+          key="end-ellipsis"
+          className="flex items-center justify-center px-3 h-8 leading-tight text-gray-500 bg-white border border-gray-300"
+        >
+          ...
+        </li>
+      );
+      pages.push(
+        <li
+          key={totalPage}
+          onClick={() => onPaginationChange(totalPage)}
+          className="flex items-center justify-center px-3 h-8 leading-tight text-gray-500 bg-white border border-gray-300 hover:bg-gray-100 hover:text-gray-700"
+        >
+          {totalPage}
+        </li>
+      );
+    }
+
+    return pages;
+  };
+
+  // Check if there is only one page
+  const isSinglePage = totalPage === 1;
 
   return (
     <>
       <nav aria-label="Page navigation example">
-        <ul className="inline-flex -space-x-px text-sm justify-between items-center">
-          {showPrevNext && (
+        <ul className="inline-flex -space-x-px text-sm">
+          {activePage > 1 && (
             <li
-              onClick={() => currentPage > 1 && onPaginationChange(currentPage - 1)}
-              className={`flex items-center justify-center p-5 h-8 leading-tight rounded-sm  ${
-                currentPage > 1
-                  ? 'bg-main text-white cursor-pointer'
-                  : 'bg-white cursor-not-allowed'
-              }`}
+              onClick={() => onPaginationChange(activePage - 1)}
+              className="flex items-center justify-center px-3 h-8 leading-tight text-gray-500 bg-white border border-gray-300 hover:bg-gray-100 hover:text-gray-700"
             >
-              Previous
+              Prev
             </li>
           )}
-          <div className="flex px-10">
-            {list.map((idx) => {
-              return (
-                <li
-                  key={idx}
-                  onClick={() => onPaginationChange(idx)}
-                  className="flex items-center justify-center px-3 h-8 leading-tight bg-white border border-gray-300 hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white"
-                >
-                  {idx}
-                </li>
-              );
-            })}
-          </div>
-          {showPrevNext && (
+          {renderPageNumbers()}
+          {activePage < totalPage && (
             <li
-              onClick={() => currentPage < totalPage && onPaginationChange(currentPage + 1)}
-              className={`flex items-center justify-center p-5 h-8 leading-tight rounded-sm ${
-                currentPage < totalPage
-                  ? 'bg-main text-white cursor-pointer'
-                  : 'bg-white text-gray-500 cursor-not-allowed'
-              }`}
+              onClick={() => onPaginationChange(activePage + 1)}
+              className="flex items-center justify-center px-3 h-8 leading-tight text-gray-500 bg-white border border-gray-300 hover:bg-gray-100 hover:text-gray-700"
             >
               Next
             </li>

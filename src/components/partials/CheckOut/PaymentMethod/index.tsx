@@ -3,27 +3,19 @@ import Image from 'next/image';
 import React, { useEffect, useState } from 'react';
 import { useFormContext } from 'react-hook-form';
 
-import { getPaymentOptionsForCheckOut } from '@/actions/payment';
 import { PaymentOptionFormat } from '@/models/Payment';
-import { useApi } from '@Core';
 import Link from 'next/link';
 import { getAcceptPayments } from '@/helper/config';
-import getConfig from 'next/config';
+import { usePaymentContext } from '@/context/PaymentOptionsContext';
 
 const SelectPaymentMethod = () => {
   const providerName = 'provider';
   const optionName = 'option';
   const paymentCard = 'paymentCard';
-
-  const publicRuntimeConfig = getConfig();
+  const { paymentOptions } = usePaymentContext();
 
   const [payments, setPayments] = useState<PaymentOptionFormat[]>([]);
   const [activeIdx, setActiveIdx] = useState<number>(-1);
-  const { response } = useApi({
-    service: getPaymentOptionsForCheckOut,
-    effects: [],
-    params: {},
-  });
 
   const {
     register,
@@ -35,14 +27,13 @@ const SelectPaymentMethod = () => {
   register(paymentCard);
 
   useEffect(() => {
-    if (response) {
+    if (paymentOptions) {
       const allowPayments = getAcceptPayments();
-
-      const acceptPayment = response.filter(({ key }) => allowPayments.includes(key));
+      const acceptPayment = paymentOptions.filter(({ key }) => allowPayments.includes(key));
 
       setPayments(acceptPayment);
     }
-  }, [response]);
+  }, [paymentOptions]);
 
   const onSelectPayment = (idx: number) => {
     const payment = payments[idx];
@@ -59,7 +50,7 @@ const SelectPaymentMethod = () => {
     <div className="flex flex-col gap-4 my-4">
       <div>
         <label htmlFor="">Payment Method</label>
-        <div className="flex mt-4">
+        <div className="grid grid-cols-2 mt-4 gap-4">
           {payments.map((payment, idx) => {
             const logo = payment.logo;
             return (

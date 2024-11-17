@@ -2,6 +2,7 @@
 import React, { useRef, useState } from 'react';
 
 import Style from './index.module.scss';
+import { useFormContext } from 'react-hook-form';
 
 export interface InputUploadProps {
   name: string;
@@ -12,6 +13,13 @@ export interface InputUploadProps {
 
 const InputUpload: React.FC<InputUploadProps> = (props) => {
   const { name, accepts = ['image/*'] } = props;
+  const {
+    register,
+    setValue,
+    getValues,
+    formState: { errors },
+  } = useFormContext();
+  register(name);
 
   const [file, setFile] = useState<File | null>(null);
   const [label, setLabel] = useState<string | null>(props.label || null);
@@ -28,8 +36,11 @@ const InputUpload: React.FC<InputUploadProps> = (props) => {
       const file = files[0];
       setLabel(file.name);
       setFile(file);
+      setValue(name, file);
     }
   };
+
+  const error = name.split('.').reduce((acc, part) => (acc as any)?.[part], errors);
 
   return (
     <>
@@ -40,13 +51,11 @@ const InputUpload: React.FC<InputUploadProps> = (props) => {
               {label}
             </label>
           )}
-          <div
-            onClick={handleFileInputClick}
-            className="cursor-pointer text-[#33A16E]"
-          >
+          <div onClick={handleFileInputClick} className="cursor-pointer text-[#33A16E]">
             Upload Attachment
           </div>
         </div>
+        {error && <p className="text-red-500 text-xs mt-2">{(error as any).message?.toString()}</p>}
       </div>
 
       <input

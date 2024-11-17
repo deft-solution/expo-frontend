@@ -1,10 +1,12 @@
 export const CurrencyList = [
   {
     id: 'KHR',
-    currency: 'KHR'
+    currency: 'KHR',
   },
   {
     id: 'USD',
-    currency: 'USD'
+    currency: 'USD',
   },
 ];
+
+export const KHR_RATE = 4000;

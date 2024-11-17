@@ -3,13 +3,31 @@ import Image from 'next/image';
 import React from 'react';
 import Style from './index.module.scss';
 import classNames from 'classnames';
+import { useBoothSelection } from '@/context/BoothSelectionContext';
+import { CalculatedDataResponse } from '@/models/Payment';
+import { formatNumber, formatNumberKHR } from '@/helper/format-number';
+import { usePaymentContext } from '@/context/PaymentOptionsContext';
 
-const CheckOutSuccess = () => {
+export interface TypePropsPaymentInfo {
+  paymentCalculated: CalculatedDataResponse | null;
+  paymentRef: string | null;
+  option?: string | null;
+}
+
+const CheckOutSuccess: React.FC<TypePropsPaymentInfo> = (props) => {
+  const { paymentCalculated: payment, paymentRef, option } = props;
+  const data = payment?.data;
+  const total = data?.orderDetails.total ?? 0;
+  const { selectedBooth: booth } = useBoothSelection();
+
+  const { paymentOptions } = usePaymentContext();
+  const paymentMethod = paymentOptions.find(({ key }) => option === key);
+
   return (
     <>
       <div>
         <div className="rounded-md bg-[#F6F7FA] p-4">
-          <div className="text-2xl font-bold">Type A</div>
+          <div className="text-2xl font-bold">{booth?.boothType?.name}</div>
           <div className="mt-4">
             <div className="flex items-center gap-2 text-[#33A16E]">
               <Image
@@ -18,26 +36,28 @@ const CheckOutSuccess = () => {
                 width={24}
                 height={24}
               />
-              <div>15m X 15m</div>
+              <div>{booth?.size}</div>
             </div>
-            <ul className="mt-4 list-disc pl-4">
-              <li>2x Bar Chairs</li>
-              <li>1x Counter (Dimension 100x50x100cm)</li>
-              <li>Electricity 1,5kw - 220 V power outlet</li>
-              <li>1x Extension Cord</li>
-              <li>2x clip lights</li>
-              <li>2x Attendee Cards</li>
-            </ul>
+            {booth?.description && (
+              <div
+                className={`mt-4 ${Style['html-summary']}`}
+                dangerouslySetInnerHTML={{ __html: booth.description }}
+              ></div>
+            )}
           </div>
-          <div className="border-t mt-9 pt-4">
+          {/* <div className="border-t mt-9 pt-4">
             <div className={classNames('pl-6', Style['green-check'])}>
               Yes, I would like a quotation for sticker printing.
-            </div>
-          </div>
+            </div>f
+          </div> */}
         </div>
         <div className="grid grid-cols-2 gap-4 mt-4">
-          <Button theme="light">Get PDF Receipt</Button>
-          <Button theme="success">Get PDF Receipt</Button>
+          <Button type="button" theme="light">
+            Get PDF Receipt
+          </Button>
+          <Button type="button" theme="success">
+            Back to Home
+          </Button>
         </div>
       </div>
       <div className="w-full h-max bg-[#F6F7FA] rounded-md">
@@ -46,7 +66,7 @@ const CheckOutSuccess = () => {
             <div>
               <div>Total Amount</div>
               <h2 className="text-3xl mt-2 font-medium text-[#33A16E]">
-                KHR 1,800,000
+                KHR {formatNumberKHR(total)}
               </h2>
             </div>
             <div className="mt-4 flex items-center gap-4 justify-center color-[#999a9c]">
@@ -64,25 +84,19 @@ const CheckOutSuccess = () => {
             <div className="mt-4 flex flex-col gap-2">
               <div className="flex items-center justify-between">
                 <div className="text-[#7b7c7d]">Ref Number</div>
-                <div>#000085752257</div>
+                <div>{paymentRef}</div>
               </div>
               <div className="flex items-center justify-between">
-                <div className="text-[#7b7c7d]">Ref Number</div>
+                <div className="text-[#7b7c7d]">Merchant Name</div>
                 <div>Wonderpass Technology Co., LTD.</div>
               </div>
               <div className="flex items-center justify-between">
                 <div className="text-[#7b7c7d]">Payment Method</div>
-                <div>WondeVISA ********* 3333</div>
+                <div>{paymentMethod?.title}</div>
               </div>
               <div className="flex items-center justify-between">
                 <div className="text-[#7b7c7d]">Payment Status</div>
-                <div
-                  className={classNames(
-                    'pl-6',
-                    Style['green-check'],
-                    Style['small']
-                  )}
-                >
+                <div className={classNames('pl-6', Style['green-check'], Style['small'])}>
                   Success
                 </div>
               </div>
@@ -99,9 +113,7 @@ const CheckOutSuccess = () => {
           <section className=" border-t border-[#00000040] pt-4">
             <div className="flex items-center justify-between">
               <div className="text-xl font-medium">Total</div>
-              <div className="font-medium text-[#33A16E] text-xl">
-                KHR 1,815,000
-              </div>
+              <div className="font-medium text-[#33A16E] text-xl">KHR {formatNumberKHR(total)}</div>
             </div>
           </section>
         </div>

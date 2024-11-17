@@ -1,5 +1,4 @@
-import { useEffect, useState } from 'react';
-
+import { useEffect, useState, useCallback } from 'react';
 import { useAuthLive } from '@/context/AuthLiveContext';
 import { useBoothSelection } from '@/context/BoothSelectionContext';
 import { CalculatedDataResponse, ICalculatedOrder, OrderItem } from '@/models/Payment';
@@ -15,49 +14,71 @@ export interface IPayments {
   paymentCard?: string;
 }
 
-export const useCalculatedCheckout = (props: TypeProps) => {
-  const { payment } = props;
+export const useCalculatedCheckout = ({ payment }: TypeProps) => {
   const { isAuthenticated } = useAuthLive();
   const { ids } = useBoothSelection();
   const [items, setItems] = useState<OrderItem[]>([]);
   const [response, setResponse] = useState<CalculatedDataResponse | null>(null);
   const [isLoading, setIsLoading] = useState<boolean>(false);
+  const [error, setError] = useState<string | null>(null);
 
+  // Prepare order items when booth selection (ids) changes
   useEffect(() => {
     if (ids.length) {
       const orderItems = ids.map((id): OrderItem => ({ passTemplate: id, quantity: 1 }));
       setItems(orderItems);
     }
-  }, [ids.length]);
+  }, [ids]);
 
+  // Perform calculation when items or payment data changes and the user is authenticated
   useEffect(() => {
-    if (isAuthenticated) {
+    if (isAuthenticated && items.length && payment) {
       onCalculated();
     }
-  }, [items.length, payment, isAuthenticated]);
+  }, [items, payment, isAuthenticated]);
 
-  const onCalculated = () => {
-    if (items.length) {
-      setIsLoading(true);
-      //
-      const param: ICalculatedOrder = {
-        orderItems: items,
-        reservationDate: null,
-      };
-      if (payment) {
-        Object.assign(param, { ...payment });
-      }
-      calculatedCheckOut(param)
-        .then((response) => {
-          setIsLoading(false);
-          setResponse(response);
-        })
-        .catch((err) => {
-          setIsLoading(false);
-          console.error(err);
-        });
+  // Function to handle the checkout calculation
+  const onCalculated = useCallback(() => {
+    // Prevent multiple concurrent requests
+    if (isLoading) {
+      return;
     }
-  };
+    setIsLoading(true);
+    setError(null); // Clear previous errors
 
-  return { response, isLoading };
+    const param: ICalculatedOrder = {
+      orderItems: items,
+      reservationDate: null,
+      ...payment, // Merge the payment details if available
+    };
+
+    calculatedCheckOut(param)
+      .then((res) => {
+        // Only update state if the response is different
+        if (JSON.stringify(res) !== JSON.stringify(response)) {
+          setResponse(res);
+        }
+      })
+      .catch((err) => {
+        console.error(err);
+        if (err?.message) {
+          const message = err?.message || 'An error occurred';
+          setError(message);
+          alert(message);
+        }
+      })
+      .finally(() => {
+        setIsLoading(false);
+      });
+  }, [items, payment, isLoading, response]);
+
+  // Optionally, handle cleanup in case the component is unmounted
+  useEffect(() => {
+    return () => {
+      // If you have async cancelation support in your API (e.g., Axios cancel token), you can use it here.
+      setIsLoading(false); // Reset loading when unmounting
+    };
+  }, []);
+
+  return { response, isLoading, error };
 };

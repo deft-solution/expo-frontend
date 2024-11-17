@@ -23,7 +23,7 @@ const CustomerInformation = () => {
           <InputFloatingLabel name="nationality" icons="Globe" placeholder="Nationality" />
         </div>
         <div className="grid grid-cols-1 gap-4">
-          <InputUpload name="companyName" label="Attach company patents" />
+          <InputUpload name="patentUrl" label="Attach company patents" />
         </div>
       </div>
     </div>
