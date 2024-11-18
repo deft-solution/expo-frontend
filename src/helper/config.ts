@@ -8,5 +8,5 @@ export const API_URL = (): string => {
 };
 
 export const getAcceptPayments = (): string[] => {
-  return ['khr-khqr', 'cards'];
+  return ['usd-khqr', 'khr-khqr'];
 };

@@ -1,12 +1,12 @@
 import classNames from 'classnames';
 import Image from 'next/image';
+import Link from 'next/link';
 import React, { useEffect, useState } from 'react';
 import { useFormContext } from 'react-hook-form';
 
-import { PaymentOptionFormat } from '@/models/Payment';
-import Link from 'next/link';
-import { getAcceptPayments } from '@/helper/config';
 import { usePaymentContext } from '@/context/PaymentOptionsContext';
+import { getAcceptPayments } from '@/helper/config';
+import { PaymentOptionFormat } from '@/models/Payment';
 
 const SelectPaymentMethod = () => {
   const providerName = 'provider';
