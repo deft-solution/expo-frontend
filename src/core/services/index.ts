@@ -6,12 +6,17 @@ import { getAccessToken } from '@/utils/LocalStorage';
 /**
  * @template T the type of the action's `response` tag.
  */
-function sendRequest<T, D = any>(config: AxiosRequestConfig<D>): Promise<T> {
+function sendRequest<T, D = any>(config: AxiosRequestConfig<D>, extra?: any): Promise<T> {
   const defaultHeaders = {};
   config.withCredentials = true;
   config.headers = Object.assign({}, config.headers, defaultHeaders);
 
-  return axios<any, AxiosResponse<T>>(config)
+  const requestOptions = {
+    ...config,
+    ...extra
+  };
+
+  return axios<any, AxiosResponse<T>>(requestOptions)
     .then((response: AxiosResponse<T>) => response.data)
     .catch((err) => {
       if (err.response == null) {
@@ -34,9 +39,10 @@ function sendRequest<T, D = any>(config: AxiosRequestConfig<D>): Promise<T> {
 export function GET<T, Q = any>(
   url: string,
   params?: Q,
-  headers?: RawAxiosRequestHeaders
+  headers?: RawAxiosRequestHeaders,
+  extra?: any
 ): Promise<T> {
-  return sendRequest({ method: 'GET', url, headers, params });
+  return sendRequest({ method: 'GET', url, headers, params }, extra);
 }
 
 /**

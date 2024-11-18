@@ -17,3 +17,33 @@ export const getWonderPassToken = () => {
 
   return null;
 };
+
+/**
+ * Triggers a download for the provided Blob, using the specified file name.
+ *
+ * @param {Blob} blob - The binary data of the file to download.
+ * @param {string} fileName - The name of the file to be saved.
+ */
+export const triggerDownload = (blob: Blob, fileName: string): void => {
+  if (!(blob instanceof Blob)) {
+    throw new Error('Response is not a valid Blob');
+  }
+
+  // Create a temporary object URL for the Blob
+  const url = URL.createObjectURL(blob);
+
+  // Create an invisible <a> element to trigger the download
+  const link = document.createElement('a');
+  link.href = url;
+  link.download = fileName; // Set the file name
+
+  // Trigger the click event on the link to start the download
+  document.body.appendChild(link);
+  link.click();
+
+  // Clean up the DOM by removing the link
+  document.body.removeChild(link);
+
+  // Revoke the Blob URL after the download is triggered
+  URL.revokeObjectURL(url);
+};

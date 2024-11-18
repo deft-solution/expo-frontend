@@ -4,7 +4,7 @@ import { useRouter } from 'next/navigation';
 import React from 'react';
 
 import { useBoothSelection } from '@/context/BoothSelectionContext';
-import { formatNumber, formatNumberKHR } from '@/helper/format-number';
+import { formatNumber } from '@/helper/format-number';
 
 import Style from './index.module.scss';
 
@@ -76,8 +76,7 @@ const BoothDetailPanel: React.FC<TypeProps> = (props) => {
               <div className="h-[58px] max-md:w-full flex flex-col justify-between">
                 <div className={classNames('text-gray-500', Style['txt-price'])}>Price</div>
                 <div className={Style['txt-amount']}>
-                  <span>KHR</span>
-                  <span className="ml-3">{formatNumberKHR(booth.price)}</span>
+                  <span className="ml-3">{formatNumber(booth.price)}</span>
                 </div>
               </div>
               <button

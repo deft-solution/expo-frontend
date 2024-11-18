@@ -1,12 +1,16 @@
-import { Button } from '@Core';
-import Image from 'next/image';
-import React from 'react';
-import Style from './index.module.scss';
 import classNames from 'classnames';
+import Image from 'next/image';
+import React, { useState } from 'react';
+
 import { useBoothSelection } from '@/context/BoothSelectionContext';
-import { CalculatedDataResponse } from '@/models/Payment';
-import { formatNumber, formatNumberKHR } from '@/helper/format-number';
 import { usePaymentContext } from '@/context/PaymentOptionsContext';
+import { triggerDownload } from '@/helper';
+import { CalculatedDataResponse } from '@/models/Payment';
+import { downloadOrderPDF } from '@/service/order';
+import { Button } from '@Core';
+
+import { formatNumber } from '../../../../helper/format-number';
+import Style from './index.module.scss';
 
 export interface TypePropsPaymentInfo {
   paymentCalculated: CalculatedDataResponse | null;
@@ -20,8 +24,26 @@ const CheckOutSuccess: React.FC<TypePropsPaymentInfo> = (props) => {
   const total = data?.orderDetails.total ?? 0;
   const { selectedBooth: booth } = useBoothSelection();
 
+  const [isDownloading, setIsDownloading] = useState(false);
+
   const { paymentOptions } = usePaymentContext();
   const paymentMethod = paymentOptions.find(({ key }) => option === key);
+
+  const onClickDownloadPDF = () => {
+    setIsDownloading(true);
+    downloadOrderPDF()
+      .then((blob) => {
+        triggerDownload(blob, `${paymentRef}.pdf`);
+      })
+      .catch((err) => {
+        if (err?.message) {
+          alert(err.message);
+        }
+      })
+      .finally(() => {
+        setIsDownloading(false);
+      });
+  };
 
   return (
     <>
@@ -52,8 +74,8 @@ const CheckOutSuccess: React.FC<TypePropsPaymentInfo> = (props) => {
           </div> */}
         </div>
         <div className="grid grid-cols-2 gap-4 mt-4">
-          <Button type="button" theme="light">
-            Get PDF Receipt
+          <Button onClick={onClickDownloadPDF} disabled={isDownloading} type="button" theme="light">
+            {isDownloading ? 'Downloading' : 'Get PDF Receipt'}
           </Button>
           <Button type="button" theme="success">
             Back to Home
@@ -66,7 +88,7 @@ const CheckOutSuccess: React.FC<TypePropsPaymentInfo> = (props) => {
             <div>
               <div>Total Amount</div>
               <h2 className="text-3xl mt-2 font-medium text-[#33A16E]">
-                KHR {formatNumberKHR(total)}
+                KHR {formatNumber(total)}
               </h2>
             </div>
             <div className="mt-4 flex items-center gap-4 justify-center color-[#999a9c]">
@@ -113,7 +135,7 @@ const CheckOutSuccess: React.FC<TypePropsPaymentInfo> = (props) => {
           <section className=" border-t border-[#00000040] pt-4">
             <div className="flex items-center justify-between">
               <div className="text-xl font-medium">Total</div>
-              <div className="font-medium text-[#33A16E] text-xl">KHR {formatNumberKHR(total)}</div>
+              <div className="font-medium text-[#33A16E] text-xl">KHR {formatNumber(total)}</div>
             </div>
           </section>
         </div>
