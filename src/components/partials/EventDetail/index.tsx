@@ -56,7 +56,7 @@ const EventDetails = (props: EventTypeProps) => {
       {event && (
         <>
           <BoothDetailPanel id={event.id} isOpen={openPanel} onClose={() => setOpenPanel(false)} />
-          {booths.length > 0 && event.floorPlanUrl && (
+          {event.floorPlanUrl && (
             <BootSelection floorPlanUrl={event.floorPlanUrl} onChange={setIds} />
           )}
         </>

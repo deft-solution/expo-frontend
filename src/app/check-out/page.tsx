@@ -114,7 +114,7 @@ const PageCheckOut: React.FC = () => {
           <iframe
             title="Payment Processing"
             className="checkout-frame w-full h-full"
-            src={`https://dev.wonderpass.asia/payment-processing?code=${paymentCode}&token=${token[1]}&platformType=2`}
+            src={`https://wonderpass.asia/payment-processing?code=${paymentCode}&token=${token[1]}&platformType=2`}
           ></iframe>
         )}
       </Modal>

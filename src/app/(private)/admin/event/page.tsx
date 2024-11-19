@@ -74,7 +74,7 @@ const Page = () => {
                       <div className="flex items-center gap-2">
                         {row.logoUrl && (
                           <Image
-                            className="w-10 h-10 rounded-full object-cover"
+                            className="w-10 h-10 rounded-full object-contain"
                             width={100}
                             height={100}
                             src={row.logoUrl}

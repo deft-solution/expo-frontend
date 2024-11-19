@@ -65,7 +65,7 @@ const EventDetailsPage = () => {
             <div className="flex gap-2 4">
               {eventRes.logoUrl && (
                 <Image
-                  className="w-20 h-20 rounded-full object-cover"
+                  className="w-20 h-20 rounded-full object-contain"
                   width={200}
                   height={200}
                   src={eventRes.logoUrl}

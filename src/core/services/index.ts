@@ -7,13 +7,16 @@ import { getAccessToken } from '@/utils/LocalStorage';
  * @template T the type of the action's `response` tag.
  */
 function sendRequest<T, D = any>(config: AxiosRequestConfig<D>, extra?: any): Promise<T> {
-  const defaultHeaders = {};
+  const defaultHeaders = {
+    'x-community-type': '16',
+    'x-platform-type': 2,
+  };
   config.withCredentials = true;
   config.headers = Object.assign({}, config.headers, defaultHeaders);
 
   const requestOptions = {
     ...config,
-    ...extra
+    ...extra,
   };
 
   return axios<any, AxiosResponse<T>>(requestOptions)

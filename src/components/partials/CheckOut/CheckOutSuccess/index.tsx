@@ -76,14 +76,14 @@ const CheckOutSuccess: React.FC<TypePropsPaymentInfo> = (props) => {
             </div>f
           </div> */}
         </div>
-        <div className="grid grid-cols-2 gap-4 mt-4">
+        {/* <div className="grid grid-cols-2 gap-4 mt-4">
           <Button onClick={onClickDownloadPDF} disabled={isDownloading} type="button" theme="light">
             {isDownloading ? 'Downloading' : 'Get PDF Receipt'}
           </Button>
           <Button type="button" theme="success">
             Back to Home
           </Button>
-        </div>
+        </div> */}
       </div>
       <div className="w-full h-max bg-[#F6F7FA] rounded-md">
         <div className="p-4 content flex flex-col gap-4">
