@@ -5,21 +5,24 @@ import React, { useState } from 'react';
 import { useBoothSelection } from '@/context/BoothSelectionContext';
 import { usePaymentContext } from '@/context/PaymentOptionsContext';
 import { triggerDownload } from '@/helper';
+import { formatDisplayDate } from '@/helper/format-date';
+import { CreateOrderResponse } from '@/models/Order';
 import { CalculatedDataResponse } from '@/models/Payment';
 import { downloadOrderPDF } from '@/service/order';
 import { Button } from '@Core';
 
-import { formatNumber } from '../../../../helper/format-number';
+import { formatNumberUSD } from '../../../../helper/format-number';
 import Style from './index.module.scss';
 
 export interface TypePropsPaymentInfo {
   paymentCalculated: CalculatedDataResponse | null;
   paymentRef: string | null;
   option?: string | null;
+  orderResponse: CreateOrderResponse | null;
 }
 
 const CheckOutSuccess: React.FC<TypePropsPaymentInfo> = (props) => {
-  const { paymentCalculated: payment, paymentRef, option } = props;
+  const { paymentCalculated: payment, paymentRef, option, orderResponse } = props;
   const data = payment?.data;
   const total = data?.orderDetails.total ?? 0;
   const { selectedBooth: booth } = useBoothSelection();
@@ -87,9 +90,7 @@ const CheckOutSuccess: React.FC<TypePropsPaymentInfo> = (props) => {
           <section className="text-center border-b border-[#00000040] pb-4">
             <div>
               <div>Total Amount</div>
-              <h2 className="text-3xl mt-2 font-medium text-[#33A16E]">
-                KHR {formatNumber(total)}
-              </h2>
+              <h2 className="text-3xl mt-2 font-medium text-[#33A16E]">{formatNumberUSD(total)}</h2>
             </div>
             <div className="mt-4 flex items-center gap-4 justify-center color-[#999a9c]">
               <Image
@@ -124,18 +125,25 @@ const CheckOutSuccess: React.FC<TypePropsPaymentInfo> = (props) => {
               </div>
               <div className="flex items-center justify-between">
                 <div className="text-[#7b7c7d]">Payment Time</div>
-                <div>25-02-2023, 13:22:16</div>
+                <div>
+                  {orderResponse?.completedAt
+                    ? formatDisplayDate(orderResponse?.completedAt, 'DD MMM YYYY, HH:mm')
+                    : 'N/A'}
+                </div>
               </div>
               <div className="flex items-center justify-between">
                 <div className="text-[#7b7c7d]">Sender</div>
-                <div>John Doe</div>
+                <div>
+                  {[orderResponse?.firstName, orderResponse?.lastName].filter(Boolean).join(' ') ||
+                    'Name not available'}
+                </div>
               </div>
             </div>
           </section>
           <section className=" border-t border-[#00000040] pt-4">
             <div className="flex items-center justify-between">
               <div className="text-xl font-medium">Total</div>
-              <div className="font-medium text-[#33A16E] text-xl">KHR {formatNumber(total)}</div>
+              <div className="font-medium text-[#33A16E] text-xl">{formatNumberUSD(total)}</div>
             </div>
           </section>
         </div>

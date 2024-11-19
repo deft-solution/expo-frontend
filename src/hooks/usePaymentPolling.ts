@@ -1,8 +1,9 @@
 'use client';
+import { useEffect, useRef, useState } from 'react';
+
 import { ValidatePassesResponse } from '@/models/Payment';
 import { orderIsCompleted } from '@/service/order';
 import { validatePaymentById } from '@/service/payment';
-import { useEffect, useState, useRef } from 'react';
 
 export interface HookProps {
   onSuccess?: () => void;

@@ -10,39 +10,39 @@ import PaymentStep from '@/components/partials/CheckOut/PaymentStep';
 import SuccessSign from '@/components/partials/CheckOut/SuccessSign';
 import { useAuthLive } from '@/context/AuthLiveContext';
 import { useBoothSelection } from '@/context/BoothSelectionContext';
+import { useCheckout } from '@/context/CheckOutContext';
 import { getWonderPassToken } from '@/helper';
 import { IPayments, useCalculatedCheckout } from '@/hooks/useCalculatedCheckout';
 import { usePaymentPolling } from '@/hooks/usePaymentPolling';
+import { CreateOrderResponse } from '@/models/Order';
 import { CheckOutForm, ICheckoutForm } from '@/schema/Checkout';
 import { submitPayment } from '@/service/payment';
 import { Form, Modal } from '@Core';
 import { yupResolver } from '@hookform/resolvers/yup';
 
 const PageCheckOut: React.FC = () => {
-  const { ids, eventId, selectedBooth } = useBoothSelection();
-
-  const methods = useForm<ICheckoutForm>({
-    resolver: yupResolver(CheckOutForm),
-  });
+  const methods = useForm<ICheckoutForm>({ resolver: yupResolver(CheckOutForm) });
 
   const { watch, setValue } = methods;
   const { provider, option, paymentCard } = watch();
-
+  //
+  const [orderResponse, setOrderResponse] = useState<CreateOrderResponse | null>(null);
   const [payment, setPayment] = useState<IPayments>();
   const [paymentCode, setPaymentCode] = useState<string | null>(null);
   const [isSubmitModalVisible, setSubmitModalVisibility] = useState(false);
-  const { userId } = useAuthLive();
 
-  const { response: calculatedPayment } = useCalculatedCheckout({ payment });
-
-  const onSuccessPayment = async () => {
+  const onSuccessPayment = () => {
     setSubmitModalVisibility(false);
   };
 
   const { setPaymentId, paymentId, isSuccess, startPolling, setOrderId, cancelPolling } =
-    usePaymentPolling({
-      onSuccess: onSuccessPayment,
-    });
+    usePaymentPolling({ onSuccess: onSuccessPayment });
+
+  //
+  const { userId } = useAuthLive();
+  const { ids, eventId, selectedBooth } = useBoothSelection();
+  const { finishSubmitting, startSubmitting } = useCheckout();
+  const { response: calculatedPayment } = useCalculatedCheckout({ payment });
 
   const token = getWonderPassToken()?.split(' ');
 
@@ -51,6 +51,7 @@ const PageCheckOut: React.FC = () => {
       return;
     }
 
+    startSubmitting();
     submitPayment(data)
       .then(async (response) => {
         await submitOrder(data, response.paymentId);
@@ -58,11 +59,15 @@ const PageCheckOut: React.FC = () => {
         setPaymentId(response.paymentId);
         startPolling();
         setSubmitModalVisibility(true);
+        finishSubmitting();
       })
       .catch((error) => {
         if (error?.message) {
           alert(`Error: ${error.message}`);
         }
+      })
+      .finally(() => {
+        finishSubmitting();
       });
   };
 
@@ -90,6 +95,7 @@ const PageCheckOut: React.FC = () => {
 
       const orderResponse = await onSubmitOrder(data, { event: eventId, userId, paymentId });
       if (orderResponse._id) {
+        setOrderResponse(orderResponse);
         setOrderId(orderResponse._id);
       }
     } catch (error) {
@@ -100,12 +106,13 @@ const PageCheckOut: React.FC = () => {
   return (
     <div className="max-md:mb-10">
       <Modal
-        contentClassName="max-w-[800px] !h-[800px]"
+        contentClassName="max-w-[400px] !h-[700px]"
         visible={isSubmitModalVisible}
         onClickOutSide={handleModalClose}
       >
         {token && token.length > 1 && (
           <iframe
+            title="Payment Processing"
             className="checkout-frame w-full h-full"
             src={`https://dev.wonderpass.asia/payment-processing?code=${paymentCode}&token=${token[1]}&platformType=2`}
           ></iframe>
@@ -128,6 +135,7 @@ const PageCheckOut: React.FC = () => {
                 option={payment?.option}
                 paymentRef={paymentId}
                 paymentCalculated={calculatedPayment}
+                orderResponse={orderResponse}
               />
             </div>
           )}

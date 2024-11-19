@@ -47,6 +47,7 @@ export interface CreateOrderResponse {
   _id: string;
   createdAt: string;
   updatedAt: string;
+  completedAt: string | null;
   __v: number;
 }
 

@@ -1,4 +1,4 @@
-import { KHR_RATE } from '@/constants/Currency';
+
 
 /**
  * Formats a given number with commas as thousands separators and ensures two decimal places.
@@ -21,27 +21,30 @@ export function formatNumber(argument: number, defaultTo = '') {
 }
 
 /**
- * Converts a given number to KHR currency by multiplying by 4000, formats it with commas as
- * thousands separators, and ensures two decimal places. Returns a default value if the input is invalid.
+ * Formats a given number with commas as thousands separators and ensures two decimal places.
+ * If the argument is not a valid number, it returns a default value.
  *
- * @param {number} argument - The number to convert and format.
+ * @param {number} argument - The number to format.
  * @param {string} [defaultTo=''] - The default value to return if the input is not a valid number.
- * @returns {string} The formatted number with commas, two decimal places, and "KHR" currency notation.
+ * @returns {string} The formatted number with commas and two decimal places, or the default value.
  *
  * @example
- * formatNumberKHR(123.5); // "492,000.00 KHR"
- * formatNumberKHR(NaN, 'N/A'); // "N/A"
+ * formatNumber(1234567.5); // "1,234,567.50"
+ * formatNumber(NaN, 'N/A'); // "N/A"
  */
-export function formatNumberKHR(argument: number, defaultTo = '') {
+export function formatNumberUSD(argument: number, defaultTo = '') {
   if (!isValidNumber(argument)) {
     return defaultTo;
   }
 
-  const convertedValue = argument * KHR_RATE;
-  return `${convertedValue.toLocaleString('en-US', {
+  // Formatting the number as a string with commas and 2 decimal places
+  const formattedNumber = argument.toLocaleString('en-US', {
     minimumFractionDigits: 2,
-    maximumFractionDigits: 2,
-  })}`;
+    maximumFractionDigits: 2
+  });
+
+  // Returning the formatted number with "USD" appended
+  return `USD ${formattedNumber}`;
 }
 
 function isValidNumber(value: number): boolean {

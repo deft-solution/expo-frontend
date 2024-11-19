@@ -2,7 +2,7 @@ import Image from 'next/image';
 import React from 'react';
 
 import { useBoothSelection } from '@/context/BoothSelectionContext';
-import { formatNumber } from '@/helper/format-number';
+import { formatNumberUSD } from '@/helper/format-number';
 import { CalculatedDataResponse } from '@/models/Payment';
 
 import InputCoupon from '../InputCoupon';
@@ -27,7 +27,7 @@ const PaymentInformation: React.FC<TypePropsPaymentInfo> = (props) => {
             <div className="font-bold">Total Amount</div>
             {data?.orderDetails && (
               <h2 className="text-3xl mt-2 font-bold text-[#33A16E]">
-                KHR {formatNumber(data.orderDetails.total)}
+                {formatNumberUSD(data.orderDetails.total)}
               </h2>
             )}
           </div>
@@ -57,8 +57,7 @@ const PaymentInformation: React.FC<TypePropsPaymentInfo> = (props) => {
                   </div>
                   <div>
                     <div className="font-bold text-xl text-right">
-                      <span className="mr-2">KHR</span>
-                      {formatNumber(order.total)}
+                      {formatNumberUSD(order.total)}
                     </div>
                   </div>
                 </div>
@@ -73,15 +72,11 @@ const PaymentInformation: React.FC<TypePropsPaymentInfo> = (props) => {
           <div className="flex flex-col gap-4 text-[#7b7c7d]">
             <div className="flex items-center justify-between">
               <div>Sub Total</div>
-              <div>
-                <span className="mr-2">KHR</span>
-                {formatNumber(subtotal)}
-              </div>
+              <div>{formatNumberUSD(subtotal)}</div>
             </div>
             {serviceFee > 0 && (
               <div className="flex items-center justify-between">
                 <div>Service Fee</div>
-                <div>KHR {formatNumber(serviceFee)}</div>
               </div>
             )}
           </div>
@@ -90,8 +85,7 @@ const PaymentInformation: React.FC<TypePropsPaymentInfo> = (props) => {
           <div className="flex items-center justify-between">
             <div className="text-xl font-bold">Total</div>
             <div className="font-medium text-[#33A16E] text-xl">
-              <span>KHR </span>
-              <span className="ml-1">{formatNumber(total ?? 0)}</span>
+              <span className="ml-1">{formatNumberUSD(total ?? 0)}</span>
             </div>
           </div>
         </section>

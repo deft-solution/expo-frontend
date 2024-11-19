@@ -4,15 +4,18 @@ import Link from 'next/link';
 import React, { useEffect, useState } from 'react';
 import { useFormContext } from 'react-hook-form';
 
+import { useCheckout } from '@/context/CheckOutContext';
 import { usePaymentContext } from '@/context/PaymentOptionsContext';
 import { getAcceptPayments } from '@/helper/config';
 import { PaymentOptionFormat } from '@/models/Payment';
+import { Button } from '@Core';
 
 const SelectPaymentMethod = () => {
   const providerName = 'provider';
   const optionName = 'option';
   const paymentCard = 'paymentCard';
   const { paymentOptions } = usePaymentContext();
+  const { submissionStatus } = useCheckout();
 
   const [payments, setPayments] = useState<PaymentOptionFormat[]>([]);
   const [activeIdx, setActiveIdx] = useState<number>(-1);
@@ -72,14 +75,20 @@ const SelectPaymentMethod = () => {
         </div>
         {error && <p className="text-red-500 text-xs mt-2">{(error as any).message?.toString()}</p>}
       </div>
-      <button
+      <Button
         type="submit"
-        className={classNames('w-full h-[48px] mt-4 text-white rounded-md bg-[#33A16E]', {
+        disabled={submissionStatus || activeIdx === -1}
+        theme="success"
+        className={classNames('w-full h-[48px] mt-4', {
           'bg-[#d9d9d9]': activeIdx === -1,
         })}
       >
-        {activeIdx === -1 ? 'Please Select Payment Method' : 'Confirm to Pay'}
-      </button>
+        <span className="transition-opacity duration-300 ease-in-out">
+          {submissionStatus && 'Processing your payment... Please wait.'}
+          {!submissionStatus && activeIdx === -1 && 'Please select a payment method'}
+          {!submissionStatus && activeIdx !== -1 && 'Confirm your payment'}
+        </span>
+      </Button>
       <div className="flex justify-between items-center text-sm">
         <div>
           <Link href="/">Term | Privacy</Link>

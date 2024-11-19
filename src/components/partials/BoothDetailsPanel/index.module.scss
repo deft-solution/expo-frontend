@@ -24,7 +24,6 @@
     scrollbar-width: none;
     display: flex;
     flex-direction: column;
-    justify-content: space-between;
   }
 }
 
@@ -107,6 +106,7 @@
 }
 
 .html-summary {
+
   ol,
   ul,
   menu {
