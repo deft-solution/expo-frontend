@@ -12,6 +12,6 @@ export const orderIsCompleted = (orderId: string): Promise<void> => {
 };
 
 export const downloadOrderPDF = (): Promise<Blob> => {
-  const API_URL = "/api/orders/v1/pdf/receipts";
+  const API_URL = '/api/orders/v1/pdf/receipts';
   return GET<Blob, any>(API_URL, {}, {}, { responseType: 'blob' });
 };
