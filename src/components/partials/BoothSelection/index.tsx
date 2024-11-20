@@ -33,7 +33,6 @@ const BootSelection = (props: BootSelectionTypeProps) => {
           const rectId = rect.id;
 
           const booth = booths.find(({ boothNumber }) => boothNumber === rectId);
-          console.log(booth, rectId);
 
           if (booth) {
             const isSelected = selectedIds.includes(booth.externalId); // Check if the current booth is selected
