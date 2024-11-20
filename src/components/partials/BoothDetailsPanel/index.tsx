@@ -4,6 +4,7 @@ import { useRouter } from 'next/navigation';
 import React from 'react';
 
 import { useBoothSelection } from '@/context/BoothSelectionContext';
+import { formatNumberUSD } from '@/helper/format-number';
 
 import Style from './index.module.scss';
 
@@ -44,7 +45,7 @@ const BoothDetailPanel: React.FC<TypeProps> = (props) => {
             />
             <div className="mt-4 flex flex-col gap-10 mt-[30px]">
               <div>
-                <h2 className={Style['booth-title']}>{booth.boothType?.name}</h2>
+                <h2 className={Style['booth-title']}>{booth.boothName}</h2>
                 <div className="flex items-center gap-4">
                   <Image
                     src="/assets/icons/booth-icons.svg"
@@ -53,7 +54,7 @@ const BoothDetailPanel: React.FC<TypeProps> = (props) => {
                     height={24}
                   />
                   <div className={Style['title-size']}>
-                    {booth.size} ({booth.boothNumber})
+                    {booth.size} ({booth.boothName})
                   </div>
                 </div>
               </div>
@@ -72,6 +73,12 @@ const BoothDetailPanel: React.FC<TypeProps> = (props) => {
               </div>
             </div>
             <div className="flex items-center max-md:flex-col justify-between gap-4 mt-auto">
+              <div className="h-[58px] max-md:w-full flex flex-col justify-between">
+                <div className={classNames('text-gray-500', Style['txt-price'])}>Price</div>
+                <div className={Style['txt-amount']}>
+                  <span>{formatNumberUSD(booth.price)}</span>
+                </div>
+              </div>
               <button
                 onClick={onClickCheckOut}
                 className="w-[175px] max-md:w-full ml-auto h-[58px] bg-black text-white"

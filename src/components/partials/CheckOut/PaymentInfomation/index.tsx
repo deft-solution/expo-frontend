@@ -51,7 +51,7 @@ const PaymentInformation: React.FC<TypePropsPaymentInfo> = (props) => {
                 <div key={order.passTemplate._id} className="flex justify-between">
                   <div>
                     <div className="font-bold text-xl">
-                      {title} : <span>{selectedBooth?.boothType?.name}</span>
+                      {title} : <span>{selectedBooth?.boothName}</span>
                     </div>
                     <div className="text-[#7b7c7d] text-xl">{size}</div>
                   </div>

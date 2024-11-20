@@ -17,6 +17,7 @@ function sendRequest<T, D = any>(config: AxiosRequestConfig<D>, extra?: any): Pr
   const requestOptions = {
     ...config,
     ...extra,
+    timeout: 40000,
   };
 
   return axios<any, AxiosResponse<T>>(requestOptions)

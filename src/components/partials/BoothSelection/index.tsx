@@ -1,5 +1,6 @@
 'use client';
 import React, { useEffect, useRef, useState } from 'react';
+
 import { useBoothSelection } from '@/context/BoothSelectionContext';
 
 interface BootSelectionTypeProps {
@@ -30,7 +31,9 @@ const BootSelection = (props: BootSelectionTypeProps) => {
         const rects = svgRef.current.querySelectorAll('rect');
         rects.forEach((rect) => {
           const rectId = rect.id;
+
           const booth = booths.find(({ boothNumber }) => boothNumber === rectId);
+          console.log(booth, rectId);
 
           if (booth) {
             const isSelected = selectedIds.includes(booth.externalId); // Check if the current booth is selected

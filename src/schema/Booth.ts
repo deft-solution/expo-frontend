@@ -1,10 +1,11 @@
 import * as yup from 'yup';
 
-import { IBootTypeList } from './BoothType';
-import { IEventList } from './Event';
 import { IPaginationParam } from '@/models/Pagination';
 
-export interface IBoothFilterParam extends IPaginationParam {}
+import { IBootTypeList } from './BoothType';
+import { IEventList } from './Event';
+
+export interface IBoothFilterParam extends IPaginationParam { }
 
 export interface IBootList extends IBooth {
   id: string;
@@ -13,6 +14,7 @@ export interface IBootList extends IBooth {
 export interface IBooth {
   isActive: boolean;
   boothNumber: string;
+  boothName: string;
   price: number;
   description: string;
   externalId: string;
@@ -31,28 +33,30 @@ export interface IBooth {
 
 export interface IBoothForm {
   boothNumber: string;
+  boothName: string;
   size: string;
   hall: string;
   event: string;
   boothType: string;
-  description: string | null;
-  externalId: string | null;
+  externalId: string;
   price: number | null;
-  mapUrl: string;
+  description?: string | null;
+  mapUrl?: string | null;
   isActive: boolean;
 }
 
 // Define a validation schema with Yup
 export const FormBooth = yup.object().shape({
-  boothNumber: yup.string().required('This field is required'),
+  boothNumber: yup.string().required('Booth Number is required'),
+  boothName: yup.string().required('Booth Name is required'),
   price: yup.number().optional().default(null),
-  description: yup.string().optional().default(null),
-  externalId: yup.string().optional().default(null),
+  description: yup.string().nullable(),
+  externalId: yup.string().required('External Id is required'),
   size: yup.string().required('This field is required'),
   hall: yup.string().required('This field is required'),
   event: yup.string().required('Event is required'),
   boothType: yup.string().required('Boot Type is required'),
-  mapUrl: yup.string().optional().default(null),
+  mapUrl: yup.string().nullable(),
   isActive: yup.boolean().optional().default(true),
 });
 

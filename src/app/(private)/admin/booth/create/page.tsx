@@ -17,7 +17,7 @@ const Page = () => {
   const id = useSearchParams().get('id') ?? null; // default value is "1"
   const methods = useForm({
     resolver: yupResolver(FormBooth),
-    defaultValues: { isActive: true },
+    defaultValues: { isActive: true, description: null, mapUrl: null },
   });
   const { handleSubmit, setValue } = methods;
 
@@ -25,8 +25,7 @@ const Page = () => {
   const [boothTypes, setBoothTypes] = useState<IBootTypeList[]>([]);
 
   // API
-  const action = () =>
-    Promise.all([getAllEventAutoComplete(), getAllBoothTypeAutoComplete()]);
+  const action = () => Promise.all([getAllEventAutoComplete(), getAllBoothTypeAutoComplete()]);
 
   const { response } = useApi({ service: action, params: {}, effects: [] });
 
@@ -48,6 +47,7 @@ const Page = () => {
     if (id) {
       findBoothOneId(id).then((res) => {
         setValue('boothNumber', res.boothNumber);
+        setValue('boothName', res.boothName);
         setValue('isActive', res.isActive);
         setValue('hall', res.hall);
         setValue('size', res.size);
@@ -65,16 +65,11 @@ const Page = () => {
   return (
     <div>
       <FormProvider {...methods}>
-        <form
-          onSubmit={handleSubmit(onFormSubmit)}
-          className="flex flex-col gap-4"
-          action=""
-        >
-          <InputText
-            name="boothNumber"
-            label="Booth Number"
-            placeholder="B202"
-          />
+        <form onSubmit={handleSubmit(onFormSubmit)} className="flex flex-col gap-4" action="">
+          <div className="grid grid-cols-2 gap-4">
+            <InputText name="boothName" label="Booth name" placeholder="B202" />
+            <InputText name="boothNumber" label="Booth Number" placeholder="B202" />
+          </div>
           <div className="grid grid-cols-2 gap-4">
             <Dropdown name="event" label="Event" items={events} />
             <Dropdown name="boothType" label="Booth Type" items={boothTypes} />
@@ -84,16 +79,8 @@ const Page = () => {
             <InputText name="size" label="Size" placeholder="13 X 13" />
           </div>
           <div className="grid grid-cols-2 gap-4">
-            <InputText
-              name="price"
-              label="Price"
-              placeholder="Booth Price Ex: 140$"
-            />
-            <InputText
-              name="externalId"
-              label="External ID"
-              placeholder="******"
-            />
+            <InputText name="price" label="Price" placeholder="Booth Price Ex: 140$" />
+            <InputText name="externalId" label="External ID" placeholder="******" />
           </div>
           <InputText name="mapUrl" label="Map URL" />
           <RichTextCK name="description" label="Description" />
