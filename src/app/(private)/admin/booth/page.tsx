@@ -3,23 +3,29 @@ import classNames from 'classnames';
 import Image from 'next/image';
 import Link from 'next/link';
 import React, { useEffect, useState } from 'react';
+import { useForm } from 'react-hook-form';
 
 import { formatDisplayDate } from '@/helper/format-date';
 import { IBootList } from '@/schema/Booth';
 import { getAllBooths } from '@/service/booth';
-import { Pagination, useApi } from '@Core';
+import { Form, InputText, Pagination, useApi } from '@Core';
 
 const Page = () => {
+  const methods = useForm();
+  const { watch } = methods;
+  const name = watch('name');
+
   const [list, setList] = useState<IBootList[]>([]);
+  const [filterName, setFilterName] = useState<string | null>(null);
   const [offset, setOffset] = useState<number>(0);
   const [total, setTotal] = useState<number>(0);
   const limit = 10;
 
   // API
-  const { response } = useApi({
+  const { response, loading } = useApi({
     service: getAllBooths,
-    params: { limit, offset },
-    effects: [offset],
+    params: { limit, offset, name: filterName },
+    effects: [offset, filterName],
   });
 
   useEffect(() => {
@@ -28,6 +34,10 @@ const Page = () => {
       setTotal(response.total);
     }
   }, [response]);
+
+  useEffect(() => {
+    setFilterName(name);
+  }, [name]);
 
   const goToEventDetail = (id: string) => {
     return '/admin/event/' + id;
@@ -44,9 +54,17 @@ const Page = () => {
           Create Booth
         </Link>
       </div>
+      <Form classNames="mt-8" methods={methods}>
+        <div className="flex">
+          <InputText disabled={loading} name="name" placeholder="Filter: Booth Name" />
+        </div>
+      </Form>
       <table className="w-full min-w-max table-auto mt-4 text-left">
         <thead>
           <tr>
+            <th className="px-6 py-3 text-start text-xs font-medium text-gray-500 uppercase dark:text-neutral-500">
+              Booth Name
+            </th>
             <th className="px-6 py-3 text-start text-xs font-medium text-gray-500 uppercase dark:text-neutral-500">
               Booth No
             </th>
@@ -70,6 +88,9 @@ const Page = () => {
             list.map((row, idx) => {
               return (
                 <tr key={idx} className="hover:bg-gray-100 dark:hover:bg-neutral-700">
+                  <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-800 dark:text-neutral-200">
+                    {row.boothName}
+                  </td>
                   <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-800 dark:text-neutral-200">
                     {row.boothNumber}
                   </td>

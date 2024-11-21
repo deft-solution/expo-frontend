@@ -9,7 +9,6 @@ import { formatDisplayDate } from '@/helper/format-date';
 import { CreateOrderResponse } from '@/models/Order';
 import { CalculatedDataResponse } from '@/models/Payment';
 import { downloadOrderPDF } from '@/service/order';
-import { Button } from '@Core';
 
 import { formatNumberUSD } from '../../../../helper/format-number';
 import Style from './index.module.scss';
@@ -111,7 +110,7 @@ const CheckOutSuccess: React.FC<TypePropsPaymentInfo> = (props) => {
               </div>
               <div className="flex items-center justify-between">
                 <div className="text-[#7b7c7d]">Merchant Name</div>
-                <div>Wonderpass Technology Co., LTD.</div>
+                <div>Ministry of Commerce</div>
               </div>
               <div className="flex items-center justify-between">
                 <div className="text-[#7b7c7d]">Payment Method</div>

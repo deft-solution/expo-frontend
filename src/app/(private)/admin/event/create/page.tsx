@@ -3,15 +3,12 @@ import { useRouter, useSearchParams } from 'next/navigation';
 import React, { useEffect } from 'react';
 import { FormProvider, useForm } from 'react-hook-form';
 
-import {
-  handleSubmitCreateEvent,
-  handleSubmitUpdateEvent,
-} from '@/actions/event';
+import { handleSubmitCreateEvent, handleSubmitUpdateEvent } from '@/actions/event';
 import DatePicker from '@/core/components/Datepicker';
 import { formatDisplayDate } from '@/helper/format-date';
 import { EventCreateFormSchema, IEvents } from '@/schema/Event';
 import { getEventById } from '@/service/event';
-import { Checkbox, InputText, TextArea, Upload } from '@Core';
+import { Checkbox, InputText, RichTextCK, Upload } from '@Core';
 import { yupResolver } from '@hookform/resolvers/yup';
 
 const Page = () => {
@@ -21,9 +18,7 @@ const Page = () => {
   const id = useSearchParams().get('id') ?? null; // default value is "1"
 
   const onSubmit = (event: IEvents) => {
-    const action = id
-      ? handleSubmitUpdateEvent(id, event)
-      : handleSubmitCreateEvent(event);
+    const action = id ? handleSubmitUpdateEvent(id, event) : handleSubmitCreateEvent(event);
     action.then(() => {
       router.push('/admin/event');
     });
@@ -50,17 +45,11 @@ const Page = () => {
 
   return (
     <div>
-      <h2 className="mb-4 text-xl font-bold text-gray-900 dark:text-white">
-        Create Event
-      </h2>
+      <h2 className="mb-4 text-xl font-bold text-gray-900 dark:text-white">Create Event</h2>
       <FormProvider {...methods}>
         <form className="flex flex-col gap-4" onSubmit={handleSubmit(onSubmit)}>
           <div className="grid gap-2 sm:grid-cols-2 sm:gap-6">
-            <InputText
-              name="name"
-              label="Event Name"
-              placeholder="Event Name"
-            />
+            <InputText name="name" label="Event Name" placeholder="Event Name" />
             <InputText
               name="mainWebsiteUrl"
               label="Main Website URL"
@@ -78,31 +67,15 @@ const Page = () => {
               <h2 className="border-b pb-4">Contact Information</h2>
               <div className="mt-4">
                 <div className="grid gap-4 mb-3 sm:grid-cols-2 sm:gap-6">
-                  <InputText
-                    name="email"
-                    label="Email Address"
-                    placeholder="Phone Number"
-                  />
-                  <InputText
-                    name="phoneNumber"
-                    label="Phone Number"
-                    placeholder="Phone Number"
-                  />
+                  <InputText name="email" label="Email Address" placeholder="Phone Number" />
+                  <InputText name="phoneNumber" label="Phone Number" placeholder="Phone Number" />
                 </div>
-                <InputText
-                  name="location"
-                  label="Location"
-                  placeholder="Location"
-                />
+                <InputText name="location" label="Location" placeholder="Location" />
               </div>
             </div>
 
             <div className="sm:col-span-2">
-              <TextArea
-                name="description"
-                label="Description"
-                placeholder="Your description here"
-              />
+              <RichTextCK name="description" label="Description" />
             </div>
 
             <Checkbox name="isActive" label="Active" />

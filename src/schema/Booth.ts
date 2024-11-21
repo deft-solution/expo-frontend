@@ -5,7 +5,9 @@ import { IPaginationParam } from '@/models/Pagination';
 import { IBootTypeList } from './BoothType';
 import { IEventList } from './Event';
 
-export interface IBoothFilterParam extends IPaginationParam { }
+export interface IBoothFilterParam extends IPaginationParam {
+  name?: string | null;
+}
 
 export interface IBootList extends IBooth {
   id: string;

@@ -58,12 +58,12 @@ const BoothDetailPanel: React.FC<TypeProps> = (props) => {
                   </div>
                 </div>
               </div>
-              {booth.description && (
+              {booth.boothType?.description && (
                 <div>
                   <div className={Style['title-exhibition']}>Exhibition Stand Includes:</div>
                   <div
                     className={`${Style['html-summary']} mt-4`}
-                    dangerouslySetInnerHTML={{ __html: booth.description }}
+                    dangerouslySetInnerHTML={{ __html: booth.boothType.description }}
                   ></div>
                 </div>
               )}

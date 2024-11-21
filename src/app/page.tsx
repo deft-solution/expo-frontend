@@ -1,8 +1,8 @@
+import { Metadata } from 'next';
+
 import HomePageComponent from '@/components/partials/Home/HomePage';
 import { IEventList } from '@/schema/Event';
 import { getSSREventByID } from '@/service/ssr/event';
-import { Metadata } from 'next';
-import * as React from 'react';
 
 type Props = {
   params: { id: string };
@@ -30,7 +30,7 @@ export async function generateMetadata(props: Props): Promise<Metadata> {
   };
 }
 
-export default function Home(props: any) {
+export default function Home() {
   return (
     <main>
       <HomePageComponent />

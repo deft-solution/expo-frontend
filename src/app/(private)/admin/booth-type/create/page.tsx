@@ -4,12 +4,8 @@ import React, { useEffect } from 'react';
 import { FormProvider, useForm } from 'react-hook-form';
 
 import { FormBoothType, IBoothTypeCreate } from '@/schema/BoothType';
-import {
-  createBoothType,
-  findBoothTypeById,
-  updateBoothTypeById,
-} from '@/service/booth-type';
-import { InputText, TextArea } from '@Core';
+import { createBoothType, findBoothTypeById, updateBoothTypeById } from '@/service/booth-type';
+import { InputText, RichTextCK } from '@Core';
 import { yupResolver } from '@hookform/resolvers/yup';
 
 import Checkbox from '../../../../../core/components/Checkbox/index';
@@ -24,9 +20,7 @@ const Page = () => {
   const { handleSubmit, setValue } = methods;
 
   const submitForm = (value: IBoothTypeCreate) => {
-    const request = id
-      ? updateBoothTypeById(id, value)
-      : createBoothType(value);
+    const request = id ? updateBoothTypeById(id, value) : createBoothType(value);
     request
       .then(() => {
         router.push('/admin/booth-type/');
@@ -51,15 +45,12 @@ const Page = () => {
     <div>
       <h2 className="text-3xl">All Booth Type</h2>
       <FormProvider {...methods}>
-        <form
-          className="flex flex-col gap-2 mt-4"
-          onSubmit={handleSubmit(submitForm)}
-        >
+        <form className="flex flex-col gap-4 mt-4" onSubmit={handleSubmit(submitForm)}>
           <div className="grid grid-cols-2 gap-4">
             <InputText name="name" label="Name" />
             <InputText name="price" label="Price" />
           </div>
-          <TextArea name="description" label="Description" />
+          <RichTextCK name="description" label="Description" />
           <Checkbox name="isActive" label="Active" />
           <div>
             <button

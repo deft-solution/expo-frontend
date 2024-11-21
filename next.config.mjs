@@ -1,28 +1,28 @@
-import path from "path";
+import path from 'path';
 
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   reactStrictMode: true,
   swcMinify: true,
-    images: {
-      domains: [],  // Leave empty or add trusted domains
-      remotePatterns: [
-        {
-          protocol: 'https',
-          hostname: '**',  // Allows any domain
-        },
-        {
-          protocol: 'http',
-          hostname: '**',  // Allows any domain for http
-        },
-      ],
-      unoptimized: true, // Disables image optimization, allows any domain
+  images: {
+    domains: [], // Leave empty or add trusted domains
+    remotePatterns: [
+      {
+        protocol: 'https',
+        hostname: '**', // Allows any domain
+      },
+      {
+        protocol: 'http',
+        hostname: '**', // Allows any domain for http
+      },
+    ],
+    unoptimized: true, // Disables image optimization, allows any domain
   },
   webpack: (config) => {
     config.resolve.alias = {
       ...config.resolve.alias,
-      "@Core": path.resolve("src/core"),
-      "@": path.resolve("src"),
+      '@Core': path.resolve('src/core'),
+      '@': path.resolve('src'),
     };
     return config;
   },
@@ -35,26 +35,21 @@ const nextConfig = {
     API_URL: process.env.API_URL,
     API_KEY: process.env.API_KEY,
     API_SECRET: process.env.API_SECRET,
-    PAYMENT_URL: process.env.PAYMENT_URL,
-    ACCPET_PAYMENT: ['khr-khqr'],
+    NEXT_PUBLIC_PAYMENT_URL: process.env.NEXT_PUBLIC_PAYMENT_URL,
+    ACCEPT_PAYMENTS: ['khr-khqr'],
   },
   async rewrites() {
-    const API_URL = process.env.API_URL || "http://localhost:4000";
-    const WONDER_PASS_API_URL = process.env.WONDER_PASS_API_URL || "http://localhost:4000";
-    const PAYMENT_URL = process.env.PAYMENT_URL || "http://localhost:4000";
+    const API_URL = process.env.API_URL || 'http://localhost:4000';
+    const WONDER_PASS_API_URL = process.env.WONDER_PASS_API_URL || 'http://localhost:4000';
 
     return [
       {
-        source: "/api/:path*",
+        source: '/api/:path*',
         destination: `${API_URL}/api/:path*`,
       },
       {
-        source: "/wonderpass-api/:path*",
+        source: '/wonderpass-api/:path*',
         destination: `${WONDER_PASS_API_URL}/api/:path*`,
-      },
-      {
-        source: '/payment-processing/:path*', // Define the source path
-        destination: `${PAYMENT_URL}/payment-processing/:path*`, // Define the destination URL
       },
     ];
   },
