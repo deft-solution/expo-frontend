@@ -38,7 +38,7 @@
   bottom: -4px; /* Adjust for spacing between the text and line */
   left: 0;
   width: 100%;
-  height: 3px; /* Thickness of the line */
+  height: 1px; /* Thickness of the line */
   background-color: currentColor; /* Use current text color */
 }
 
@@ -64,9 +64,9 @@
   left: 0;
   bottom: -5px;
   width: 0;
-  height: 3px;
+  height: 1px;
   background-color: black;
-  transition: width 0.3s ease-in-out;
+  transition: width 0.2s ease-in-out;
   z-index: -1;
 }
 

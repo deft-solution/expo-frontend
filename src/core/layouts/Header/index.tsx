@@ -14,32 +14,18 @@ const Header = () => {
   const { event, eventId } = useEvent();
   const [toggle, setToggle] = useState(false);
   const [toggleSearch, setToggleSearch] = useState(false);
-  const [isSticky, setIsSticky] = useState(false); // New state to track sticky
   const menuRef = useRef<HTMLDivElement>(null);
 
-  useEffect(() => {
-    const handleResize = () => {
-      if (window.innerWidth >= 1280) {
-        setToggle(false);
-      }
-    };
-    window.addEventListener('resize', handleResize);
-    handleResize();
-    return () => window.removeEventListener('resize', handleResize);
-  }, []);
-
-  useEffect(() => {
-    const handleScroll = () => {
-      if (window.scrollY > 148) {
-        // Adjust this threshold value as needed
-        setIsSticky(true);
-      } else {
-        setIsSticky(false);
-      }
-    };
-    window.addEventListener('scroll', handleScroll);
-    return () => window.removeEventListener('scroll', handleScroll);
-  }, []);
+  // useEffect(() => {
+  //   const handleResize = () => {
+  //     if (window.innerWidth >= 1280) {
+  //       setToggle(false);
+  //     }
+  //   };
+  //   window.addEventListener('resize', handleResize);
+  //   handleResize();
+  //   return () => window.removeEventListener('resize', handleResize);
+  // }, []);
 
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
@@ -90,26 +76,24 @@ const Header = () => {
   return (
     <nav
       ref={menuRef}
-      className={`flex max-md:p-5 px-10 py-16 justify-between items-center shadow-lg shadow-[#00EEFF40] z-30 relative bg-white ${
-        isSticky ? Style.sticky : ''
-      }`}
+      className={`flex max-md:my-[0.8em] my-[24px] xl:px-[53px] justify-between items-center z-30 relative bg-white max-w-full`}
     >
-      <div className="flex container mx-auto justify-between items-center gap-[60px] w-full">
+      <div className="flex max-xms:p-[10px] px-[20px] justify-between items-center w-full">
         <Link href={getUrl('/')}>
           <Image
             src="/assets/logo/logo.svg"
             alt="/assets/logo/logo.svg"
-            className="max-md:max-w-[280px]"
-            width={350}
-            height={250}
+            className="max-xsm:max-w-[169.5px] md:max-w-[310px] max-w-[276px] xl:max-w-[256px]"
+            width={320}
+            height={52}
           />
         </Link>
-        <ul className="flex items-center justify-between gap-[60px] font-semibold max-2xl:hidden">
+        <ul className="flex items-center ml-[1.2em] justify-between font-halyard font-medium max-xl:hidden">
           {links.map((link, index) => (
             <Link
               key={index}
               href={link.href}
-              className={`relative text-xl duration-300 ${
+              className={`relative duration-50 mx-[0.7em] ${
                 isActive(link.href) ? Style['active-link'] : Style['underline-effect']
               }
               `}
@@ -119,29 +103,33 @@ const Header = () => {
           ))}
         </ul>
 
-        <div className="flex gap-4 2xl:items-end items-center max-2xl:flex-row flex-col justify-center">
-          <div className="flex gap-4 items-center">
+        <div className="flex items-center xl:flex-col xl:items-end 1xl:items-center 1xl:flex-row justify-center gap-x-[1.5em]">
+          <div className="flex items-center gap-x-[1em] max-sm:gap-x-[1em]">
             <Image
               src="/assets/icons/search.svg"
               alt="/assets/icons/search.svg"
+              className="max-xsm:max-w-[28px]"
               width={30}
               height={30}
               onClick={() => setToggleSearch(true)}
             />
-            <div onClick={() => setToggle(!toggle)} className="2xl:hidden">
-              <MenuRounded className="text-black min-h-10 min-w-10" />
+            <div onClick={() => setToggle(!toggle)} className="xl:hidden">
+              <Image
+                src="/assets/icons/menu.svg"
+                alt="/assets/icons/menu.svg"
+                width={40}
+                height={40}
+              />
             </div>
           </div>
 
-          {event && (
-            <button
-              type="button"
-              onClick={handleBookNow}
-              className="bg-blue-700 uppercase font-semibold text-white py-4 px-8 max-lg:hidden transform active:scale-95 transition-transform duration-150"
-            >
-              Reserve Booth Now
-            </button>
-          )}
+          <button
+            type="button"
+            onClick={handleBookNow}
+            className="bg-[#4361EE] uppercase tracking-widest min-w-[196px] md:my-[1em] text-[12px] font-medium text-white py-[1.2em]  transform active:scale-95 max-md:hidden transition-transform duration-150"
+          >
+            Reserve Booth Now
+          </button>
         </div>
       </div>
 
@@ -150,67 +138,83 @@ const Header = () => {
       <div
         className={`${
           toggleSearch ? 'top-0' : 'top-[-100%]'
-        } fixed left-0 w-full h-2/3 animation duration-300 bg-black text-white py-24 max-md:px-10 px-28 shadow-lg`}
+        } fixed left-0 animation py-[23px] xl:py-[40px] xl:px-[60px] duration-1000 xl:h-[62%] max-xl:h-[40%] w-full bg-black  text-white`}
       >
-        <div className=" flex items-center justify-between gap-10 mb-44">
-          <Link href={getUrl('/')}>
-            <Image
-              src="/assets/logo/logo-white.svg"
-              alt="/assets/logo/logo-white.svg"
-              className=" max-md:max-w-[280px]"
-              width={350}
-              height={250}
+        <div className="max-xl:w-[calc(100vw-60px)] mx-auto">
+          <div className="grid grid-cols-4 items-center max-xl:items-start justify-between">
+            <Link href={getUrl('/')} className="w-[300px]">
+              <Image
+                src="/assets/logo/logo-white.svg"
+                alt="/assets/logo/logo.svg"
+                className=" w-full"
+                width={320}
+                height={52}
+              />
+            </Link>
+            <div className="col-span-2"></div>
+            <div className="flex justify-end">
+              <Image
+                src="/assets/icons/cross.svg"
+                alt="/assets/icons/cross.svg"
+                className="hover:rotate-180 ease-in-out animation text-white duration-300"
+                width={50}
+                height={50}
+                onClick={() => setToggleSearch(false)}
+              />
+            </div>
+          </div>
+          <div className="flex max-xl:max-w-[94%] w-full xl:w-[1280px]  mx-auto justify-between border-b border-b-gray-700/50 absolute inset-x-0 xl:top-[50%] max-xl:top-[60%]">
+            <input
+              type="text"
+              className="w-full bg-transparent font-halyard font-normal mb-[0.7em]  xl:text-[2rem] text-[1.3rem] md:text-[1.6rem]  "
+              placeholder="Type words and hit enter"
             />
-          </Link>
-          <Image
-            src="/assets/icons/cross.svg"
-            alt="/assets/icons/cross.svg"
-            className="hover:rotate-180 ease-in-out animation text-white duration-300"
-            width={30}
-            height={30}
-            onClick={() => setToggleSearch(false)}
-          />
-        </div>
-        <div className="pb-8 border-b-gray-700/30 border-b w-full flex items-center justify-between">
-          <input
-            type="text"
-            className="outline-none bg-transparent text-gray-200 text-3xl font-semibold w-full"
-            placeholder="Type words and hit enter"
-          />
-          <Image
-            src="/assets/icons/search-white.svg"
-            alt="/assets/icons/search-white.svg"
-            width={30}
-            height={30}
-            className=""
-            onClick={() => setToggleSearch(true)}
-          />
+            <Image
+              src="/assets/icons/search-white.svg"
+              alt="/assets/icons/search-white.svg"
+              className=""
+              width={32}
+              height={32}
+              onClick={() => setToggleSearch(true)}
+            />
+          </div>
         </div>
       </div>
 
       <div
         className={`${
           toggle ? 'top-0' : 'top-[-100%]'
-        } fixed left-0 w-full h-full animation duration-300 bg-black text-white p-5 shadow-lg`}
+        } fixed left-0 w-full h-full animation duration-1000 bg-black md:flex md:flex-col md:justify-between xl:justify-start text-white md:pb-0 p-[24px] xsm:px-[20px] xsm:py-[30px] font-halyard`}
       >
-        <div className="py-10 px-5 flex items-start justify-between gap-10">
-          <div>
-            <h2 className="font-bold text-3xl">Cambodia Trade Expo 2024</h2>
-            <p>Cambodia Trade Expo 2024</p>
+        <div className="flex xl:max-w-[95%] xl:mt-[24px] animation duration-1000 xl:w-full xl:mx-auto items-center justify-between gap-10 leading-relaxed tracking-tight">
+          <div className="xsm:ml-[10px]">
+            <Link href="/" className="text-[1.6em] max-xsm:text-[1.2em] ">
+              Cambodia Trade Expo 2024
+            </Link>
+            <p className="text-[13px] font-montserrat leading-[8px] text-gray-300">
+              Cambodia Trade Expo 2024
+            </p>
           </div>
-          <div onClick={() => setToggle(false)} className="flex items-center gap-2 group ">
-            <p className="text-xl text-gray-300">Close</p>
-            <Image
-              src="/assets/icons/cross.svg"
-              alt="/assets/icons/cross.svg"
-              className="group-hover:rotate-180 ease-in-out animation text-white duration-300"
-              width={30}
-              height={30}
-            />
+          <div
+            onClick={() => setToggle(false)}
+            className="flex items-center gap-2 group md:items-start md:pt-[43px] md:top-0 md:right-0 md:w-[400px] md:absolute md:h-screen md:bg-[#1D1F23]"
+          >
+            <div className="md:absolute md:right-10 xl:top-[4em] xl:right-[3em] relative flex items-center gap-1">
+              <p className="max-xsm:hidden xsm:text-[1em] font-montserrat font-extralight text-[15px] text-gray-400">
+                Close
+              </p>
+              <Image
+                src="/assets/icons/cross.svg"
+                alt="/assets/icons/cross.svg"
+                className=" group-hover:rotate-180 ease-in-out animation text-white duration-300"
+                width={40}
+                height={40}
+              />
+            </div>
           </div>
         </div>
         <ul
-          className={`flex flex-col font-bold items-start w-full justify-between duration-150 animation mt-32`}
+          className={`flex xl:max-w-[80%] animation duration-300 xl:w-full xl:mx-auto flex-col font-halyard max-xsm:text-[1.2em] text-[1.7em] xl:text-[2.2em] items-start w-full justify-between animation mt-[3em] xl:mt-[3em] sm:mt-[2em] xl:gap-3`}
         >
           {links.map((link, index) => (
             <Link
@@ -219,25 +223,14 @@ const Header = () => {
               onClick={() => setToggle(false)}
               className={`
                hover:text-white text-gray-300
-               px-5 py-2 w-full text-3xl `}
+                w-full max-xsm:py-1 xsm:py-[2px] xl:py-0`}
             >
               {link.label}
             </Link>
           ))}
         </ul>
-        <div className="p-5 ">
-          {event && (
-            <button
-              type="button"
-              onClick={handleBookNow}
-              className="bg-blue-700 uppercase font-semibold text-white py-4 px-8 transform active:scale-95 transition-transform duration-150"
-            >
-              Reserve Booth Now
-            </button>
-          )}
-        </div>
 
-        <div className="flex">
+        <div className="flex xl:mt-[13em] xl:justify-start border-t xl:mb-[20px] xl:max-w-[80%] xl:w-full xl:mx-auto border-t-gray-400/20 max-xsm:mt-[1.3em] mt-[2.4em] xl:pt-[20px]">
           {Array(4)
             .fill(4)
             .map((_, index) => ({
@@ -246,7 +239,7 @@ const Header = () => {
             }))
             .map((img) => (
               <Image
-                className="object-cover mx-4 xl:mx-20"
+                className="object-cover max-xsm:w-[15px] xsm:w-[18px] xl:mr-[1.6em] mr-[1.2em] max-xsm:py-[1em] xsm:py-[1.2em] text-gray-400"
                 key={img.id + 1}
                 src={img.src}
                 width={30}
