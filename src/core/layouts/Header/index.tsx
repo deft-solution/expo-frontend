@@ -30,17 +30,17 @@ const Header = () => {
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
       if (menuRef.current && !menuRef.current.contains(event.target as Node)) {
-        setToggle(false);
+        setToggleSearch(false);
       }
     };
 
-    if (toggle) {
+    if (toggleSearch) {
       document.addEventListener('mousedown', handleClickOutside);
     } else {
       document.removeEventListener('mousedown', handleClickOutside);
     }
     return () => document.removeEventListener('mousedown', handleClickOutside);
-  }, [toggle]);
+  }, [toggleSearch]);
 
   const handleBookNow = () => {
     if (eventId) {
@@ -88,7 +88,7 @@ const Header = () => {
             height={52}
           />
         </Link>
-        <ul className="flex items-center ml-[1.2em] justify-between font-halyard font-medium max-xl:hidden">
+        <ul className="flex items-center ml-[1.2em] justify-between font-halyard font-semibold max-xl:hidden">
           {links.map((link, index) => (
             <Link
               key={index}
@@ -103,14 +103,14 @@ const Header = () => {
           ))}
         </ul>
 
-        <div className="flex items-center xl:flex-col xl:items-end 1xl:items-center 1xl:flex-row justify-center gap-x-[1.5em]">
+        <div className="flex items-center xl:flex-col xl:items-end 1xl:items-center 1xl:flex-row justify-center gap-x-[1.5em] 1xl:gap-x-[2.8em]">
           <div className="flex items-center gap-x-[1em] max-sm:gap-x-[1em]">
             <Image
               src="/assets/icons/search.svg"
               alt="/assets/icons/search.svg"
               className="max-xsm:max-w-[28px]"
-              width={30}
-              height={30}
+              width={25}
+              height={25}
               onClick={() => setToggleSearch(true)}
             />
             <div onClick={() => setToggle(!toggle)} className="xl:hidden">
@@ -126,7 +126,7 @@ const Header = () => {
           <button
             type="button"
             onClick={handleBookNow}
-            className="bg-[#4361EE] uppercase tracking-widest min-w-[196px] md:my-[1em] text-[12px] font-medium text-white py-[1.2em]  transform active:scale-95 max-md:hidden transition-transform duration-150"
+            className="bg-[#4361EE] uppercase tracking-widest min-w-[196px] md:my-[1em] text-[12px] font-medium text-white py-[1.2em]   hover:bg-[#1E3FDB] max-md:hidden animation duration-300"
           >
             Reserve Booth Now
           </button>
@@ -140,13 +140,15 @@ const Header = () => {
           toggleSearch ? 'top-0' : 'top-[-100%]'
         } fixed left-0 animation py-[23px] xl:py-[40px] xl:px-[60px] duration-1000 xl:h-[62%] max-xl:h-[40%] w-full bg-black  text-white`}
       >
-        <div className="max-xl:w-[calc(100vw-60px)] mx-auto">
-          <div className="grid grid-cols-4 items-center max-xl:items-start justify-between">
-            <Link href={getUrl('/')} className="w-[300px]">
+        <div className="max-xl:w-[calc(100vw-60px)] max-xsm:w-full mx-auto">
+          <div className="grid grid-cols-4 items-center justify-between">
+            <Link
+              href={getUrl('/')}
+              className="max-xsm:w-[169.5px] xsm:w-[256px] xl:w-[310px] max-xsm:ml-[15px]"
+            >
               <Image
                 src="/assets/logo/logo-white.svg"
                 alt="/assets/logo/logo.svg"
-                className=" w-full"
                 width={320}
                 height={52}
               />
@@ -172,9 +174,8 @@ const Header = () => {
             <Image
               src="/assets/icons/search-white.svg"
               alt="/assets/icons/search-white.svg"
-              className=""
-              width={32}
-              height={32}
+              width={25}
+              height={25}
               onClick={() => setToggleSearch(true)}
             />
           </div>
@@ -197,16 +198,16 @@ const Header = () => {
           </div>
           <div
             onClick={() => setToggle(false)}
-            className="flex items-center gap-2 group md:items-start md:pt-[43px] md:top-0 md:right-0 md:w-[400px] md:absolute md:h-screen md:bg-[#1D1F23]"
+            className="flex items-center gap-2  md:items-start md:pt-[43px] md:top-0 md:right-0 md:w-[400px] md:absolute md:h-screen md:bg-[#1D1F23]"
           >
-            <div className="md:absolute md:right-10 xl:top-[4em] xl:right-[3em] relative flex items-center gap-1">
+            <div className="md:absolute md:right-10 group xl:top-[4em] xl:right-[3em] relative flex items-center gap-1">
               <p className="max-xsm:hidden xsm:text-[1em] font-montserrat font-extralight text-[15px] text-gray-400">
                 Close
               </p>
               <Image
                 src="/assets/icons/cross.svg"
                 alt="/assets/icons/cross.svg"
-                className=" group-hover:rotate-180 ease-in-out animation text-white duration-300"
+                className="group-hover:rotate-180 ease-in-out animation text-white duration-300"
                 width={40}
                 height={40}
               />
