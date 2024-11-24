@@ -189,7 +189,10 @@ const Header = () => {
       >
         <div className="flex xl:max-w-[95%] xl:mt-[24px] animation duration-1000 xl:w-full xl:mx-auto items-center justify-between gap-10 leading-relaxed tracking-tight">
           <div className="xsm:ml-[10px]">
-            <Link href="/" className="text-[1.6em] max-xsm:text-[1.2em] ">
+            <Link
+              href="/"
+              className="text-[1.6em] max-xsm:text-[1.2em] hover:text-[#1E3FDB]  transition-colors duration-300"
+            >
               Cambodia Trade Expo 2024
             </Link>
             <p className="text-[13px] font-montserrat leading-[8px] text-gray-300">
