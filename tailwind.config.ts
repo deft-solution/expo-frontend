@@ -9,6 +9,10 @@ const config: Config = {
   ],
   theme: {
     extend: {
+      screens: {
+        xsm: '480px',
+        '1xl': '1363px', // Extra large devices (default Tailwind size)
+      },
       colors: {
         primary: {
           DEFAULT: 'var(--color-primary)',
@@ -35,6 +39,7 @@ const config: Config = {
         montserrat: ['Montserrat', 'sans-serif'],
         battambang: ['Battambang', 'sans-serif'],
         moul: ['Moul', 'sans-serif'],
+        halyard: ['Halyard', 'sans-serif'],
       },
     },
   },

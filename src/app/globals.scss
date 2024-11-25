@@ -1,25 +1,32 @@
-@import "tailwindcss/base";
-@import "tailwindcss/components";
-@import "tailwindcss/utilities";
-@import "intl-tel-input/build/css/intlTelInput.css";
+@import 'tailwindcss/base';
+@import 'tailwindcss/components';
+@import 'tailwindcss/utilities';
+@import 'intl-tel-input/build/css/intlTelInput.css';
 
 @font-face {
-  font-family: "Moul";
-  src: url("/assets/fonts/Moul-Regular.ttf") format("truetype");
+  font-family: 'Halyard';
+  src: url('/assets/fonts/Halyard-Display-Regular.ttf') format('truetype');
   font-weight: normal;
   font-style: normal;
 }
 
 @font-face {
-  font-family: "Montserrat";
-  src: url("/assets/fonts/Montserrat-Regular.ttf") format("truetype");
+  font-family: 'Moul';
+  src: url('/assets/fonts/Moul-Regular.ttf') format('truetype');
   font-weight: normal;
   font-style: normal;
 }
 
 @font-face {
-  font-family: "Battambang";
-  src: url("/assets/fonts/Battambang-Regular.ttf") format("truetype");
+  font-family: 'Montserrat';
+  src: url('/assets/fonts/Montserrat-Regular.ttf') format('truetype');
+  font-weight: normal;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'Battambang';
+  src: url('/assets/fonts/Battambang-Regular.ttf') format('truetype');
   font-weight: normal;
   font-style: normal;
 }
@@ -32,10 +39,10 @@
 }
 
 body {
-  font-family: "Montserrat", sans-serif;
+  font-family: 'Halyard', sans-serif;
   margin: 0;
   padding: 0;
-  font-size: 16px;
+  font-size: 17px;
   box-sizing: border-box;
 }
 
@@ -75,7 +82,7 @@ rect.rect-hover {
   background-size: 20px;
   background-repeat: no-repeat;
   padding-left: 30px; // Space for the icon
-  background-image: url("/assets/icons/coupons.svg");
+  background-image: url('/assets/icons/coupons.svg');
 }
 
 .ck .ck-content {
