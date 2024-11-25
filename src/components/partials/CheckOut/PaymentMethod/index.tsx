@@ -1,6 +1,5 @@
 import classNames from 'classnames';
 import Image from 'next/image';
-import Link from 'next/link';
 import React, { useEffect, useState } from 'react';
 import { useFormContext } from 'react-hook-form';
 
@@ -89,20 +88,6 @@ const SelectPaymentMethod = () => {
           {!submissionStatus && activeIdx !== -1 && 'Confirm your payment'}
         </span>
       </Button>
-      <div className="flex justify-between items-center text-sm">
-        <div>
-          <Link href="/">Term | Privacy</Link>
-        </div>
-        <div className="flex items-center justify-between gap-2">
-          <span>Powered by:</span>
-          <Image
-            src="/assets/logo/wonderpass.svg"
-            alt="/assets/logo/wonderpass.svg"
-            width={100}
-            height={60}
-          />
-        </div>
-      </div>
     </div>
   );
 };
