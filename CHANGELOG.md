@@ -1,5 +1,15 @@
 # Release Notes
 
+**Release Date:** [25-Nov-2024]
+
+## v.1.0.1
+
+### Improvement
+
+  - Temporarily removed the Header until the new design is finalized.
+
+  - Removed "Term and Privacy" and "Wonderpass" from the interface
+
 **Release Date:** [21-Nov-2024]
 
 ## v.1.0.0

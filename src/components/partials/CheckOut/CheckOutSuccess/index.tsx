@@ -51,7 +51,7 @@ const CheckOutSuccess: React.FC<TypePropsPaymentInfo> = (props) => {
     <>
       <div>
         <div className="rounded-md bg-[#F6F7FA] p-4">
-          <div className="text-2xl font-bold">{booth?.boothType?.name}</div>
+          <div className="text-2xl font-bold">{booth?.boothName}</div>
           <div className="mt-4">
             <div className="flex items-center gap-2 text-[#33A16E]">
               <Image
@@ -62,10 +62,10 @@ const CheckOutSuccess: React.FC<TypePropsPaymentInfo> = (props) => {
               />
               <div>{booth?.size}</div>
             </div>
-            {booth?.description && (
+            {booth?.boothType?.description && (
               <div
                 className={`mt-4 ${Style['html-summary']}`}
-                dangerouslySetInnerHTML={{ __html: booth.description }}
+                dangerouslySetInnerHTML={{ __html: booth.boothType.description }}
               ></div>
             )}
           </div>

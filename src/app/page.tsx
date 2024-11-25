@@ -1,6 +1,6 @@
 import { Metadata } from 'next';
+import { notFound } from 'next/navigation';
 
-import HomePageComponent from '@/components/partials/Home/HomePage';
 import { IEventList } from '@/schema/Event';
 import { getSSREventByID } from '@/service/ssr/event';
 
@@ -12,6 +12,10 @@ type Props = {
 export async function generateMetadata(props: Props): Promise<Metadata> {
   const { searchParams } = props;
   const eventId = searchParams.event as string;
+
+  if (!eventId) {
+    notFound();
+  }
 
   let event: IEventList | null = null;
   if (eventId) {
@@ -31,9 +35,5 @@ export async function generateMetadata(props: Props): Promise<Metadata> {
 }
 
 export default function Home() {
-  return (
-    <main>
-      <HomePageComponent />
-    </main>
-  );
+  return <main></main>;
 }
