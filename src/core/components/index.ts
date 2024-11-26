@@ -24,6 +24,9 @@ export type { InputTagsTypeProps } from './InputTag';
 export { default as Upload } from './Uploads';
 export type { UploadTypesProps } from './Uploads';
 
+export { default as Dropdown } from './Dropdown';
+export type { DropdownTypeProps } from './Dropdown';
+
 export { default as Form } from './Form';
 export type { FormTypeProps } from './Form';
 
