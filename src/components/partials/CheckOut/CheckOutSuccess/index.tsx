@@ -10,9 +10,9 @@ import { formatDisplayDate } from '@/helper/format-date';
 import { IVerifyTransactionSuccess } from '@/models/Payment';
 import { downloadOrderPDF } from '@/service/order';
 
-import Button from '../../../../core/components/Buttons/index';
 import { formatNumberByCurrency } from '../../../../helper/format-number';
 import Style from './index.module.scss';
+import { Button } from '@Core';
 
 export interface TypePropsPaymentInfo {
   orderResponse: IVerifyTransactionSuccess | null;

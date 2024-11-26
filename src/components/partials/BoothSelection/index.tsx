@@ -1,6 +1,5 @@
 'use client';
 import React, { useEffect, useRef, useState } from 'react';
-
 import { useBoothSelection } from '@/context/BoothSelectionContext';
 
 interface BootSelectionTypeProps {
