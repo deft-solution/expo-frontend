@@ -1,18 +1,17 @@
 import classNames from 'classnames';
+import DOMPurify from 'dompurify';
 import Image from 'next/image';
 import React, { useState } from 'react';
-import DOMPurify from 'dompurify';
 
 import { useBoothSelection } from '@/context/BoothSelectionContext';
 import { triggerDownload } from '@/helper';
 import { formatDisplayDate } from '@/helper/format-date';
+import { IVerifyTransactionSucess } from '@/models/Payment';
 import { downloadOrderPDF } from '@/service/order';
 
-import { formatNumberByCurrency, formatNumberUSD } from '../../../../helper/format-number';
-import Style from './index.module.scss';
 import Button from '../../../../core/components/Buttons/index';
-import { useCalculatedCheckout } from '@/hooks/useCalculatedCheckout';
-import { IVerifyTransactionSucess } from '@/models/Payment';
+import { formatNumberByCurrency } from '../../../../helper/format-number';
+import Style from './index.module.scss';
 
 export interface TypePropsPaymentInfo {
   orderResponse: IVerifyTransactionSucess | null;
@@ -23,10 +22,14 @@ const CheckOutSuccess: React.FC<TypePropsPaymentInfo> = (props) => {
   const [isDownloading, setIsDownloading] = useState(false);
 
   const onClickDownloadPDF = () => {
+    if (!orderResponse) {
+      return;
+    }
+
     setIsDownloading(true);
     downloadOrderPDF()
       .then((blob) => {
-        triggerDownload(blob, `order.pdf`);
+        triggerDownload(blob, `${orderResponse.transactionNo}.pdf`);
       })
       .catch((err) => {
         if (err?.message) {
