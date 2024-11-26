@@ -12,7 +12,7 @@ export function findBoothOneId(id: string): Promise<IBootList> {
   return GETWithToken<IBootList, any>(API_URL, {});
 }
 
-export function getAllBothForEvent(eventId: string): Promise<IBootList[]> {
+export function getAllBoothForEvent(eventId: string): Promise<IBootList[]> {
   const API_URL = '/api/booths/v1/guest/' + eventId;
   return GET<IBootList[], any>(API_URL, {});
 }

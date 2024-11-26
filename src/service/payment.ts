@@ -1,5 +1,15 @@
 import { getWonderPassToken } from '@/helper';
-import { CalculatedDataResponse, CheckOutFormParam, CheckoutSuccess, ICalculatedOrder, PaymentOption, ValidatePassesResponse } from '@/models/Payment';
+import {
+  CalculatedDataResponse,
+  CheckOutFormParam,
+  CheckoutSuccess,
+  ICalculatedOrder,
+  ICreatePaymentQRCode,
+  IGenerateQRCodeSuccess,
+  IVerifyTransactionSucess,
+  PaymentOption,
+  ValidatePassesResponse,
+} from '@/models/Payment';
 import { GET, POST } from '@Core';
 
 export const getPaymentOptions = (): Promise<PaymentOption> => {
@@ -26,4 +36,18 @@ export const validatePaymentById = (paymentId: string): Promise<ValidatePassesRe
   const token = getWonderPassToken();
   const header = { Authorization: token };
   return GET<ValidatePassesResponse>(API_URL, {}, header);
+};
+
+export const verifyPaymenyTransaction = (
+  transactionId: string
+): Promise<IVerifyTransactionSucess> => {
+  const API_URL = '/api/payments/v1/status';
+  return POST<IVerifyTransactionSucess, { transactionId: string }>(API_URL, { transactionId });
+};
+
+export const createQRCodePayment = (
+  param: ICreatePaymentQRCode
+): Promise<IGenerateQRCodeSuccess> => {
+  const API_URL = '/api/payments/v1/qrcode';
+  return POST<IGenerateQRCodeSuccess, ICreatePaymentQRCode>(API_URL, param);
 };

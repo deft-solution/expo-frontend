@@ -10,7 +10,7 @@ import { Modal } from '@/core';
 
 const Layout = ({ children }: { children: React.ReactNode }) => {
   const [showAuthForm, setShowAuthForm] = useState(false);
-  const { eventId } = useBoothSelection();
+  const { currentEventId } = useBoothSelection();
 
   const { isAuthenticated } = useAuthLive();
 
@@ -18,7 +18,7 @@ const Layout = ({ children }: { children: React.ReactNode }) => {
     setShowAuthForm(!isAuthenticated);
   }, [isAuthenticated]);
 
-  if (!eventId) {
+  if (!currentEventId) {
     return <></>;
   }
 

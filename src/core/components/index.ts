@@ -48,6 +48,9 @@ export type { InputUploadProps } from './InputUploads';
 export { default as InputPhone } from './InputPhone';
 export type { InputPhoneTypProps } from './InputPhone';
 
+export { default as QRCode } from './QRCode';
+export type { QRCodeTypeProps } from './QRCode';
+
 const LazyRichTextCK = lazy(() => import('./RichTextCK'));
 export { LazyRichTextCK as RichTextCK };
 export type { CkEditorComponentProps } from './RichTextCK';

@@ -70,7 +70,7 @@ export interface ICalculatedOrder {
 }
 
 export interface OrderItem {
-  passTemplate: string;
+  boothId: string;
   quantity: number;
 }
 
@@ -151,4 +151,31 @@ export interface ValidatePassesResponse {
   data: number;
   statusCode: number;
   message: string;
+}
+
+export interface ICreatePaymentQRCode {
+  orderId: string;
+  event: string;
+  note: string | null;
+}
+
+export interface IGenerateQRCodeSuccess {
+  id: string;
+  qrCode: string;
+  metaData: string;
+  amount: number;
+  transactionNo: string;
+  currency: string;
+  createdAt: string;
+}
+
+export interface IVerifyTransactionSucess {
+  orderId: string;
+  transactionNo: string;
+  createdAt: string;
+  sender: string;
+  amount: number;
+  paymentTimestamp: string;
+  currency: string;
+  status: number;
 }

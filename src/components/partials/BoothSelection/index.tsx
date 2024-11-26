@@ -1,18 +1,18 @@
 'use client';
 import React, { useEffect, useRef, useState } from 'react';
-
 import { useBoothSelection } from '@/context/BoothSelectionContext';
 
 interface BootSelectionTypeProps {
   floorPlanUrl: string;
+  maxBoothPerOrder?: number; // Maximum booths allowed to be selected
   onChange?: (ids: string[]) => void; // Passes an array of selected booth IDs
 }
 
 const BootSelection = (props: BootSelectionTypeProps) => {
-  const { floorPlanUrl, onChange } = props;
+  const { floorPlanUrl, maxBoothPerOrder = 1, onChange } = props;
 
   const [selectedIds, setSelectedIds] = useState<string[]>([]); // Track an array of selected booth IDs
-  const { booths } = useBoothSelection(); // Get booth details from context
+  const { boothList } = useBoothSelection(); // Get booth details from context
   const svgRef = useRef<HTMLDivElement | null>(null);
 
   useEffect(() => {
@@ -32,10 +32,10 @@ const BootSelection = (props: BootSelectionTypeProps) => {
         rects.forEach((rect) => {
           const rectId = rect.id;
 
-          const booth = booths.find(({ boothNumber }) => boothNumber === rectId);
+          const booth = boothList.find(({ boothNumber }) => boothNumber === rectId);
 
           if (booth) {
-            const isSelected = selectedIds.includes(booth.externalId); // Check if the current booth is selected
+            const isSelected = selectedIds.includes(booth.id); // Check if the current booth is selected
 
             // Set initial checked state based on selectedIds
             if (isSelected) {
@@ -75,7 +75,7 @@ const BootSelection = (props: BootSelectionTypeProps) => {
 
   const onClickBooth = (rect: SVGRectElement) => {
     const rectId = rect.id; // Get booth ID from the rect element
-    const booth = booths.find(({ boothNumber }) => boothNumber === rectId);
+    const booth = boothList.find(({ boothNumber }) => boothNumber === rectId);
 
     if (!booth) {
       alert(`Booth with ID ${rectId} does not exist. Please verify and try again.`);
@@ -87,23 +87,35 @@ const BootSelection = (props: BootSelectionTypeProps) => {
       return; // Prevent further action if the booth is reserved
     }
 
-    const externalId = booth.externalId;
+    const boothId = booth.id;
 
-    // Remove 'checked' class from all other booths
-    const rects = svgRef.current?.querySelectorAll('rect') || [];
-    rects.forEach((r) => r.classList.remove('checked'));
+    // Use functional state update to ensure the latest selectedIds
+    setSelectedIds((prevSelectedIds) => {
+      // Check if the selection exceeds the maximum allowed based on the previous state
+      if (!prevSelectedIds.includes(boothId) && prevSelectedIds.length >= maxBoothPerOrder) {
+        alert(`You can only select up to ${maxBoothPerOrder} booth(s).`);
+        return prevSelectedIds; // Do not update state if max selection is exceeded
+      }
 
-    // Update the selectedIds array to only include the currently selected booth
-    const newSelectedIds = [externalId];
-    setSelectedIds(newSelectedIds); // Update the selected booth IDs
+      // Proceed with updating selectedIds
+      const newSelectedIds = prevSelectedIds.includes(boothId)
+        ? prevSelectedIds.filter((id) => id !== boothId) // Deselect booth
+        : [...prevSelectedIds, boothId]; // Select booth
 
-    // Add the 'checked' class to the clicked booth
-    rect.classList.add('checked');
+      // Emit the onChange event with the updated selectedIds array
+      if (onChange) {
+        onChange(newSelectedIds);
+      }
 
-    // Emit the onChange event with the updated selectedIds array
-    if (onChange) {
-      onChange(newSelectedIds);
-    }
+      // Update the visual state of the booth based on newSelectedIds
+      if (newSelectedIds.includes(boothId)) {
+        rect.classList.add('checked'); // Add 'checked' class if booth is selected
+      } else {
+        rect.classList.remove('checked'); // Remove 'checked' class if booth is not selected
+      }
+
+      return newSelectedIds; // Update state with new selection
+    });
   };
 
   const fetchingSvg = () => fetch(floorPlanUrl).then((res) => res.text());

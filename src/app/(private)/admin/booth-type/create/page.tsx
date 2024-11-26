@@ -5,10 +5,11 @@ import { FormProvider, useForm } from 'react-hook-form';
 
 import { FormBoothType, IBoothTypeCreate } from '@/schema/BoothType';
 import { createBoothType, findBoothTypeById, updateBoothTypeById } from '@/service/booth-type';
-import { InputText, RichTextCK } from '@Core';
+import { Dropdown, InputText, RichTextCK } from '@Core';
 import { yupResolver } from '@hookform/resolvers/yup';
 
 import Checkbox from '../../../../../core/components/Checkbox/index';
+import { CurrencyList } from '@/constants/Currency';
 
 const Page = () => {
   const id = useSearchParams().get('id') ?? null; // default value is "1"
@@ -34,6 +35,7 @@ const Page = () => {
     if (id) {
       findBoothTypeById(id).then((res) => {
         setValue('name', res.name);
+        setValue('currency', res.currency);
         setValue('isActive', res.isActive);
         setValue('description', res.description);
         setValue('price', res.price);
@@ -46,8 +48,9 @@ const Page = () => {
       <h2 className="text-3xl">All Booth Type</h2>
       <FormProvider {...methods}>
         <form className="flex flex-col gap-4 mt-4" onSubmit={handleSubmit(submitForm)}>
-          <div className="grid grid-cols-2 gap-4">
+          <div className="grid grid-cols-3 gap-4">
             <InputText name="name" label="Name" />
+            <Dropdown name="currency" items={CurrencyList} label="currency" />
             <InputText name="price" label="Price" />
           </div>
           <RichTextCK name="description" label="Description" />

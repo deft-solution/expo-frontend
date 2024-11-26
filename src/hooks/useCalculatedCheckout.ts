@@ -1,64 +1,47 @@
 import { useCallback, useEffect, useState } from 'react';
 
-import { useAuthLive } from '@/context/AuthLiveContext';
 import { useBoothSelection } from '@/context/BoothSelectionContext';
-import { CalculatedDataResponse, ICalculatedOrder, OrderItem } from '@/models/Payment';
-import { calculatedCheckOut } from '@/service/payment';
+import { OrderItem } from '@/models/Payment';
+import { calculatedTotalAmount } from '@/service/order';
+import { IOrderCalculatedResponse } from '@/models/Order';
+import { TypeCurrency } from '@/constants/Currency';
 
-export interface TypeProps {
-  payment?: IPayments;
-}
+export const useCalculatedCheckout = () => {
+  const { selectedBoothIds, currentEventId } = useBoothSelection();
 
-export interface IPayments {
-  provider?: number;
-  option?: string;
-  paymentCard?: string;
-}
-
-export const useCalculatedCheckout = ({ payment }: TypeProps) => {
-  const { isAuthenticated } = useAuthLive();
-  const { ids } = useBoothSelection();
   const [items, setItems] = useState<OrderItem[]>([]);
-  const [response, setResponse] = useState<CalculatedDataResponse | null>(null);
+  const [currency, setCurrency] = useState<TypeCurrency>('KHR');
+  const [response, setResponse] = useState<IOrderCalculatedResponse | null>(null);
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [error, setError] = useState<string | null>(null);
 
   // Prepare order items when booth selection (ids) changes
   useEffect(() => {
-    if (ids.length) {
-      const orderItems = ids.map((id): OrderItem => ({ passTemplate: id, quantity: 1 }));
+    if (selectedBoothIds.length) {
+      const orderItems = selectedBoothIds.map((id): OrderItem => ({ boothId: id, quantity: 1 }));
       setItems(orderItems);
     }
-  }, [ids]);
+  }, [selectedBoothIds.length]);
 
   // Perform calculation when items or payment data changes and the user is authenticated
   useEffect(() => {
-    if (isAuthenticated && items.length && payment) {
+    if (items.length && currentEventId) {
       onCalculated();
     }
-  }, [items, payment, isAuthenticated]);
+  }, [items, currency]);
 
   // Function to handle the checkout calculation
   const onCalculated = useCallback(() => {
     // Prevent multiple concurrent requests
-    if (isLoading) {
+    if (isLoading || !currentEventId) {
       return;
     }
     setIsLoading(true);
     setError(null); // Clear previous errors
 
-    const param: ICalculatedOrder = {
-      orderItems: items,
-      reservationDate: null,
-      ...payment, // Merge the payment details if available
-    };
-
-    calculatedCheckOut(param)
+    calculatedTotalAmount({ currency, event: currentEventId, booths: items })
       .then((res) => {
-        // Only update state if the response is different
-        if (JSON.stringify(res) !== JSON.stringify(response)) {
-          setResponse(res);
-        }
+        setResponse(res);
       })
       .catch((err) => {
         console.error(err);
@@ -71,7 +54,7 @@ export const useCalculatedCheckout = ({ payment }: TypeProps) => {
       .finally(() => {
         setIsLoading(false);
       });
-  }, [items, payment, isLoading, response]);
+  }, [items, isLoading, currency]);
 
   // Optionally, handle cleanup in case the component is unmounted
   useEffect(() => {
@@ -81,5 +64,5 @@ export const useCalculatedCheckout = ({ payment }: TypeProps) => {
     };
   }, []);
 
-  return { response, isLoading, error };
+  return { response, isLoading, error, setCurrency };
 };

@@ -52,11 +52,9 @@ const Page = () => {
         setValue('hall', res.hall);
         setValue('size', res.size);
         setValue('mapUrl', res.mapUrl);
-        setValue('event', res.event as any);
+        setValue('event', res.event as string);
         setValue('description', res.description);
-        setValue('externalId', res.externalId);
         setValue('price', res.price);
-        setValue('event', res.event as any);
         setValue('boothType', res.boothType as any);
       });
     }
@@ -80,9 +78,8 @@ const Page = () => {
           </div>
           <div className="grid grid-cols-2 gap-4">
             <InputText name="price" label="Price" placeholder="Booth Price Ex: 140$" />
-            <InputText name="externalId" label="External ID" placeholder="******" />
+            <InputText name="mapUrl" label="Map URL" />
           </div>
-          <InputText name="mapUrl" label="Map URL" />
           <RichTextCK name="description" label="Description" />
           <Checkbox name="isActive" label="Active" />
           <div>
