@@ -140,7 +140,7 @@ function Page() {
         </thead>
         <tbody>
           {list.map((row) => (
-            <tr className="hover:bg-gray-100 dark:hover:bg-neutral-700">
+            <tr key={row._id} className="hover:bg-gray-100 dark:hover:bg-neutral-700">
               <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-800 dark:text-neutral-200">
                 <Link href={'/admin/order/'}>{row.orderNo}</Link>
               </td>
