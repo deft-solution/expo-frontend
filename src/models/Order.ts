@@ -1,4 +1,5 @@
 import { TypeCurrency } from '@/constants/Currency';
+import { string } from 'yup';
 
 export interface IOrderRequestParams {
   event: string;
@@ -78,4 +79,73 @@ export interface ICalculatedBooth {
   originCurrency: string;
   size: string;
   quantity: number;
+}
+
+export interface IOrder {
+  companyName: string;
+  completedAt: null | string;
+  createdAt: null | string;
+  createdBy: null | string;
+  currency: string;
+  email: string;
+  event: {
+    createdAt: null | string;
+    createdBy: null | string;
+    description: string;
+    email: string | null;
+    endDate: string | null;
+    floorPlanUrl: string;
+    id: string;
+    isActive: boolean;
+    location: string;
+    logoUrl: string;
+    mainWebsiteUrl: string;
+    maxBoothPerOrder: number;
+    name: string;
+    phoneNumber: string | null;
+    startFrom: string | null;
+    updatedAt: string | null;
+  };
+  firstName: string;
+  ip: string;
+  items: {
+    boothId: {
+      boothName: string;
+      boothNumber: string;
+      boothType: string;
+      createdAt: string;
+      createdBy: string;
+      description: string;
+      event: string;
+      externalId: string;
+      hall: string;
+      id: string;
+      isActive: boolean;
+      isReserved: boolean;
+      mapUrl: null | string;
+      price: number;
+      size: string;
+      updatedAt: string;
+    };
+    boothTypeCurrency: string;
+    currency: string;
+    price: number;
+    quantity: number;
+    totalPrice: number;
+    unitPrice: number;
+    _id: string;
+  }[];
+  lastName: string;
+  nationality: string;
+  note: string;
+  orderNo: string;
+  patentUrl: null | string;
+  paymentMethod: number;
+  paymentStatus: number;
+  phoneNumber: string;
+  status: number;
+  totalAmount: number;
+  updatedAt: string;
+  __v: number;
+  _id: string;
 }
