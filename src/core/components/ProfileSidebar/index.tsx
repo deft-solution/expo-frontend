@@ -31,8 +31,8 @@ function ProfileSidebar() {
     <aside
       className={classNames(
         collapsibleCtx,
-        'hidden md:block',
-        Style['sidebar-wrapper'],
+        'hidden md:block max-w-[200px]',
+        Style['sidebar-wrapper']
       )}
     >
       <div className={Style['sidebar-content']}>

@@ -26,7 +26,7 @@ export default function PrivateLayout({ children }: Readonly<RootLayoutProps>) {
   return (
     <div className="min-h-screen mt-4 flex flex-1">
       <ProfileSidebar />
-      <main className="flex-1 mx-4 bg-white rounded-xl">
+      <main className="flex-1 mx-4 overflow-scroll bg-white rounded-xl">
         <div className="p-4">{children}</div>
       </main>
     </div>

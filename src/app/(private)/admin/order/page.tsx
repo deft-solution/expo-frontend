@@ -17,6 +17,7 @@ import { formatPaymentMethod } from '@/helper/format-method';
 import { getAllEventAutoComplete } from '@/service/event';
 import { IEventList } from '@/schema/Event';
 import { ListItemType } from '@/core/components/Dropdown';
+import Image from 'next/image';
 
 function Page() {
   const limit = 10;
@@ -25,14 +26,11 @@ function Page() {
   const [total, setTotal] = useState(0);
   const [list, setList] = useState<IOrderResponse[]>([]);
   //
-  const [isRefresh, setIsRefresh] = useState(false);
 
   const [selectedEventId, setSelectedEventId] = useState<string | null>(null);
   const [eventList, setEventsList] = useState<IEventList[]>([]);
 
-  const methods = useForm<ListItemType>({
-    defaultValues: { event: null },
-  });
+  const methods = useForm<ListItemType>({ defaultValues: { event: null } });
   const { watch, setValue } = methods;
   const eventId = watch('eventId');
   const orderNo = watch('orderNo');
@@ -40,7 +38,7 @@ function Page() {
   const { response, loading } = useApi({
     service: getAllOrders,
     params: { limit, offset, eventId, orderNo },
-    effects: [offset, selectedEventId, orderNo, isRefresh],
+    effects: [offset, selectedEventId, orderNo],
   });
 
   const { response: events } = useApi<IEventList[]>({
@@ -86,6 +84,10 @@ function Page() {
     }
   }
 
+  const goToEventDetail = (id: string) => {
+    return '/admin/event/' + id;
+  };
+
   return (
     <div>
       <h2 className="text-3xl mb-4">All Order ({total})</h2>
@@ -96,15 +98,20 @@ function Page() {
         >
           <div className="flex max-xl:w-4/5 items-start gap-4 max-xl:flex-col">
             <div className="w-full max-xl:max-w-full">
-              <InputText name="orderNo" placeholder="Filter: Order No" />
+              <InputText disabled={loading} name="orderNo" placeholder="Filter: Order No" />
             </div>
           </div>
           <div className="flex max-xl:w-4/5 items-start gap-4 max-xl:flex-col">
             <div className="w-full max-xl:max-w-full">
-              <Dropdown name="eventId" items={eventList} placeholder="Select Event" />
+              <Dropdown
+                disabled={loading}
+                name="eventId"
+                items={eventList}
+                placeholder="Select Event"
+              />
             </div>
           </div>
-          <Button onClick={onClearFilter} className="flex-grow self-stretch">
+          <Button disabled={loading} onClick={onClearFilter} className="flex-grow self-stretch">
             Clear
           </Button>
         </Form>
@@ -156,16 +163,30 @@ function Page() {
               </td>
 
               <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-800 dark:text-neutral-200">
-                <Link href={'/admin/order/'}>
-                  {row.firstName} {row.lastName}
-                </Link>
+                <Link href={'/admin/order/'}>{[row.firstName, row.lastName].join(' ')}</Link>
               </td>
+
               <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-800 dark:text-neutral-200">
                 <Link href={'/admin/order/'}>{row.email}</Link>
               </td>
 
               <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-800 dark:text-neutral-200">
-                <Link href={'/admin/order/'}>{row.event.name}</Link>
+                {row.event && (
+                  <Link href={goToEventDetail(row.event.id)}>
+                    <div className="flex items-center gap-2">
+                      {row.event?.logoUrl && (
+                        <Image
+                          className="w-10 h-10 rounded-full object-cover"
+                          width={100}
+                          height={100}
+                          src={row.event.logoUrl}
+                          alt={row.event.logoUrl}
+                        />
+                      )}
+                      {row.event.name}
+                    </div>
+                  </Link>
+                )}
               </td>
 
               <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-800 dark:text-neutral-200">
@@ -178,18 +199,12 @@ function Page() {
                 <Link href={'/admin/order/'}>
                   <div className="flex gap-x-2 items-center">
                     <div
-                      className={classNames('h-2.5 w-2.5 rounded-full me-2 flex items-center', 4)}
-                    >
-                      <span>
-                        <div
-                          className={classNames(
-                            'h-2.5 w-2.5 rounded-full me-2',
-                            getStatusClass(row.status)
-                          )}
-                        ></div>
-                      </span>
-                      <span>{formatOrderStatus(row.status)}</span>
-                    </div>
+                      className={classNames(
+                        'h-2.5 w-2.5 rounded-full me-2',
+                        getStatusClass(row.status)
+                      )}
+                    ></div>
+                    {formatOrderStatus(row.status)}
                   </div>
                 </Link>
               </td>
@@ -199,11 +214,11 @@ function Page() {
               </td>
 
               <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-800 dark:text-neutral-200">
-                <Link href={'/'}> {formatDisplayDate(row.createdAt, 'DD MMM YYYY')}</Link>
+                <Link href={'/'}>{formatDisplayDate(row.createdAt, 'DD MMM YYYY')}</Link>
               </td>
 
-              <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-800 dark:text-neutral-200">
-                <Link href={'/'}>{formatDisplayDate(row.completedAt, 'DD MMM YYYY')}</Link>
+              <td className="px-6 py-4 whitespace-nowrap text-sm text-center font-medium text-gray-800 dark:text-neutral-200">
+                <Link href={'/'}>{formatDisplayDate(row.completedAt, 'DD MMM YYYY hh:mm A')}</Link>
               </td>
             </tr>
           ))}
