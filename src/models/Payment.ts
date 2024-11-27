@@ -1,3 +1,4 @@
+import { TypeCurrency } from '@/constants/Currency';
 import { Payments } from '@/enums/payments';
 import { BaseResponse } from '@/schema/Wonderpass/Base';
 
@@ -165,7 +166,7 @@ export interface IGenerateQRCodeSuccess {
   metaData: string;
   amount: number;
   transactionNo: string;
-  currency: string;
+  currency: TypeCurrency;
   createdAt: string;
 }
 
@@ -176,6 +177,6 @@ export interface IVerifyTransactionSucess {
   sender: string;
   amount: number;
   paymentTimestamp: string;
-  currency: string;
+  currency: TypeCurrency;
   status: number;
 }

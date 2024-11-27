@@ -1,14 +1,11 @@
 import classNames from 'classnames';
 import Image from 'next/image';
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import { useFormContext } from 'react-hook-form';
 
-import { useCheckout } from '@/context/CheckOutContext';
-import { usePaymentContext } from '@/context/PaymentOptionsContext';
-import { getAcceptPayments } from '@/helper/config';
-import { PaymentOptionFormat } from '@/models/Payment';
-import { Button } from '@Core';
 import { PAYMENT_LIST } from '@/constants/Payment';
+import { useCheckout } from '@/context/CheckOutContext';
+import { Button } from '@Core';
 
 const SelectPaymentMethod = () => {
   const name = 'paymentMethod';
@@ -46,7 +43,7 @@ const SelectPaymentMethod = () => {
                 onClick={() => onSelectPayment(idx)}
                 className={classNames(
                   'flex items-center border gap-6 justify-center border-gray-200 p-6 rounded-2xl cursor-pointer',
-                  { 'bg-[#d9d9d9]': activeIdx === idx }
+                  { 'bg-[#d9d9d9]': activeIdx === idx, disabled: submissionStatus }
                 )}
               >
                 {logo && <Image src={logo} alt={logo} width={24} height={24} />}

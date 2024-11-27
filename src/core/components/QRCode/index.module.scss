@@ -1,0 +1,19 @@
+.wrapper-container {
+  width: 255px;
+  overflow: hidden;
+  border-radius: 20px;
+  background: #ffffff;
+  box-shadow: 10px 10px 40px #e2e2e2, -10px -10px 40px #ffffff;
+}
+
+.payment-details {
+  padding: 0px 30px 20px 30px;
+  border-bottom: 1.2px dashed rgba(0, 0, 0, 0.5)
+}
+
+.text-timer {
+  color: #C20000;
+  font-weight: normal;
+  margin-bottom: 20px;
+  text-align: center;
+}

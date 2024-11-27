@@ -1,20 +1,22 @@
 'use client';
 import React, { useEffect, useRef, useState } from 'react';
+import { useFormContext } from 'react-hook-form';
+
+import { uploadFiles } from '@/service/file';
 
 import Style from './index.module.scss';
-import { useFormContext } from 'react-hook-form';
-import { uploadFiles } from '@/service/file';
 
 export interface InputUploadProps {
   name: string;
   label?: string;
   enabledUpload?: boolean;
   folderName?: string;
+  disabled?: boolean;
   accepts?: string[]; // Optional prop as an array of strings
 }
 
 const InputUpload: React.FC<InputUploadProps> = (props) => {
-  const { name, accepts = ['image/*'], folderName, enabledUpload = true } = props;
+  const { name, accepts = ['image/*'], folderName, enabledUpload = true, disabled = false } = props;
   const {
     register,
     setValue,
@@ -85,6 +87,7 @@ const InputUpload: React.FC<InputUploadProps> = (props) => {
 
       <input
         id={name}
+        disabled={disabled}
         type="file"
         multiple={false}
         onChange={onSelectFile}

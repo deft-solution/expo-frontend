@@ -12,7 +12,7 @@ import { useBoothSelection } from '@/context/BoothSelectionContext';
 import { useCheckout } from '@/context/CheckOutContext';
 import { useCalculatedCheckout } from '@/hooks/useCalculatedCheckout';
 import { usePaymentPolling } from '@/hooks/usePaymentPolling';
-import { CreateOrderResponse } from '@/models/Order';
+import { IGenerateQRCodeSuccess } from '@/models/Payment';
 import { IOrderRequestParams, OrderRequestParamsSchema } from '@/schema/Checkout';
 import { Form, Modal, QRCode } from '@Core';
 import { yupResolver } from '@hookform/resolvers/yup';
@@ -27,7 +27,7 @@ const PageCheckOut: React.FC = () => {
   const { selectedBoothIds, currentEventId } = useBoothSelection();
 
   const [isSubmitModalVisible, setSubmitModalVisibility] = useState(false);
-  const [qrCodeValue, setQRCodeValue] = useState<string | null>(null);
+  const [khqrPayment, setKHQRPayment] = useState<IGenerateQRCodeSuccess | null>(null);
   const currency = watch('currency');
 
   useEffect(() => {
@@ -62,7 +62,7 @@ const PageCheckOut: React.FC = () => {
     onCreateOrder(data)
       .then((response) => {
         if (response && response.qrCode) {
-          setQRCodeValue(response.qrCode);
+          setKHQRPayment(response);
           setPaymentId(response.id);
           setSubmitModalVisibility(true);
           startPolling();
@@ -85,13 +85,18 @@ const PageCheckOut: React.FC = () => {
   return (
     <div className="max-md:mb-10">
       <Modal
-        contentClassName="max-w-[400px] !h-[700px]"
+        contentClassName="max-w-[400px] !h-[600px]"
         onClickOutSide={handleModalClose}
         visible={isSubmitModalVisible}
       >
-        {qrCodeValue && (
-          <div className="flex h-100 items-center justify-center">
-            <QRCode value={qrCodeValue} />
+        {khqrPayment && khqrPayment.amount > 0 && khqrPayment.currency && (
+          <div className="flex h-full items-center justify-center">
+            <QRCode
+              amount={khqrPayment.amount}
+              currency={khqrPayment.currency}
+              onCountDownFinished={handleModalClose}
+              value={khqrPayment.qrCode}
+            />
           </div>
         )}
       </Modal>
