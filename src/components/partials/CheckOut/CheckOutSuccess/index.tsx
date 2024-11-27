@@ -95,9 +95,6 @@ const CheckOutSuccess: React.FC<TypePropsPaymentInfo> = (props) => {
 
         {/* Action Buttons */}
         <div className="grid grid-cols-2 gap-4 mt-4">
-          <Button onClick={onClickDownloadPDF} disabled={isDownloading} type="button" theme="light">
-            {isDownloading ? 'Downloading' : 'Get PDF Receipt'}
-          </Button>
           <Button type="button" theme="success">
             Back to Home
           </Button>
