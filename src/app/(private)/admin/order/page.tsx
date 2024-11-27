@@ -13,7 +13,6 @@ import { IOrderResponse } from '@/models/Order';
 import { formatDisplayDate } from '@/helper/format-date';
 import { formatNumberByCurrency } from '@/helper/format-number';
 import { formatOrderStatus } from '@/helper/format-status';
-import { formatPaymentMethod } from '@/helper/format-method';
 import { getAllEventAutoComplete } from '@/service/event';
 import { IEventList } from '@/schema/Event';
 import { ListItemType } from '@/core/components/Dropdown';
