@@ -1,6 +1,6 @@
 import {
   CreateOrderResponse,
-  IOrder,
+  IOrderResponse,
   IOrderCalculatedRequest,
   IOrderCalculatedResponse,
 } from '@/models/Order';
@@ -8,9 +8,9 @@ import { IPagination, IPaginationParam } from '@/models/Pagination';
 import { IOrderRequestParams } from '@/schema/Checkout';
 import { GET, GETWithToken, POST, PUT } from '@Core';
 
-export function getAllOrders(param: IPaginationParam): Promise<IPagination<IOrder>> {
+export function getAllOrders(param: IPaginationParam): Promise<IPagination<IOrderResponse>> {
   const API_URL = '/api/orders/v1/admin/list';
-  return GETWithToken<IPagination<IOrder>, any>(API_URL, param);
+  return GETWithToken<IPagination<IOrderResponse>, any>(API_URL, param);
 }
 
 export const createOrder = (param: IOrderRequestParams): Promise<CreateOrderResponse> => {

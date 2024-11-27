@@ -19,9 +19,9 @@ export const formatOrderStatus = (status: number) => {
     case order.ORDER_STATUS_PENDING:
       return 'Pending';
     case order.ORDER_STATUS_COMPLETED:
-      return 'Paid';
+      return 'Completed';
     case order.ORDER_STATUS_CANCEL:
-      return 'Failed';
+      return 'Canceled';
     default:
       return '';
   }

@@ -1,5 +1,20 @@
 import { TypeCurrency } from '@/constants/Currency';
-import { string } from 'yup';
+import { IBooth } from '@/schema/Booth';
+import { IBootTypeList } from '@/schema/BoothType';
+import { IEvents } from '@/schema/Event';
+
+export interface Event extends IEvents {
+  createdBy: string;
+  createdAt: string;
+  updatedAt: string;
+  id: string;
+}
+
+export interface BoothId extends IBooth {
+  mapUrl: any;
+  event: string;
+  boothType: IBootTypeList;
+}
 
 export interface IOrderRequestParams {
   event: string;
@@ -51,7 +66,7 @@ export interface CreateOrderResponse {
 }
 
 export interface Item {
-  boothId: string;
+  boothId: string | BoothId;
   quantity: number;
   unitPrice: number;
   totalPrice: number;
@@ -81,60 +96,17 @@ export interface ICalculatedBooth {
   quantity: number;
 }
 
-export interface IOrder {
+export interface IOrderResponse {
   companyName: string;
   completedAt: null | string;
   createdAt: null | string;
   createdBy: null | string;
   currency: string;
   email: string;
-  event: {
-    createdAt: null | string;
-    createdBy: null | string;
-    description: string;
-    email: string | null;
-    endDate: string | null;
-    floorPlanUrl: string;
-    id: string;
-    isActive: boolean;
-    location: string;
-    logoUrl: string;
-    mainWebsiteUrl: string;
-    maxBoothPerOrder: number;
-    name: string;
-    phoneNumber: string | null;
-    startFrom: string | null;
-    updatedAt: string | null;
-  };
+  event: Event;
   firstName: string;
   ip: string;
-  items: {
-    boothId: {
-      boothName: string;
-      boothNumber: string;
-      boothType: string;
-      createdAt: string;
-      createdBy: string;
-      description: string;
-      event: string;
-      externalId: string;
-      hall: string;
-      id: string;
-      isActive: boolean;
-      isReserved: boolean;
-      mapUrl: null | string;
-      price: number;
-      size: string;
-      updatedAt: string;
-    };
-    boothTypeCurrency: string;
-    currency: string;
-    price: number;
-    quantity: number;
-    totalPrice: number;
-    unitPrice: number;
-    _id: string;
-  }[];
+  items: Item[];
   lastName: string;
   nationality: string;
   note: string;

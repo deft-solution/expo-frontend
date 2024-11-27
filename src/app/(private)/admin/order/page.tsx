@@ -1,44 +1,48 @@
 'use client';
 
 import React, { useEffect, useState } from 'react';
-import * as payment from '@/constants/Payment';
+import * as order from '@/constants/Order';
 
-import { Button, Form, Pagination, useApi } from '@Core';
+import { Button, Dropdown, Form, InputText, Pagination, useApi } from '@Core';
 import classNames from 'classnames';
 import Link from 'next/link';
 import { useForm } from 'react-hook-form';
 
-import moment from 'moment';
 import { getAllOrders } from '@/service/order';
-import { IOrderRequestParams } from '@/schema/Checkout';
-import { IOrder } from '@/models/Order';
+import { IOrderResponse } from '@/models/Order';
 import { formatDisplayDate } from '@/helper/format-date';
 import { formatNumberByCurrency } from '@/helper/format-number';
-import { formatOrderStatus, formatPaymentStatus } from '@/helper/format-status';
+import { formatOrderStatus } from '@/helper/format-status';
 import { formatPaymentMethod } from '@/helper/format-method';
 import { getAllEventAutoComplete } from '@/service/event';
 import { IEventList } from '@/schema/Event';
+import { ListItemType } from '@/core/components/Dropdown';
 
 function Page() {
   const limit = 10;
   //
   const [offset, setOffset] = useState(0);
   const [total, setTotal] = useState(0);
-  const [list, setList] = useState<IOrder[]>([]);
+  const [list, setList] = useState<IOrderResponse[]>([]);
   //
-  const [isDownloading, setIsDownloading] = useState(false);
   const [isRefresh, setIsRefresh] = useState(false);
 
-  const [selectedMachine, setSelectedMachine] = useState<string | null>(null);
-  const [selectedOrderStatus, setSelectedOrderStatus] = useState<number | null>(null);
-  const [fromDate, setFromDate] = useState<string | null>(null);
-  const [toDate, setToDate] = useState<string | null>(null);
+  const [selectedEventId, setSelectedEventId] = useState<string | null>(null);
   const [eventList, setEventsList] = useState<IEventList[]>([]);
+
+  const methods = useForm<ListItemType>({
+    defaultValues: { event: null },
+  });
+  const { watch, setValue } = methods;
+  const eventId = watch('eventId');
+  const orderNo = watch('orderNo');
+
   const { response, loading } = useApi({
     service: getAllOrders,
-    params: { limit, offset },
-    effects: [offset],
+    params: { limit, offset, eventId, orderNo },
+    effects: [offset, selectedEventId, orderNo, isRefresh],
   });
+
   const { response: events } = useApi<IEventList[]>({
     service: getAllEventAutoComplete,
     params: {},
@@ -51,52 +55,59 @@ function Page() {
       setTotal(response.total);
     }
   }, [response]);
+
   useEffect(() => {
     if (events?.length) {
       setEventsList(events);
     }
   }, [events?.length]);
 
-  console.log(eventList);
-  //   function onClearFilter() {
-  //     setOffset(0);
-  //     setValue('machine', null);
-  //     setValue('status', null);
-  //     setValue('from', null);
-  //     setValue('to', null);
-  //   }
+  useEffect(() => {
+    setOffset(0);
+    setSelectedEventId(eventId);
+  }, [eventId]);
+
+  function onClearFilter() {
+    setOffset(0);
+    setValue('eventId', null);
+    setValue('orderNo', null);
+  }
+
+  function getStatusClass(statusOrder: number) {
+    switch (statusOrder) {
+      case order.ORDER_STATUS_PENDING:
+        return 'bg-yellow-500';
+      case order.ORDER_STATUS_COMPLETED:
+        return 'bg-green-500';
+      case order.ORDER_STATUS_CANCEL:
+        return 'bg-red-500';
+      default:
+        return 'bg-gray-500';
+    }
+  }
 
   return (
     <div>
       <h2 className="text-3xl mb-4">All Order ({total})</h2>
       <div className="flex items-center justify-between max-xl:flex-col gap-4">
-        <form className="flex max-xl:w-full h-full gap-4 items-center justify-between">
+        <Form
+          methods={methods}
+          classNames="flex max-xl:w-full h-full gap-4 items-center justify-between"
+        >
           <div className="flex max-xl:w-4/5 items-start gap-4 max-xl:flex-col">
             <div className="w-full max-xl:max-w-full">
-              <select
-                defaultValue=""
-                required
-                className="bg-gray-50 text-sm rounded-lg w-full h-12 py-3 px-2.5 border"
-              >
-                <option value="" disabled>
-                  Select Event
-                </option>
-                {eventList.map((row) => (
-                  <option value={row.id} key={row.id}>
-                    {row.name}
-                  </option>
-                ))}
-              </select>
+              <InputText name="orderNo" placeholder="Filter: Order No" />
             </div>
           </div>
-          <Button className="flex-grow self-stretch">Clear</Button>
-        </form>
-        <Button
-          className="flex max-xl:w-full items-center h-full bg-green-700 gap-2 hover:bg-green-800  justify-center"
-          disabled={isDownloading}
-        >
-          Download Excel
-        </Button>
+          <div className="flex max-xl:w-4/5 items-start gap-4 max-xl:flex-col">
+            <div className="w-full max-xl:max-w-full">
+              <Dropdown name="eventId" items={eventList} placeholder="Select Event" />
+            </div>
+          </div>
+          <Button onClick={onClearFilter} className="flex-grow self-stretch">
+            Clear
+          </Button>
+        </Form>
       </div>
 
       <table className="w-full min-w-max table-auto mt-4 text-left">
@@ -106,7 +117,10 @@ function Page() {
               Order No
             </th>
             <th className="px-6 py-3 text-start text-xs font-medium text-gray-500 uppercase dark:text-neutral-500">
-              Booth | Hall
+              Customer Name
+            </th>
+            <th className="px-6 py-3 text-start text-xs font-medium text-gray-500 uppercase dark:text-neutral-500">
+              Email
             </th>
 
             <th className="px-6 py-3 text-start text-xs font-medium text-gray-500 uppercase dark:text-neutral-500">
@@ -119,10 +133,6 @@ function Page() {
 
             <th className="px-6 py-3 text-start text-xs font-medium text-gray-500 uppercase dark:text-neutral-500">
               Status
-            </th>
-
-            <th className="px-6 py-3 text-start text-xs font-medium text-gray-500 uppercase dark:text-neutral-500">
-              Payment Status
             </th>
 
             <th className="px-6 py-3 text-start text-xs font-medium text-gray-500 uppercase dark:text-neutral-500">
@@ -147,8 +157,11 @@ function Page() {
 
               <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-800 dark:text-neutral-200">
                 <Link href={'/admin/order/'}>
-                  {row.items[0].boothId.boothName} | {row.items[0].boothId.hall}
+                  {row.firstName} {row.lastName}
                 </Link>
+              </td>
+              <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-800 dark:text-neutral-200">
+                <Link href={'/admin/order/'}>{row.email}</Link>
               </td>
 
               <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-800 dark:text-neutral-200">
@@ -164,23 +177,24 @@ function Page() {
               <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-800 dark:text-neutral-200">
                 <Link href={'/admin/order/'}>
                   <div className="flex gap-x-2 items-center">
-                    <div className={classNames('h-2.5 w-2.5 rounded-full me-2', 4)}>
-                      {formatOrderStatus(row.status)}
+                    <div
+                      className={classNames('h-2.5 w-2.5 rounded-full me-2 flex items-center', 4)}
+                    >
+                      <span>
+                        <div
+                          className={classNames(
+                            'h-2.5 w-2.5 rounded-full me-2',
+                            getStatusClass(row.status)
+                          )}
+                        ></div>
+                      </span>
+                      <span>{formatOrderStatus(row.status)}</span>
                     </div>
                   </div>
                 </Link>
               </td>
 
-              <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-800 dark:text-neutral-200">
-                <Link href={'/admin/order/'}>
-                  <div className="flex gap-x-2 items-center">
-                    <div className={classNames('h-2.5 w-2.5 rounded-full me-2', 5)}></div>
-                    {formatPaymentStatus(row.paymentStatus)}
-                  </div>
-                </Link>
-              </td>
-
-              <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-800 dark:text-neutral-200">
+              <td className="px-6 py-4 whitespace-nowrap text-center text-sm font-medium text-gray-800 dark:text-neutral-200">
                 <Link href={'/'}>{formatPaymentMethod(row.paymentMethod)}</Link>
               </td>
 
@@ -195,12 +209,12 @@ function Page() {
           ))}
         </tbody>
       </table>
-      {/*
+
       {!loading && !list.length && (
         <div className="mt-10 text-center text-gray-800 dark:text-neutral-200">
           No order has been recorded for this filter(s).
         </div>
-      )} */}
+      )}
 
       <div className="mt-4">
         <Pagination total={total} pageSize={limit} onChange={setOffset} />
