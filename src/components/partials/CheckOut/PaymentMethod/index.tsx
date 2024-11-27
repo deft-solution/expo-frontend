@@ -3,9 +3,9 @@ import Image from 'next/image';
 import React, { useState } from 'react';
 import { useFormContext } from 'react-hook-form';
 
+import { PAYMENT_LIST } from '@/constants/Payment';
 import { useCheckout } from '@/context/CheckOutContext';
 import { Button } from '@Core';
-import { PAYMENT_LIST } from '@/constants/Payment';
 
 const SelectPaymentMethod = () => {
   const name = 'paymentMethod';
