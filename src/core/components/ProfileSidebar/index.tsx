@@ -40,6 +40,9 @@ function ProfileSidebar() {
           <Link href="/admin/dashboard">
             <li>Dashboard</li>
           </Link>
+          <Link href="/admin/order">
+            <li>Order</li>
+          </Link>
           <Link href="/admin/booth">
             <li>Booth</li>
           </Link>

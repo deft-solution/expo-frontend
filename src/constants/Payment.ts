@@ -1,6 +1,10 @@
 export const USD_KHQR = 1;
 export const KHR_KHQR = 2;
 
+export const PAYMENT_STATUS_PENDING = 1;
+export const PAYMENT_STATUS_COMPLETED = 2;
+export const PAYMENT_STATUS_FAILED = 3;
+
 export const PAYMENT_LIST = [
   {
     id: USD_KHQR,
