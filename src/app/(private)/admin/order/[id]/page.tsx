@@ -137,7 +137,7 @@ const Page = ({ params: { id } }: { params: { id: string } }) => {
                     <div className="space-y-2">
                       <div className="flex gap-1 flex-col">
                         <p className="flex justify-between">
-                          <span className="font-bold">Total Amount:</span>{' '}
+                          <span className="font-bold">Total Amount:</span>
                         </p>
                       </div>
                       <div className="flex gap-1 flex-col">
@@ -173,19 +173,19 @@ const Page = ({ params: { id } }: { params: { id: string } }) => {
                     <div className="flex gap-1 flex-col">
                       <p className="space-x-12 flex justify-between">
                         <span className="font-bold">Serial No:</span>
-                        'hi'{' '}
+                        hi
                       </p>
                     </div>
                     <div className="flex gap-1 flex-col">
                       <p className="space-x-12 flex justify-between">
                         <span className="font-bold">Model No;</span>
-                        'hi'{' '}
+                        hi
                       </p>
                     </div>
                     <div className="flex gap-1 flex-col">
                       <p className="space-x-12 flex justify-between">
                         <span className="font-bold">Contact Person:</span>
-                        'contact'{' '}
+                        contact
                       </p>
                     </div>
                   </div>
