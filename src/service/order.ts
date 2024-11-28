@@ -34,3 +34,8 @@ export const downloadOrderPDF = (): Promise<Blob> => {
   const API_URL = '/api/orders/v1/pdf/receipts';
   return GET<Blob, any>(API_URL, {}, {}, { responseType: 'blob' });
 };
+
+export function getOrderById(id: string): Promise<IOrderResponse> {
+  const API_URL = '/api/orders/v1/admin/' + id;
+  return GETWithToken<IOrderResponse>(API_URL, {});
+}

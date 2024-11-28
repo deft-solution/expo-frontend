@@ -28,17 +28,19 @@ function Page() {
   //
 
   const [selectedEventId, setSelectedEventId] = useState<string | null>(null);
+  const [selectedStatus, setSelectedStatus] = useState<string | null>(null);
   const [eventList, setEventsList] = useState<IEventList[]>([]);
 
   const methods = useForm<ListItemType>({ defaultValues: { event: null } });
   const { watch, setValue } = methods;
   const eventId = watch('eventId');
   const orderNo = watch('orderNo');
+  const status = watch('status');
 
   const { response, loading } = useApi({
     service: getAllOrders,
-    params: { limit, offset, eventId, orderNo },
-    effects: [offset, selectedEventId, orderNo],
+    params: { limit, offset, eventId, orderNo, status },
+    effects: [offset, selectedEventId, orderNo, selectedStatus],
   });
 
   const { response: events } = useApi<IEventList[]>({
@@ -63,12 +65,14 @@ function Page() {
   useEffect(() => {
     setOffset(0);
     setSelectedEventId(eventId);
-  }, [eventId]);
+    setSelectedStatus(status);
+  }, [eventId, status]);
 
   function onClearFilter() {
     setOffset(0);
     setValue('eventId', null);
     setValue('orderNo', null);
+    setValue('status', null);
   }
 
   function getStatusClass(statusOrder: number) {
@@ -90,7 +94,7 @@ function Page() {
 
   return (
     <div>
-      <h2 className="text-3xl mb-4">All Order ({total})</h2>
+      <h2 className="text-3xl mb-4">All Orders ({total})</h2>
       <div className="flex items-center justify-between max-xl:flex-col gap-4">
         <Form
           methods={methods}
@@ -108,6 +112,16 @@ function Page() {
                 name="eventId"
                 items={eventList}
                 placeholder="Select Event"
+              />
+            </div>
+          </div>
+          <div className="flex max-xl:w-4/5 items-start gap-4 max-xl:flex-col">
+            <div className="w-full max-xl:max-w-full">
+              <Dropdown
+                disabled={loading}
+                name="status"
+                items={order.statusList}
+                placeholder="Select Status"
               />
             </div>
           </div>
@@ -143,10 +157,6 @@ function Page() {
             </th>
 
             <th className="px-6 py-3 text-start text-xs font-medium text-gray-500 uppercase dark:text-neutral-500">
-              Payment Method
-            </th>
-
-            <th className="px-6 py-3 text-start text-xs font-medium text-gray-500 uppercase dark:text-neutral-500">
               Created At
             </th>
 
@@ -159,7 +169,7 @@ function Page() {
           {list.map((row) => (
             <tr key={row._id} className="hover:bg-gray-100 dark:hover:bg-neutral-700">
               <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-800 dark:text-neutral-200">
-                <Link href={'/admin/order/'}>{row.orderNo}</Link>
+                <Link href={'/admin/order/' + row._id}>{row.orderNo}</Link>
               </td>
 
               <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-800 dark:text-neutral-200">
@@ -209,12 +219,8 @@ function Page() {
                 </Link>
               </td>
 
-              <td className="px-6 py-4 whitespace-nowrap text-center text-sm font-medium text-gray-800 dark:text-neutral-200">
-                <Link href={'/'}>{formatPaymentMethod(row.paymentMethod)}</Link>
-              </td>
-
               <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-800 dark:text-neutral-200">
-                <Link href={'/'}>{formatDisplayDate(row.createdAt, 'DD MMM YYYY')}</Link>
+                <Link href={'/'}>{formatDisplayDate(row.createdAt, 'DD MMM YYYY hh:mm A')}</Link>
               </td>
 
               <td className="px-6 py-4 whitespace-nowrap text-sm text-center font-medium text-gray-800 dark:text-neutral-200">
