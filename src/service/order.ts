@@ -30,8 +30,8 @@ export const calculatedTotalAmount = (
   return POST<IOrderCalculatedResponse, any>(API_URL, params);
 };
 
-export const downloadOrderPDF = (): Promise<Blob> => {
-  const API_URL = '/api/orders/v1/pdf/receipts';
+export const downloadOrderPDF = (id: string): Promise<Blob> => {
+  const API_URL = `/api/orders/v1/${id}/pdf`;
   return GET<Blob, any>(API_URL, {}, {}, { responseType: 'blob' });
 };
 

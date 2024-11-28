@@ -27,7 +27,7 @@ const CheckOutSuccess: React.FC<TypePropsPaymentInfo> = (props) => {
     }
 
     setIsDownloading(true);
-    downloadOrderPDF()
+    downloadOrderPDF(orderResponse.orderId)
       .then((blob) => {
         triggerDownload(blob, `${orderResponse.transactionNo}.pdf`);
       })
@@ -97,6 +97,9 @@ const CheckOutSuccess: React.FC<TypePropsPaymentInfo> = (props) => {
         <div className="grid grid-cols-2 gap-4 mt-4">
           <Button type="button" theme="success">
             Back to Home
+          </Button>
+          <Button onClick={onClickDownloadPDF} disabled={isDownloading} type="button" theme="light">
+            {isDownloading ? 'Downloading' : 'Get PDF Receipt'}
           </Button>
         </div>
       </div>
