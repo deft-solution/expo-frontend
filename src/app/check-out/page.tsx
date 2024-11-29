@@ -25,7 +25,6 @@ const PageCheckOut: React.FC = () => {
   const { setValue, watch } = methods;
   //
   const { selectedBoothIds, currentEventId } = useBoothSelection();
-
   const [isSubmitModalVisible, setSubmitModalVisibility] = useState(false);
   const [khqrPayment, setKHQRPayment] = useState<IGenerateQRCodeSuccess | null>(null);
   const currency = watch('currency');
@@ -55,9 +54,13 @@ const PageCheckOut: React.FC = () => {
 
   //
   const { finishSubmitting, startSubmitting } = useCheckout();
-  const { response: calculatedPayment, setCurrency } = useCalculatedCheckout();
+  const { response: calculatedPayment, setCurrency, isLoading } = useCalculatedCheckout();
 
   const handleFormSubmit: SubmitHandler<IOrderRequestParams> = (data) => {
+    if (isLoading) {
+      return;
+    }
+
     startSubmitting();
     onCreateOrder(data)
       .then((response) => {

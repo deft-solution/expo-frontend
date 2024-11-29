@@ -1,10 +1,10 @@
 import { useCallback, useEffect, useState } from 'react';
 
+import { TypeCurrency } from '@/constants/Currency';
 import { useBoothSelection } from '@/context/BoothSelectionContext';
+import { IOrderCalculatedResponse } from '@/models/Order';
 import { OrderItem } from '@/models/Payment';
 import { calculatedTotalAmount } from '@/service/order';
-import { IOrderCalculatedResponse } from '@/models/Order';
-import { TypeCurrency } from '@/constants/Currency';
 
 export const useCalculatedCheckout = () => {
   const { selectedBoothIds, currentEventId } = useBoothSelection();
@@ -59,7 +59,7 @@ export const useCalculatedCheckout = () => {
   // Optionally, handle cleanup in case the component is unmounted
   useEffect(() => {
     return () => {
-      // If you have async cancelation support in your API (e.g., Axios cancel token), you can use it here.
+      // If you have async cancellation support in your API (e.g., Axios cancel token), you can use it here.
       setIsLoading(false); // Reset loading when unmounting
     };
   }, []);

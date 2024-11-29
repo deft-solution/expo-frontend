@@ -30,16 +30,6 @@ const EventDetails = (props: EventTypeProps) => {
   const { response } = useApi({ service: getAllBoothForEvent, params: id, effects: [id] });
 
   useEffect(() => {
-    if (selectedBoothIds.length > 0) {
-      setOpenPanel(true);
-    }
-
-    return () => {
-      setOpenPanel(false);
-    };
-  }, [selectedBoothIds.length]);
-
-  useEffect(() => {
     if (response) {
       setBoothList(response);
     }
@@ -51,6 +41,11 @@ const EventDetails = (props: EventTypeProps) => {
       setEvent(responseEvent);
     }
   }, [responseEvent]);
+
+  const onSelectBooth = (ids: string[]) => {
+    setOpenPanel(true);
+    setSelectedBoothIds(ids);
+  };
 
   return (
     <div>
@@ -65,7 +60,7 @@ const EventDetails = (props: EventTypeProps) => {
             <BootSelection
               maxBoothPerOrder={event.maxBoothPerOrder}
               floorPlanUrl={event.floorPlanUrl}
-              onChange={setSelectedBoothIds}
+              onChange={onSelectBooth}
             />
           )}
         </>

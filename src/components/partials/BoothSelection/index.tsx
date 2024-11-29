@@ -1,5 +1,6 @@
 'use client';
 import React, { useEffect, useRef, useState } from 'react';
+
 import { useBoothSelection } from '@/context/BoothSelectionContext';
 
 interface BootSelectionTypeProps {
@@ -24,6 +25,7 @@ const BootSelection = (props: BootSelectionTypeProps) => {
   const fetchSvg = async () => {
     try {
       const svg = await fetchingSvg();
+
       if (svgRef.current) {
         const updatedSvg = svg.replace('<svg', '<svg width="100%" height="100vh"');
         svgRef.current.innerHTML = updatedSvg;
@@ -73,6 +75,25 @@ const BootSelection = (props: BootSelectionTypeProps) => {
     }
   };
 
+  useEffect(() => {
+    // Update visual state after selectedIds changes
+    if (svgRef.current) {
+      const rects = svgRef.current.querySelectorAll('rect');
+      rects.forEach((rect) => {
+        const rectId = rect.id;
+        const booth = boothList.find(({ boothNumber }) => boothNumber === rectId);
+        if (booth) {
+          const isSelected = selectedIds.includes(booth.id);
+          if (isSelected) {
+            rect.classList.add('checked'); // Add 'checked' class if booth is selected
+          } else {
+            rect.classList.remove('checked'); // Remove 'checked' class if booth is not selected
+          }
+        }
+      });
+    }
+  }, [selectedIds, boothList]); // This effect runs when selectedIds or boothList changes
+
   const onClickBooth = (rect: SVGRectElement) => {
     const rectId = rect.id; // Get booth ID from the rect element
     const booth = boothList.find(({ boothNumber }) => boothNumber === rectId);
@@ -89,29 +110,36 @@ const BootSelection = (props: BootSelectionTypeProps) => {
 
     const boothId = booth.id;
 
+    if (maxBoothPerOrder === 1) {
+      setSelectedIds(() => {
+        const newSelectedIds = [boothId];
+
+        if (onChange) {
+          onChange(newSelectedIds);
+        }
+
+        return newSelectedIds;
+      });
+
+      return;
+    }
+
     // Use functional state update to ensure the latest selectedIds
     setSelectedIds((prevSelectedIds) => {
+      const isSelected = prevSelectedIds.includes(boothId);
+      const newSelectedIds = isSelected
+        ? prevSelectedIds.filter((id) => id !== boothId) // Deselect booth
+        : [...prevSelectedIds, boothId]; // Select booth
+
       // Check if the selection exceeds the maximum allowed based on the previous state
-      if (!prevSelectedIds.includes(boothId) && prevSelectedIds.length >= maxBoothPerOrder) {
+      if (!isSelected && newSelectedIds.length > maxBoothPerOrder) {
         alert(`You can only select up to ${maxBoothPerOrder} booth(s).`);
         return prevSelectedIds; // Do not update state if max selection is exceeded
       }
 
-      // Proceed with updating selectedIds
-      const newSelectedIds = prevSelectedIds.includes(boothId)
-        ? prevSelectedIds.filter((id) => id !== boothId) // Deselect booth
-        : [...prevSelectedIds, boothId]; // Select booth
-
       // Emit the onChange event with the updated selectedIds array
       if (onChange) {
         onChange(newSelectedIds);
-      }
-
-      // Update the visual state of the booth based on newSelectedIds
-      if (newSelectedIds.includes(boothId)) {
-        rect.classList.add('checked'); // Add 'checked' class if booth is selected
-      } else {
-        rect.classList.remove('checked'); // Remove 'checked' class if booth is not selected
       }
 
       return newSelectedIds; // Update state with new selection

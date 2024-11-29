@@ -1,5 +1,3 @@
-import React from 'react';
-
 import CustomerInformation from '../CustomerInformation';
 import SelectPaymentMethod from '../PaymentMethod';
 
