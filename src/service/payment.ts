@@ -1,10 +1,9 @@
-import { getWonderPassToken } from '@/helper';
 import {
   ICreatePaymentQRCode,
   IGenerateQRCodeSuccess,
   IVerifyTransactionSuccess,
 } from '@/models/Payment';
-import { GET, POST } from '@Core';
+import { POST } from '@Core';
 
 export const verifyPaymentTransaction = (
   transactionId: string
