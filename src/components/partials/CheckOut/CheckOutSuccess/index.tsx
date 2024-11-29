@@ -1,12 +1,13 @@
 import classNames from 'classnames';
 import DOMPurify from 'dompurify';
 import Image from 'next/image';
+import { useRouter } from 'next/navigation';
 import React, { useState } from 'react';
 
 import { useBoothSelection } from '@/context/BoothSelectionContext';
 import { triggerDownload } from '@/helper';
 import { formatDisplayDate } from '@/helper/format-date';
-import { IVerifyTransactionSucess } from '@/models/Payment';
+import { IVerifyTransactionSuccess } from '@/models/Payment';
 import { downloadOrderPDF } from '@/service/order';
 
 import Button from '../../../../core/components/Buttons/index';
@@ -14,10 +15,11 @@ import { formatNumberByCurrency } from '../../../../helper/format-number';
 import Style from './index.module.scss';
 
 export interface TypePropsPaymentInfo {
-  orderResponse: IVerifyTransactionSucess | null;
+  orderResponse: IVerifyTransactionSuccess | null;
 }
 const CheckOutSuccess: React.FC<TypePropsPaymentInfo> = (props) => {
   const { orderResponse } = props;
+  const router = useRouter();
   const { selectedBooths } = useBoothSelection();
   const [isDownloading, setIsDownloading] = useState(false);
 
@@ -39,6 +41,10 @@ const CheckOutSuccess: React.FC<TypePropsPaymentInfo> = (props) => {
       .finally(() => {
         setIsDownloading(false);
       });
+  };
+
+  const goToHomePage = () => {
+    router.push('https://cambodiaexpo.testing.wonderpass.asia/');
   };
 
   return (
@@ -95,7 +101,7 @@ const CheckOutSuccess: React.FC<TypePropsPaymentInfo> = (props) => {
 
         {/* Action Buttons */}
         <div className="grid grid-cols-2 gap-4 mt-4">
-          <Button type="button" theme="success">
+          <Button onClick={goToHomePage} type="button" theme="success">
             Back to Home
           </Button>
           <Button onClick={onClickDownloadPDF} disabled={isDownloading} type="button" theme="light">

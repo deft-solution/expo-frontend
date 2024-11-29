@@ -1,16 +1,10 @@
 import { TokenType } from '@/enums/TokenType';
 import { AccessToken } from '@/models/AccessToken';
 import { IAuthLogin } from '@/schema';
+import { AuthInformation, ILoginEmailParam, ISendCodeForm, SendCodeSuccess, VerifyOTPParam } from '@/schema/Wonderpass/Authentication';
 import { POST } from '@Core';
 
 import { SignUpExhibitionParam } from '../models/AccessToken';
-import {
-  AuthInformation,
-  ILoginEmailParam,
-  ISendCodeForm,
-  SendCodeSuccess,
-  VerifyOTPParam,
-} from '@/schema/Wonderpass/Authentication';
 
 export function login(param: IAuthLogin): Promise<AccessToken> {
   const API_URL = '/api/oauth2/v1/login';

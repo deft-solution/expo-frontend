@@ -170,7 +170,7 @@ export interface IGenerateQRCodeSuccess {
   createdAt: string;
 }
 
-export interface IVerifyTransactionSucess {
+export interface IVerifyTransactionSuccess {
   orderId: string;
   transactionNo: string;
   createdAt: string;

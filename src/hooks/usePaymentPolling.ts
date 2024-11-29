@@ -1,8 +1,8 @@
 'use client';
 import { useEffect, useRef, useState } from 'react';
 
-import { IVerifyTransactionSucess } from '@/models/Payment';
-import { verifyPaymenyTransaction } from '@/service/payment';
+import { IVerifyTransactionSuccess } from '@/models/Payment';
+import { verifyPaymentTransaction } from '@/service/payment';
 
 export interface HookProps {
   onSuccess?: () => void;
@@ -13,7 +13,7 @@ export const usePaymentPolling = (props: HookProps = {}) => {
   const [polling, setPolling] = useState<boolean>(false);
   const [paymentId, setPaymentId] = useState<string | null>(null);
 
-  const [response, setResponse] = useState<IVerifyTransactionSucess | null>(null);
+  const [response, setResponse] = useState<IVerifyTransactionSuccess | null>(null);
   const [isSuccess, setIsSuccess] = useState(false);
   const intervalIdRef = useRef<ReturnType<typeof setInterval> | null>(null);
 
@@ -22,7 +22,7 @@ export const usePaymentPolling = (props: HookProps = {}) => {
 
     const poll = async () => {
       try {
-        const result = await verifyPaymenyTransaction(paymentId);
+        const result = await verifyPaymentTransaction(paymentId);
 
         if (result) {
           // Stop polling on success
