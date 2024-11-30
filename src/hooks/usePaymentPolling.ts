@@ -1,9 +1,8 @@
 'use client';
 import { useEffect, useRef, useState } from 'react';
 
-import { ValidatePassesResponse } from '@/models/Payment';
-import { orderIsCompleted } from '@/service/order';
-import { validatePaymentById } from '@/service/payment';
+import { IVerifyTransactionSuccess } from '@/models/Payment';
+import { verifyPaymentTransaction } from '@/service/payment';
 
 export interface HookProps {
   onSuccess?: () => void;
@@ -13,41 +12,45 @@ export const usePaymentPolling = (props: HookProps = {}) => {
   const { onSuccess } = props;
   const [polling, setPolling] = useState<boolean>(false);
   const [paymentId, setPaymentId] = useState<string | null>(null);
-  const [orderId, setOrderId] = useState<string | null>(null);
-  const [response, setResponse] = useState<ValidatePassesResponse | null>(null);
+
+  const [response, setResponse] = useState<IVerifyTransactionSuccess | null>(null);
   const [isSuccess, setIsSuccess] = useState(false);
   const intervalIdRef = useRef<ReturnType<typeof setInterval> | null>(null);
 
   useEffect(() => {
-    if (!paymentId || !polling) {
-      return;
-    }
+    if (!paymentId || !polling) return;
 
-    intervalIdRef.current = setInterval(async () => {
+    const poll = async () => {
       try {
-        const result = await validatePaymentById(paymentId);
-        setResponse(result);
+        const result = await verifyPaymentTransaction(paymentId);
 
-        // Stop polling if the response meets the stop condition
-        if (result.data === 1) {
+        if (result) {
+          // Stop polling on success
+          setResponse(result);
           clearInterval(intervalIdRef.current!);
           intervalIdRef.current = null;
           setIsSuccess(true);
           setPolling(false);
-          if (orderId) {
-            await orderIsCompleted(orderId);
-          }
           if (onSuccess) {
             onSuccess();
           }
         }
-      } catch (err) {
+      } catch (err: any) {
+        if (err.errorCode === 60005) {
+          console.warn('Retryable error occurred, continuing polling...');
+          // Continue polling without resetting the interval
+          return;
+        }
+
+        // Handle non-retryable errors
         console.error('Error during polling:', err);
-        setPolling(false);
         clearInterval(intervalIdRef.current!);
         intervalIdRef.current = null;
+        setPolling(false);
       }
-    }, 2000); // Poll every 2 seconds
+    };
+
+    intervalIdRef.current = setInterval(poll, 2000);
 
     return () => {
       if (intervalIdRef.current) {
@@ -55,22 +58,18 @@ export const usePaymentPolling = (props: HookProps = {}) => {
         intervalIdRef.current = null;
       }
     };
-  }, [paymentId, polling]);
+  }, [paymentId, polling, onSuccess]);
 
-  // Function to cancel polling
+  const startPolling = () => setPolling(true);
+
   const cancelPolling = () => {
     if (intervalIdRef.current) {
       clearInterval(intervalIdRef.current);
       intervalIdRef.current = null;
-      setPolling(false);
     }
+    setPolling(false);
   };
 
-  const startPolling = () => {
-    setPolling(true);
-  };
-
-  // Return values and functions to control polling externally
   return {
     isSuccess,
     response,
@@ -78,7 +77,6 @@ export const usePaymentPolling = (props: HookProps = {}) => {
     paymentId,
     startPolling,
     setPaymentId,
-    setOrderId,
-    cancelPolling, // Add the cancel function to the returned object
+    cancelPolling,
   };
 };

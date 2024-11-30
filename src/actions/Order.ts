@@ -1,6 +1,7 @@
-import { IOrderRequestParams } from '@/models/Order';
-import { ICheckoutForm } from '@/schema/Checkout';
+import { IGenerateQRCodeSuccess } from '@/models/Payment';
+import { IOrderRequestParams } from '@/schema/Checkout';
 import { createOrder } from '@/service/order';
+import { createQRCodePayment } from '@/service/payment';
 
 export interface OrderParam {
   event: string;
@@ -8,29 +9,18 @@ export interface OrderParam {
   paymentId: string;
 }
 
-export const onSubmitOrder = (param: ICheckoutForm, orderInfo: OrderParam) => {
-  const order: IOrderRequestParams = {
-    firstName: param.firstName,
-    lastName: param.lastName,
-    email: param.email,
-    companyName: param.companyName,
-    patentUrl: param.patentUrl ?? null,
-    phoneNumber: param.phoneNumber,
-    nationality: param.nationality,
-    note: 'Created Order',
-    provider: param.provider,
-    paymentCard: param.paymentCard,
-    option: param.option,
-    paymentId: orderInfo.paymentId,
-    event: orderInfo.event,
-    userId: orderInfo.userId,
-    booths: [
-      {
-        boothId: param.passTemplate,
-        quantity: param.quantity,
-      },
-    ],
-  };
-
-  return createOrder(order);
+export const onCreateOrder = (
+  param: IOrderRequestParams
+): Promise<IGenerateQRCodeSuccess | undefined> => {
+  param['note'] = param.note ?? 'Created Order';
+  return createOrder(param).then((response) => {
+    if (!response) {
+      return;
+    }
+    return createQRCodePayment({
+      event: response.event,
+      orderId: response._id,
+      note: param.note ?? null,
+    });
+  });
 };

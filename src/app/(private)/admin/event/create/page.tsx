@@ -13,7 +13,10 @@ import { yupResolver } from '@hookform/resolvers/yup';
 
 const Page = () => {
   const router = useRouter();
-  const methods = useForm({ resolver: yupResolver(EventCreateFormSchema) });
+  const methods = useForm({
+    resolver: yupResolver(EventCreateFormSchema),
+    defaultValues: { maxBoothPerOrder: 1 },
+  });
   const { handleSubmit, setValue, trigger } = methods;
   const id = useSearchParams().get('id') ?? null; // default value is "1"
 
@@ -29,6 +32,7 @@ const Page = () => {
       getEventById(id).then((res) => {
         setValue('name', res.name);
         setValue('logoUrl', res.logoUrl);
+        setValue('maxBoothPerOrder', res.maxBoothPerOrder);
         setValue('startFrom', formatDisplayDate(res.startFrom, 'YYYY-MM-DD'));
         setValue('endDate', formatDisplayDate(res.endDate, 'YYYY-MM-DD'));
         setValue('email', res.email);
@@ -55,7 +59,12 @@ const Page = () => {
               label="Main Website URL"
               placeholder="Main Website URL"
             />
-            <div className="grid gap-4 grid-cols-2 col-span-2">
+            <div className="grid gap-4 grid-cols-3 col-span-2">
+              <InputText
+                name="maxBoothPerOrder"
+                label="Max Boother Per Order"
+                placeholder="Ex: 1"
+              />
               <DatePicker name="startFrom" label="Start From" />
               <DatePicker name="endDate" label="End Date" />
             </div>

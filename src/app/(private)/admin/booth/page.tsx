@@ -7,6 +7,7 @@ import { useForm } from 'react-hook-form';
 
 import { formatDisplayDate } from '@/helper/format-date';
 import { IBootList } from '@/schema/Booth';
+import { IEventList } from '@/schema/Event';
 import { getAllBooths } from '@/service/booth';
 import { Form, InputText, Pagination, useApi } from '@Core';
 
@@ -86,6 +87,7 @@ const Page = () => {
         <tbody className="divide-y divide-gray-200 dark:divide-neutral-700">
           {list.length > 0 &&
             list.map((row, idx) => {
+              const event = row?.event as IEventList;
               return (
                 <tr key={idx} className="hover:bg-gray-100 dark:hover:bg-neutral-700">
                   <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-800 dark:text-neutral-200">
@@ -95,19 +97,19 @@ const Page = () => {
                     {row.boothNumber}
                   </td>
                   <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-800 dark:text-neutral-200">
-                    {row.event?.id && (
-                      <Link href={goToEventDetail(row.event.id)}>
+                    {(event as IEventList)?.id && (
+                      <Link href={goToEventDetail(event.id)}>
                         <div className="flex items-center gap-2">
-                          {row?.event?.logoUrl && (
+                          {event?.logoUrl && (
                             <Image
                               className="w-10 h-10 rounded-full object-cover"
                               width={100}
                               height={100}
-                              src={row.event.logoUrl}
-                              alt={row.event.logoUrl}
+                              src={event.logoUrl}
+                              alt={event.logoUrl}
                             />
                           )}
-                          {row?.event?.name}
+                          {event?.name}
                         </div>
                       </Link>
                     )}

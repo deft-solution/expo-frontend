@@ -29,7 +29,7 @@ export interface IBooth {
   createdAt: string;
   updatedAt: string;
   id: string;
-  event?: IEventList;
+  event: IEventList | string;
   boothType?: IBootTypeList;
 }
 
@@ -40,7 +40,6 @@ export interface IBoothForm {
   hall: string;
   event: string;
   boothType: string;
-  externalId: string;
   price: number | null;
   description?: string | null;
   mapUrl?: string | null;
@@ -53,7 +52,6 @@ export const FormBooth = yup.object().shape({
   boothName: yup.string().required('Booth Name is required'),
   price: yup.number().optional().default(null),
   description: yup.string().nullable(),
-  externalId: yup.string().required('External Id is required'),
   size: yup.string().required('This field is required'),
   hall: yup.string().required('This field is required'),
   event: yup.string().required('Event is required'),

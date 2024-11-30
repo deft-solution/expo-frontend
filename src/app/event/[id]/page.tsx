@@ -28,7 +28,7 @@ export async function generateMetadata(props: Props): Promise<Metadata> {
     description: event.description,
     openGraph: {
       title: event.name,
-      description: event.description,
+      description: event.description ?? '',
       images: event.logoUrl,
       type: 'website',
     },

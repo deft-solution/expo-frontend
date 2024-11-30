@@ -1,4 +1,5 @@
 'use client';
+
 import classNames from 'classnames';
 import Link from 'next/link';
 import React, { useEffect, useState } from 'react';
@@ -6,13 +7,14 @@ import React, { useEffect, useState } from 'react';
 import { formatDisplayDate } from '@/helper/format-date';
 import { IBootTypeList } from '@/schema/BoothType';
 import { getAllBoothType } from '@/service/booth-type';
-import { useApi } from '@Core';
+import { Pagination, useApi } from '@Core';
 
 const Page = () => {
+  const limit = 10;
+  //
   const [list, setList] = useState<IBootTypeList[]>([]);
   const [offset, setOffset] = useState<number>(0);
   const [total, setTotal] = useState<number>(0);
-  const limit = 10;
 
   // API
   const { response } = useApi({
@@ -30,12 +32,15 @@ const Page = () => {
 
   return (
     <div>
-      <Link
-        className="col-end-7 text-white bg-primary hover:bg-primary-800 font-medium rounded-lg text-sm px-5 py-2.5 text-center"
-        href="/admin/booth-type/create"
-      >
-        Create Booth Type
-      </Link>
+      <div className="flex justify-between items-center">
+        <h2 className="text-xl font-bold">All Booth Type ({total})</h2>
+        <Link
+          className="col-end-7 text-white bg-primary hover:bg-primary-800 font-medium rounded-lg text-sm px-5 py-2.5 text-center"
+          href="/admin/booth-type/create"
+        >
+          Create Booth Type
+        </Link>
+      </div>
       <table className="w-full min-w-max table-auto mt-4 text-left">
         <thead>
           <tr>
@@ -58,15 +63,12 @@ const Page = () => {
           {list.length > 0 &&
             list.map((row, idx) => {
               return (
-                <tr
-                  key={idx}
-                  className="hover:bg-gray-100 dark:hover:bg-neutral-700"
-                >
+                <tr key={idx} className="hover:bg-gray-100 dark:hover:bg-neutral-700">
                   <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-800 dark:text-neutral-200">
                     {row.name}
                   </td>
                   <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-800 dark:text-neutral-200">
-                    {row.price}
+                    {row.price} ({row.currency})
                   </td>
                   <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-800 dark:text-neutral-200">
                     {formatDisplayDate(row.createdAt, 'DD MMM YYYY')}
@@ -77,7 +79,7 @@ const Page = () => {
                         className={classNames(
                           'h-2.5 w-2.5 rounded-full me-2',
                           { 'bg-green-500': row.isActive },
-                          { 'bg-red-500': !row.isActive },
+                          { 'bg-red-500': !row.isActive }
                         )}
                       ></div>
                       <div>{row.isActive ? 'Active' : 'Deactive'}</div>
@@ -98,6 +100,9 @@ const Page = () => {
             })}
         </tbody>
       </table>
+      <div className="mt-4">
+        <Pagination total={total} pageSize={limit} onChange={setOffset} />
+      </div>
     </div>
   );
 };

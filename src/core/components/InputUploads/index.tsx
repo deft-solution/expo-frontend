@@ -1,22 +1,25 @@
 'use client';
-import React, { useRef, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
+import { useFormContext } from 'react-hook-form';
+
+import { uploadFiles } from '@/service/file';
 
 import Style from './index.module.scss';
-import { useFormContext } from 'react-hook-form';
 
 export interface InputUploadProps {
   name: string;
   label?: string;
+  enabledUpload?: boolean;
   folderName?: string;
+  disabled?: boolean;
   accepts?: string[]; // Optional prop as an array of strings
 }
 
 const InputUpload: React.FC<InputUploadProps> = (props) => {
-  const { name, accepts = ['image/*'] } = props;
+  const { name, accepts = ['image/*'], folderName, enabledUpload = true, disabled = false } = props;
   const {
     register,
     setValue,
-    getValues,
     formState: { errors },
   } = useFormContext();
   register(name);
@@ -39,8 +42,32 @@ const InputUpload: React.FC<InputUploadProps> = (props) => {
       setValue(name, file);
     }
   };
-
   const error = name.split('.').reduce((acc, part) => (acc as any)?.[part], errors);
+
+  useEffect(() => {
+    if (file) {
+      const formData = new FormData();
+      formData.append('file', file);
+      formData.append('name', file.name);
+
+      if (folderName) {
+        formData.append('folderName', folderName);
+      }
+
+      if (enabledUpload) {
+        uploadFiles(formData)
+          .then((response) => {
+            const { url } = response;
+            setValue(name, url);
+          })
+          .catch((err) => {
+            alert(err?.message ?? 'Something went wrong');
+          });
+      }
+    }
+
+    return () => {};
+  }, [file]);
 
   return (
     <>
@@ -60,6 +87,7 @@ const InputUpload: React.FC<InputUploadProps> = (props) => {
 
       <input
         id={name}
+        disabled={disabled}
         type="file"
         multiple={false}
         onChange={onSelectFile}

@@ -1,11 +1,12 @@
 import Image from 'next/image';
+import Link from 'next/link';
+import { usePathname, useRouter, useSearchParams } from 'next/navigation';
 import React, { useEffect, useRef, useState } from 'react';
 
-import Link from 'next/link';
-import { Close, Menu } from '@mui/icons-material';
-import { usePathname, useRouter, useSearchParams } from 'next/navigation';
-import Style from './index.module.scss';
 import { useEvent } from '@/context/EventContext';
+import { Close, Menu } from '@mui/icons-material';
+
+import Style from './index.module.scss';
 
 const Header = () => {
   const pathname = usePathname();
@@ -79,6 +80,10 @@ const Header = () => {
     return false;
   };
 
+  const onToggle = () => {
+    setToggle(!toggle);
+  };
+
   const links = [
     { href: getUrl('https://cambodiaexpo.testing.wonderpass.asia/'), label: 'Home' },
     { href: getUrl('/about-us'), label: 'About' },
@@ -103,7 +108,8 @@ const Header = () => {
       </div>
 
       {/*Mobile View*/}
-      <div onClick={() => setToggle(!toggle)} className="xl:hidden">
+      {/* remove class hidden when you want to show on mobile because the design does not yet finished */}
+      <div onClick={onToggle} className="xl:hidden hidden">
         {toggle ? <Close className="w-7 h-7 text-main" /> : <Menu className="w-7 h-7 text-main" />}
       </div>
       <div

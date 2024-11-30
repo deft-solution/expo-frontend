@@ -2,7 +2,7 @@
 import React, { useEffect, useState } from 'react';
 
 import { IEventList } from '@/schema/Event';
-import { getAllBothForEvent } from '@/service/booth';
+import { getAllBoothForEvent } from '@/service/booth';
 import { getEventForGuest } from '@/service/event';
 import { useApi } from '@Core';
 
@@ -19,45 +19,49 @@ const EventDetails = (props: EventTypeProps) => {
 
   const [event, setEvent] = useState<IEventList | null>(null);
   const [openPanel, setOpenPanel] = useState(false);
-  const { ids, setIds, setEventId, setBooths, booths } = useBoothSelection();
+  const { boothList, setBoothList, setSelectedBoothIds, selectedBoothIds, setCurrentEventId } =
+    useBoothSelection();
 
   const { response: responseEvent } = useApi({
     service: getEventForGuest,
     params: id,
     effects: [id],
   });
-  const { response } = useApi({ service: getAllBothForEvent, params: id, effects: [id] });
-
-  useEffect(() => {
-    if (ids.length) {
-      setOpenPanel(true);
-    }
-
-    return () => {
-      setOpenPanel(false);
-    };
-  }, [ids]);
+  const { response } = useApi({ service: getAllBoothForEvent, params: id, effects: [id] });
 
   useEffect(() => {
     if (response) {
-      setBooths(response);
+      setBoothList(response);
     }
   }, [response]);
 
   useEffect(() => {
     if (responseEvent) {
-      setEventId(responseEvent.id);
+      setCurrentEventId(responseEvent.id);
       setEvent(responseEvent);
     }
   }, [responseEvent]);
+
+  const onSelectBooth = (ids: string[]) => {
+    setOpenPanel(true);
+    setSelectedBoothIds(ids);
+  };
 
   return (
     <div>
       {event && (
         <>
-          <BoothDetailPanel id={event.id} isOpen={openPanel} onClose={() => setOpenPanel(false)} />
-          {booths.length > 0 && event.floorPlanUrl && (
-            <BootSelection floorPlanUrl={event.floorPlanUrl} onChange={setIds} />
+          <BoothDetailPanel
+            eventId={event.id}
+            isOpen={openPanel}
+            onClose={() => setOpenPanel(false)}
+          />
+          {boothList.length > 0 && event.floorPlanUrl && (
+            <BootSelection
+              maxBoothPerOrder={event.maxBoothPerOrder}
+              floorPlanUrl={event.floorPlanUrl}
+              onChange={onSelectBooth}
+            />
           )}
         </>
       )}

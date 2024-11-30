@@ -8,6 +8,7 @@ export interface InputFloatingType {
   name: string;
   label?: string;
   placeholder?: string;
+  disabled?: boolean;
   icons?: 'User' | 'Email' | 'Phone' | 'House' | 'Globe';
 }
 
@@ -20,16 +21,14 @@ const iconMap: Record<string, string> = {
 };
 
 const InputFloatingLabel: React.FC<InputFloatingType> = (props) => {
-  const { name, label, icons, placeholder } = props;
+  const { name, label, icons, placeholder, disabled } = props;
   const {
     register,
     formState: { errors },
   } = useFormContext(); // retrieve all hook methods
   register(name);
 
-  const error = name
-    .split('.')
-    .reduce((acc, part) => (acc as any)?.[part], errors);
+  const error = name.split('.').reduce((acc, part) => (acc as any)?.[part], errors);
 
   const errorCtx = classNames({ [Style['error']]: error });
 
@@ -42,11 +41,8 @@ const InputFloatingLabel: React.FC<InputFloatingType> = (props) => {
       )}
       <input
         id={name}
-        className={classNames(
-          errorCtx,
-          iconMap[icons || ''],
-          Style['input-floating']
-        )}
+        disabled={disabled}
+        className={classNames(errorCtx, iconMap[icons || ''], Style['input-floating'])}
         type="text"
         placeholder={placeholder}
         {...register(name)}

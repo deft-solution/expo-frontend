@@ -1,48 +1,61 @@
+import { TypeCurrency } from '@/constants/Currency';
 import * as yup from 'yup';
 
-export interface ICheckoutForm {
-  firstName: string;
-  lastName: string;
-  phoneNumber: string;
-  email: string;
-  provider: number;
-  companyName: string;
-  patentUrl?: string;
-  nationality: string;
-  option: string;
-  quantity: number;
-  passTemplate: string;
-  paymentCard: string;
+export interface IOrderBooth {
+  boothId: string; // Required
+  quantity: number; // Required, must be a positive integer
 }
 
+export interface IOrderRequestParams {
+  currency: TypeCurrency;
+  event: string; // Required, must be a valid ObjectId
+  firstName: string; // Required, minimum length 2
+  lastName: string; // Required, minimum length 2
+  phoneNumber: string; // Required, must match a specific pattern
+  companyName: string; // Required
+  nationality: string; // Required
+  patentUrl: string | null; // Nullable
+  note?: string | null; // Nullable
+  paymentMethod: number; // Required
+  email: string; // Required, must be a valid email
+  booths: IOrderBooth[]; // Required, at least one booth
+}
+
+// Yup schema for IOrderBooths (assuming it has specific fields)
+const OrderBoothsSchema = yup.object({
+  boothId: yup.string().required('Booth ID is required'), // Example field
+  quantity: yup
+    .number()
+    .integer('Quantity must be an integer')
+    .positive('Quantity must be a positive number')
+    .required('Quantity is required'),
+});
+
 // Define a validation schema with Yup
-export const CheckOutForm = yup.object().shape({
-  firstName: yup.string().required('First Name is required'),
-  lastName: yup.string().required('Last Name is required'),
-  quantity: yup.number().default(1).optional(),
-  companyName: yup.string().optional().default(null),
-  patentUrl: yup.string().optional(),
-  nationality: yup.string().optional().default(null),
-  passTemplate: yup.string().required('Pass template cant be null'),
-  phoneNumber: yup
+export const OrderRequestParamsSchema = yup.object({
+  currency: yup
     .string()
-    .matches(/^(0[1-9]{1}[0-9]{7,8}|(\+855)[1-9]{1}[0-9]{7,8})$/, 'Invalid Cambodian phone number')
-    .required('Phone number is required'),
-  email: yup.string().email('Invalid email address').required('Email is required'),
-  provider: yup.number().required('Please kindly select your payment method.'),
-  option: yup.string().required('Please kindly select your payment method.'),
-  paymentCard: yup.string().required('Please kindly select your payment method.'),
-});
-
-export const OrderItemSchema = yup.object().shape({
-  passTemplate: yup.string().required('Pass template is required'),
-  quantity: yup.number().positive().default(1).integer().required('Quantity is required'),
-});
-
-export const CalculatedOrderSchema = yup.object().shape({
-  orderItems: yup.array().of(OrderItemSchema).required('Order items are required'),
-  reservationDate: yup.string().nullable().required('Reservation date is required'),
-  provider: yup.number().optional(),
-  option: yup.string().optional(),
-  paymentCard: yup.string().optional(),
+    .oneOf(['KHR', 'USD'], 'Currency must be either KHR or USD')
+    .required('Currency is required'),
+  event: yup.string().required('Event is required'),
+  firstName: yup
+    .string()
+    .required('First name is required')
+    .min(2, 'First name must be at least 2 characters long'),
+  lastName: yup
+    .string()
+    .required('Last name is required')
+    .min(2, 'Last name must be at least 2 characters long'),
+  phoneNumber: yup.string().required('Phone number is required'),
+  companyName: yup.string().required('Company Name is a required field'), // Optional and allows null values
+  nationality: yup.string().required('Nationality is a required field'), // Optional and allows null values
+  patentUrl: yup.string().nullable().default(null),
+  note: yup.string().nullable(),
+  paymentMethod: yup.number().required('Payment method is required'),
+  email: yup.string().required('Email is required').email('Email must be a valid email address'),
+  booths: yup
+    .array()
+    .of(OrderBoothsSchema)
+    .required('Booths are required')
+    .min(1, 'At least one booth must be selected'),
 });

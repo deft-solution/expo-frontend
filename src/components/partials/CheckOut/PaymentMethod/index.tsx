@@ -1,22 +1,16 @@
 import classNames from 'classnames';
 import Image from 'next/image';
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import { useFormContext } from 'react-hook-form';
 
+import { PAYMENT_LIST } from '@/constants/Payment';
 import { useCheckout } from '@/context/CheckOutContext';
-import { usePaymentContext } from '@/context/PaymentOptionsContext';
-import { getAcceptPayments } from '@/helper/config';
-import { PaymentOptionFormat } from '@/models/Payment';
 import { Button } from '@Core';
 
 const SelectPaymentMethod = () => {
-  const providerName = 'provider';
-  const optionName = 'option';
-  const paymentCard = 'paymentCard';
-  const { paymentOptions } = usePaymentContext();
+  const name = 'paymentMethod';
+  const payments = PAYMENT_LIST;
   const { submissionStatus } = useCheckout();
-
-  const [payments, setPayments] = useState<PaymentOptionFormat[]>([]);
   const [activeIdx, setActiveIdx] = useState<number>(-1);
 
   const {
@@ -24,29 +18,17 @@ const SelectPaymentMethod = () => {
     setValue,
     formState: { errors },
   } = useFormContext(); // retrieve all hook methods
-  register(providerName);
-  register(optionName);
-  register(paymentCard);
-
-  useEffect(() => {
-    if (paymentOptions) {
-      const allowPayments = getAcceptPayments();
-      const acceptPayment = paymentOptions.filter(({ key }) => allowPayments.includes(key));
-
-      setPayments(acceptPayment);
-    }
-  }, [paymentOptions]);
+  register(name);
 
   const onSelectPayment = (idx: number) => {
     const payment = payments[idx];
     setActiveIdx(idx);
     //
-    setValue(providerName, payment.provider, { shouldValidate: true });
-    setValue(optionName, payment.key, { shouldValidate: true });
-    setValue(paymentCard, payment._id, { shouldValidate: true });
+    setValue('currency', payment.currency);
+    setValue(name, payment.id, { shouldValidate: true });
   };
 
-  const error = providerName.split('.').reduce((acc, part) => (acc as any)?.[part], errors);
+  const error = name.split('.').reduce((acc, part) => (acc as any)?.[part], errors);
 
   return (
     <div className="flex flex-col gap-4 my-4">
@@ -54,20 +36,18 @@ const SelectPaymentMethod = () => {
         <label htmlFor="">Payment Method</label>
         <div className="grid grid-cols-2 mt-4 gap-4">
           {payments.map((payment, idx) => {
-            const logo = payment.logo;
+            const logo = payment.imageUrl;
             return (
               <div
-                key={payment._id}
+                key={idx}
                 onClick={() => onSelectPayment(idx)}
                 className={classNames(
                   'flex items-center border gap-6 justify-center border-gray-200 p-6 rounded-2xl cursor-pointer',
-                  { 'bg-[#d9d9d9]': activeIdx === idx }
+                  { 'bg-[#d9d9d9]': activeIdx === idx, disabled: submissionStatus }
                 )}
               >
-                {logo.imageUrl && (
-                  <Image src={logo.imageUrl} alt={logo.imageUrl} width={24} height={24} />
-                )}
-                <div>{payment.title}</div>
+                {logo && <Image src={logo} alt={logo} width={24} height={24} />}
+                <div>{payment.name}</div>
               </div>
             );
           })}

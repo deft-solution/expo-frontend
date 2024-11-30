@@ -1,11 +1,13 @@
+export type TypeCurrency = 'KHR' | 'USD';
+
 export const CurrencyList = [
   {
     id: 'KHR',
-    currency: 'KHR',
+    name: 'KHR',
   },
   {
     id: 'USD',
-    currency: 'USD',
+    name: 'USD',
   },
 ];
 

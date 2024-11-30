@@ -4,13 +4,13 @@ import React, { createContext, useContext, useEffect, useState } from 'react';
 import { IBootList } from '@/schema/Booth';
 
 export interface BoothSelectionContextType {
-  ids: string[];
-  eventId: string | null;
-  booths: IBootList[];
-  selectedBooth: IBootList | null;
-  setIds: React.Dispatch<React.SetStateAction<string[]>>;
-  setEventId: React.Dispatch<React.SetStateAction<string | null>>;
-  setBooths: React.Dispatch<React.SetStateAction<IBootList[]>>;
+  selectedBoothIds: string[]; // IDs of the selected booths
+  currentEventId: string | null; // ID of the currently active event
+  boothList: IBootList[]; // List of all available booths
+  selectedBooths: IBootList[]; // List of the booths that are currently selected
+  setSelectedBoothIds: React.Dispatch<React.SetStateAction<string[]>>;
+  setCurrentEventId: React.Dispatch<React.SetStateAction<string | null>>;
+  setBoothList: React.Dispatch<React.SetStateAction<IBootList[]>>;
 }
 
 const BoothContext = createContext<BoothSelectionContextType | undefined>(undefined);
@@ -26,23 +26,31 @@ export const useBoothSelection = () => {
 
 // BoothProvider component
 export const BoothProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
-  const [ids, setIds] = useState<string[]>([]); // Manage booth IDs state
-  const [eventId, setEventId] = useState<string | null>(null); // Manage booth IDs state
-  const [booths, setBooths] = useState<IBootList[]>([]); // Manage booths state
-
-  const [selectedBooth, setSelectedBooth] = useState<IBootList | null>(null);
+  const [selectedBoothIds, setSelectedBoothIds] = useState<string[]>([]); // Manage selected booth IDs
+  const [currentEventId, setCurrentEventId] = useState<string | null>(null); // Manage current event ID
+  const [boothList, setBoothList] = useState<IBootList[]>([]); // Manage list of all booths
+  const [selectedBooths, setSelectedBooths] = useState<IBootList[]>([]); // Manage selected booths
 
   useEffect(() => {
-    if (ids.length && booths.length) {
-      const boothId = ids[0]; // default First Index;
-      const booth = booths.find(({ externalId }) => externalId === boothId);
-      setSelectedBooth(booth ?? null);
-    }
-  }, [booths, ids]);
+    // Update the list of selected booths whenever selected IDs or booth list changes
+    const updatedSelectedBooths = selectedBoothIds
+      .map((id) => boothList.find((booth) => booth.id === id))
+      .filter((booth): booth is IBootList => !!booth); // Filter out undefined values
+
+    setSelectedBooths(updatedSelectedBooths);
+  }, [boothList, selectedBoothIds]);
 
   return (
     <BoothContext.Provider
-      value={{ ids, eventId, setEventId, setIds, booths, setBooths, selectedBooth }}
+      value={{
+        selectedBoothIds,
+        currentEventId,
+        setCurrentEventId,
+        setSelectedBoothIds,
+        boothList,
+        setBoothList,
+        selectedBooths,
+      }}
     >
       {children}
     </BoothContext.Provider>

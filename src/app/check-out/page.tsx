@@ -2,123 +2,107 @@
 import React, { useEffect, useState } from 'react';
 import { SubmitHandler, useForm } from 'react-hook-form';
 
-import { onSubmitOrder } from '@/actions/Order';
+import { onCreateOrder } from '@/actions/Order';
 import CheckOutSuccess from '@/components/partials/CheckOut/CheckOutSuccess';
 import PaymentDetail from '@/components/partials/CheckOut/PaymentDetails';
 import PaymentInformation from '@/components/partials/CheckOut/PaymentInfomation';
 import PaymentStep from '@/components/partials/CheckOut/PaymentStep';
 import SuccessSign from '@/components/partials/CheckOut/SuccessSign';
-import { useAuthLive } from '@/context/AuthLiveContext';
 import { useBoothSelection } from '@/context/BoothSelectionContext';
 import { useCheckout } from '@/context/CheckOutContext';
-import { getWonderPassToken } from '@/helper';
-import { IPayments, useCalculatedCheckout } from '@/hooks/useCalculatedCheckout';
+import { useCalculatedCheckout } from '@/hooks/useCalculatedCheckout';
 import { usePaymentPolling } from '@/hooks/usePaymentPolling';
-import { CreateOrderResponse } from '@/models/Order';
-import { CheckOutForm, ICheckoutForm } from '@/schema/Checkout';
-import { submitPayment } from '@/service/payment';
-import { Form, Modal } from '@Core';
+import { IGenerateQRCodeSuccess } from '@/models/Payment';
+import { IOrderRequestParams, OrderRequestParamsSchema } from '@/schema/Checkout';
+import { Form, Modal, QRCode } from '@Core';
 import { yupResolver } from '@hookform/resolvers/yup';
 
 const PageCheckOut: React.FC = () => {
-  const methods = useForm<ICheckoutForm>({ resolver: yupResolver(CheckOutForm) });
-
-  const { watch, setValue } = methods;
-  const { provider, option, paymentCard } = watch();
+  const methods = useForm<IOrderRequestParams>({
+    resolver: yupResolver(OrderRequestParamsSchema),
+    defaultValues: { currency: 'KHR' },
+  });
+  const { setValue, watch } = methods;
   //
-  const [orderResponse, setOrderResponse] = useState<CreateOrderResponse | null>(null);
-  const [payment, setPayment] = useState<IPayments>();
-  const [paymentCode, setPaymentCode] = useState<string | null>(null);
+  const { selectedBoothIds, currentEventId } = useBoothSelection();
   const [isSubmitModalVisible, setSubmitModalVisibility] = useState(false);
+  const [khqrPayment, setKHQRPayment] = useState<IGenerateQRCodeSuccess | null>(null);
+  const currency = watch('currency');
+
+  useEffect(() => {
+    if (currentEventId) {
+      setValue('event', currentEventId);
+    }
+
+    if (selectedBoothIds.length) {
+      const booths = selectedBoothIds.map((id) => ({ boothId: id, quantity: 1 }));
+      setValue('booths', booths);
+    }
+  }, [selectedBoothIds.length, currentEventId]);
+
+  useEffect(() => {
+    setCurrency(currency);
+  }, [currency]);
 
   const onSuccessPayment = () => {
     setSubmitModalVisibility(false);
   };
 
-  const { setPaymentId, paymentId, isSuccess, startPolling, setOrderId, cancelPolling } =
-    usePaymentPolling({ onSuccess: onSuccessPayment });
+  const { response, isSuccess, setPaymentId, startPolling, cancelPolling } = usePaymentPolling({
+    onSuccess: onSuccessPayment,
+  });
 
   //
-  const { userId } = useAuthLive();
-  const { ids, eventId, selectedBooth } = useBoothSelection();
   const { finishSubmitting, startSubmitting } = useCheckout();
-  const { response: calculatedPayment } = useCalculatedCheckout({ payment });
+  const { response: calculatedPayment, setCurrency, isLoading } = useCalculatedCheckout();
 
-  const token = getWonderPassToken()?.split(' ');
-
-  const handleFormSubmit: SubmitHandler<ICheckoutForm> = (data) => {
-    if (!eventId) {
+  const handleFormSubmit: SubmitHandler<IOrderRequestParams> = (data) => {
+    if (isLoading) {
       return;
     }
 
     startSubmitting();
-    submitPayment(data)
-      .then(async (response) => {
-        await submitOrder(data, response.paymentId);
-        setPaymentCode(response.code);
-        setPaymentId(response.paymentId);
-        startPolling();
-        setSubmitModalVisibility(true);
+    onCreateOrder(data)
+      .then((response) => {
+        if (response && response.qrCode) {
+          setKHQRPayment(response);
+          setPaymentId(response.id);
+          setSubmitModalVisibility(true);
+          startPolling();
+        }
         finishSubmitting();
       })
-      .catch((error) => {
-        if (error?.message) {
-          alert(`Error: ${error.message}`);
-        }
+      .catch((err) => {
+        alert(err.message ?? 'Something went wrong');
       })
       .finally(() => {
         finishSubmitting();
       });
   };
 
-  useEffect(() => {
-    setPayment({ provider, option, paymentCard });
-  }, [provider, option, paymentCard]);
-
-  useEffect(() => {
-    setValue('passTemplate', ids[0]);
-  }, [ids, setValue]);
-
   const handleModalClose = () => {
     setSubmitModalVisibility(false);
     cancelPolling();
   };
 
-  // Submit order after payment
-  const submitOrder = async (data: ICheckoutForm, paymentId: string) => {
-    try {
-      if (!eventId || !userId || !selectedBooth?.id) {
-        return;
-      }
-
-      data['passTemplate'] = selectedBooth.id;
-
-      const orderResponse = await onSubmitOrder(data, { event: eventId, userId, paymentId });
-      if (orderResponse._id) {
-        setOrderResponse(orderResponse);
-        setOrderId(orderResponse._id);
-      }
-    } catch (error) {
-      throw new Error('Error creating the order');
-    }
-  };
-
   return (
     <div className="max-md:mb-10">
       <Modal
-        contentClassName="max-w-[400px] !h-[700px]"
-        visible={isSubmitModalVisible}
+        contentClassName="max-w-[400px] !h-[600px]"
         onClickOutSide={handleModalClose}
+        visible={isSubmitModalVisible}
       >
-        {token && token.length > 1 && (
-          <iframe
-            title="Payment Processing"
-            className="checkout-frame w-full h-full"
-            src={`${process.env.NEXT_PUBLIC_PAYMENT_URL}/payment-processing?code=${paymentCode}&token=${token[1]}&platformType=2`}
-          ></iframe>
+        {khqrPayment && khqrPayment.amount > 0 && khqrPayment.currency && (
+          <div className="flex h-full items-center justify-center">
+            <QRCode
+              amount={khqrPayment.amount}
+              currency={khqrPayment.currency}
+              onCountDownFinished={handleModalClose}
+              value={khqrPayment.qrCode}
+            />
+          </div>
         )}
       </Modal>
-
       {/* Main Checkout Form */}
       <Form methods={methods} onSubmit={handleFormSubmit}>
         <PaymentStep isCompleted={isSuccess} />
@@ -131,12 +115,7 @@ const PageCheckOut: React.FC = () => {
           ) : (
             <div className="grid grid-cols-1 md:grid-cols-2 gap-5 mt-7">
               <SuccessSign className="col-span-1 md:col-span-2 items-center flex flex-col gap-5" />
-              <CheckOutSuccess
-                option={payment?.option}
-                paymentRef={paymentId}
-                paymentCalculated={calculatedPayment}
-                orderResponse={orderResponse}
-              />
+              <CheckOutSuccess orderResponse={response} />
             </div>
           )}
         </div>

@@ -1,18 +1,32 @@
+import { TypeCurrency } from '@/constants/Currency';
+import { IBooth } from '@/schema/Booth';
+import { IBootTypeList } from '@/schema/BoothType';
+import { IEvents } from '@/schema/Event';
+
+export interface Event extends IEvents {
+  createdBy: string;
+  createdAt: string;
+  updatedAt: string;
+  id: string;
+}
+
+export interface BoothId extends IBooth {
+  mapUrl: any;
+  event: string;
+  boothType: IBootTypeList;
+}
+
 export interface IOrderRequestParams {
   event: string;
   firstName: string;
   lastName: string;
   phoneNumber: string;
-  userId: string;
   email: string;
-  companyName: string | null;
-  patentUrl: string | null;
-  nationality: string | null;
-  note: string | null;
-  paymentId: string;
-  paymentCard: string;
-  option: string;
-  provider: number;
+  companyName: string;
+  patentUrl?: string | null;
+  note?: string | null;
+  nationality: string;
+  paymentMehtod: number;
   booths: IOrderBooths[];
 }
 
@@ -52,9 +66,58 @@ export interface CreateOrderResponse {
 }
 
 export interface Item {
-  boothId: string;
+  boothId: string | BoothId;
   quantity: number;
   unitPrice: number;
   totalPrice: number;
+  _id: string;
+}
+
+export interface IOrderCalculatedRequest {
+  currency: TypeCurrency;
+  event: string;
+  booths: IOrderBooths[];
+}
+
+export interface IOrderCalculatedResponse {
+  totalAmount: number;
+  booths: ICalculatedBooth[];
+  currency: TypeCurrency;
+}
+
+export interface ICalculatedBooth {
+  boothId: string;
+  price: number;
+  boothName: string;
+  boothTypeName: string;
+  convertedPrice: number;
+  originCurrency: string;
+  size: string;
+  quantity: number;
+}
+
+export interface IOrderResponse {
+  companyName: string;
+  completedAt: null | string;
+  createdAt: null | string;
+  createdBy: null | string;
+  currency: string;
+  email: string;
+  event: Event;
+  firstName: string;
+  ip: string;
+  items: Item[];
+  lastName: string;
+  nationality: string;
+  note: string;
+  orderNo: string;
+  patentUrl: null | string;
+  paymentMethod: number;
+  paymentStatus: number;
+  phoneNumber: string;
+  status: number;
+  totalAmount: number;
+  updatedAt: string;
+  __v: number;
   _id: string;
 }

@@ -1,5 +1,17 @@
-import { CreateOrderResponse, IOrderRequestParams } from '@/models/Order';
-import { GET, POST, PUT } from '@Core';
+import {
+  CreateOrderResponse,
+  IOrderResponse,
+  IOrderCalculatedRequest,
+  IOrderCalculatedResponse,
+} from '@/models/Order';
+import { IPagination, IPaginationParam } from '@/models/Pagination';
+import { IOrderRequestParams } from '@/schema/Checkout';
+import { GET, GETWithToken, POST, PUT } from '@Core';
+
+export function getAllOrders(param: IPaginationParam): Promise<IPagination<IOrderResponse>> {
+  const API_URL = '/api/orders/v1/admin/list';
+  return GETWithToken<IPagination<IOrderResponse>, any>(API_URL, param);
+}
 
 export const createOrder = (param: IOrderRequestParams): Promise<CreateOrderResponse> => {
   const API_URL = '/api/orders/v1/create';
@@ -11,7 +23,19 @@ export const orderIsCompleted = (orderId: string): Promise<void> => {
   return PUT<void, any>(API_URL, {}, {});
 };
 
-export const downloadOrderPDF = (): Promise<Blob> => {
-  const API_URL = '/api/orders/v1/pdf/receipts';
+export const calculatedTotalAmount = (
+  params: IOrderCalculatedRequest
+): Promise<IOrderCalculatedResponse> => {
+  const API_URL = '/api/orders/v1/calculated';
+  return POST<IOrderCalculatedResponse, any>(API_URL, params);
+};
+
+export const downloadOrderPDF = (id: string): Promise<Blob> => {
+  const API_URL = `/api/orders/v1/${id}/pdf`;
   return GET<Blob, any>(API_URL, {}, {}, { responseType: 'blob' });
 };
+
+export function getOrderById(id: string): Promise<IOrderResponse> {
+  const API_URL = '/api/orders/v1/admin/' + id;
+  return GETWithToken<IOrderResponse>(API_URL, {});
+}

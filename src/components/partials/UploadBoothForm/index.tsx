@@ -45,7 +45,7 @@ const UploadBoothForm: React.FC<UploadBoothTypeProps> = (props) => {
     <div>
       <h2 className="text-xl font-bold"> Upload Booth Template Form</h2>
       <Form onSubmit={onSubmitForm} classNames="grid gap-4 mt-4" methods={methods}>
-        <InputUpload name="file" accepts={['.xls', '.xlsx']} />
+        <InputUpload enabledUpload={false} name="file" accepts={['.xls', '.xlsx']} />
         <div className="flex justify-between">
           <Button theme="light" onClick={onClosed}>
             Close
