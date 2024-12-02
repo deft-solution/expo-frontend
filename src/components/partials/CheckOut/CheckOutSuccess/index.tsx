@@ -5,14 +5,14 @@ import { useRouter } from 'next/navigation';
 import React, { useState } from 'react';
 
 import { useBoothSelection } from '@/context/BoothSelectionContext';
-import { triggerDownload } from '@/helper';
+import { getWordPressUrl, triggerDownload } from '@/helper';
 import { formatDisplayDate } from '@/helper/format-date';
 import { IVerifyTransactionSuccess } from '@/models/Payment';
 import { downloadOrderPDF } from '@/service/order';
+import { Button } from '@Core';
 
 import { formatNumberByCurrency } from '../../../../helper/format-number';
 import Style from './index.module.scss';
-import { Button } from '@Core';
 
 export interface TypePropsPaymentInfo {
   orderResponse: IVerifyTransactionSuccess | null;
@@ -44,7 +44,7 @@ const CheckOutSuccess: React.FC<TypePropsPaymentInfo> = (props) => {
   };
 
   const goToHomePage = () => {
-    router.push('https://cambodiaexpo.testing.wonderpass.asia/');
+    router.push(getWordPressUrl());
   };
 
   return (
