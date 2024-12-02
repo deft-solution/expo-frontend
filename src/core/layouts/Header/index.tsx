@@ -4,6 +4,7 @@ import { usePathname, useRouter, useSearchParams } from 'next/navigation';
 import React, { useEffect, useRef, useState } from 'react';
 
 import { useEvent } from '@/context/EventContext';
+import { getWordPressUrl } from '@/helper';
 import { Close, Menu } from '@mui/icons-material';
 
 import Style from './index.module.scss';
@@ -84,8 +85,9 @@ const Header = () => {
     setToggle(!toggle);
   };
 
+  const baseUrl = getWordPressUrl();
   const links = [
-    { href: getUrl('https://cambodiaexpo.testing.wonderpass.asia/'), label: 'Home' },
+    { href: getUrl(baseUrl), label: 'Home' },
     { href: getUrl('/about-us'), label: 'About' },
     { href: getUrl('/services'), label: 'Services' },
     { href: getUrl('/upcoming-packages'), label: 'Upcoming Packages' },
@@ -99,10 +101,7 @@ const Header = () => {
         `}
     >
       <div className="flex container mx-auto justify-between items-center gap-[60px] w-full">
-        <Link
-          href={getUrl('https://cambodiaexpo.testing.wonderpass.asia/')}
-          className="max-sm:max-w-[200px]"
-        >
+        <Link href={getUrl(baseUrl)} className="max-sm:max-w-[200px]">
           <Image src="/assets/logo/logo.svg" alt="/assets/logo/logo.svg" width={250} height={100} />
         </Link>
       </div>

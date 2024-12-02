@@ -18,6 +18,14 @@ export const getWonderPassToken = () => {
   return null;
 };
 
+export const getWordPressUrl = (): string => {
+  const baseUrl = process.env.NEXT_PUBLIC_WORDPRESS_URL;
+  if (!baseUrl) {
+    throw new Error('`NEXT_PUBLIC_WORDPRESS_URL` is not defined in the environment variables.');
+  }
+  return baseUrl.replace(/\/$/, ''); // Ensure no trailing slash
+};
+
 /**
  * Triggers a download for the provided Blob, using the specified file name.
  *
